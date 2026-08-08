@@ -39,7 +39,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
     <div className="w-full max-w-[488px] max-[1080px]:max-w-none">
       <div>
         <div>
-          <h2 className="mb-8 font-['Poppins'] text-2xl leading-9 font-bold tracking-[1.2px] text-[#353b3c]">Design</h2>
+          <h2 className="font-poppins mb-8 text-2xl leading-9 font-bold tracking-[1.2px] text-[#353b3c]">Design</h2>
           <div>
             <RadioGroup<Platform>
               label="Platform"
@@ -114,10 +114,10 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
         </div>
 
         <div className="mt-16">
-          <h2 className="mb-8 font-['Poppins'] text-2xl leading-9 font-bold tracking-[1.2px] text-[#353b3c]">Color</h2>
+          <h2 className="font-poppins mb-8 text-2xl leading-9 font-bold tracking-[1.2px] text-[#353b3c]">Color</h2>
           <div className="grid gap-6">
             <div>
-              <p className="mb-2 font-['Poppins'] text-xl font-semibold text-[#353b3c]">Template</p>
+              <p className="font-poppins mb-2 text-xl font-semibold text-[#353b3c]">Template</p>
               <div className="grid grid-cols-6 gap-x-6 gap-y-3">
                 {presetNames.map((preset) => (
                   <button
@@ -140,7 +140,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
                 aria-expanded={detailsOpen}
                 onClick={() => setDetailsOpen((open) => !open)}
               >
-                <span className="my-auto font-['Noto_Sans_JP'] text-xl font-semibold tracking-[0.05em] text-[#353b3c]">詳細設定</span>
+                <span className="my-auto font-sans text-xl font-semibold tracking-[0.05em] text-[#353b3c]">詳細設定</span>
                 <span className="my-auto block">
                   <img className={`block transition-transform duration-300 ${detailsOpen ? 'rotate-180' : ''}`} src="/assets/arrow.svg" alt="" />
                 </span>
@@ -205,7 +205,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
         <div className="mt-16">
           <button
             type="button"
-            className="w-full cursor-pointer rounded-lg bg-[#585858] p-3 text-center font-['Poppins'] text-xl font-bold text-white transition-opacity duration-300 hover:opacity-70 max-[768px]:hover:opacity-100"
+            className="font-poppins w-full cursor-pointer rounded-lg bg-[#585858] p-3 text-center text-xl font-bold text-white transition-opacity duration-300 hover:opacity-70 max-[768px]:hover:opacity-100"
             onClick={onCreate}
           >
             Create
@@ -228,7 +228,7 @@ type RadioGroupProps<T extends string | boolean> = {
 function RadioGroup<T extends string | boolean>({ label, name, value, options, onChange, hidden = false }: RadioGroupProps<T>) {
   return (
     <div className={`mt-6 first:mt-[30px] ${hidden ? 'hidden' : ''}`}>
-      <p className="mb-2 font-['Poppins'] text-xs font-medium text-[#c3c3c3]">{label}</p>
+      <p className="font-poppins mb-2 text-xs font-medium text-[#c3c3c3]">{label}</p>
       <div className="flex flex-wrap gap-x-6 gap-y-3">
         {options.map(([optionValue, optionLabel]) => {
           const id = `${name}-${String(optionValue)}`
@@ -260,7 +260,7 @@ type ColorSectionProps = {
 function ColorSection({ heading, colors, fields, onChange, hidden = false }: ColorSectionProps) {
   return (
     <div className={`mt-6 first:mt-0 ${hidden ? 'hidden' : ''}`}>
-      <p className="mb-2 font-['Poppins'] text-base font-semibold text-[#353b3c]">{heading}</p>
+      <p className="font-poppins mb-2 text-base font-semibold text-[#353b3c]">{heading}</p>
       <div className="grid grid-cols-2 gap-x-6 gap-y-3 max-[1080px]:gap-x-3 max-[1080px]:gap-y-1.5">
         {fields.map(([key, label]) => (
           <ColorInput key={`${key}-${colors[key]}`} colorKey={key} label={label} value={colors[key]} onChange={onChange} />
@@ -304,10 +304,10 @@ function ColorInput({ colorKey, label, value, onChange }: ColorInputProps) {
           value={value}
           onChange={(event) => onChange(colorKey, event.target.value)}
         />
-        <span className="mx-0.5 ml-1 font-['Poppins'] font-medium text-[#c3c3c3]">#</span>
+        <span className="font-poppins mx-0.5 ml-1 font-medium text-[#c3c3c3]">#</span>
         <input
           type="text"
-          className="w-full p-1 font-['Poppins'] font-normal text-[#353b3c]"
+          className="font-poppins w-full p-1 font-normal text-[#353b3c]"
           maxLength={6}
           pattern="[a-zA-Z0-9]{6}"
           value={textValue}

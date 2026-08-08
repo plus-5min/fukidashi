@@ -30,7 +30,7 @@ export function CommentPreview({ config }: CommentPreviewProps) {
             showBadge
           />
 
-          <div className={`font-['Noto_Sans_JP'] text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
+          <div className={`font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
             <div className="relative flex justify-between rounded-t-[10px] bg-[var(--superchat-name-bg)] px-5 py-3 text-[var(--superchat-name)]">
               <p>リスナー </p>
               <p>￥5,000</p>
@@ -42,7 +42,7 @@ export function CommentPreview({ config }: CommentPreviewProps) {
             </div>
           </div>
 
-          <div className={`font-['Noto_Sans_JP'] text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
+          <div className={`font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
             <div className="flex gap-2 rounded-t-[10px] bg-[var(--membership-name-bg)] px-5 py-3 text-[var(--membership-name)]">
               <p>リスナー</p>
               <MemberBadge />
@@ -52,7 +52,7 @@ export function CommentPreview({ config }: CommentPreviewProps) {
             </div>
           </div>
 
-          <div className={`font-['Noto_Sans_JP'] text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
+          <div className={`font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
             <div className="flex gap-2 rounded-t-[10px] bg-[var(--membership-name-bg)] px-5 pt-3 pb-0 text-[var(--membership-name)]">
               <p>リスナー</p>
               <MemberBadge />
@@ -97,7 +97,7 @@ function TextComment({ config, name, message, hidden = false, member = false, sh
 
   return (
     <div
-      className={`gap-3 font-['Noto_Sans_JP'] text-base leading-6 font-bold tracking-[0.5px] not-italic ${
+      className={`gap-3 font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic ${
         hidden ? 'hidden' : 'flex'
       } ${isRight ? 'flex-row-reverse' : 'flex-row'}`}
     >

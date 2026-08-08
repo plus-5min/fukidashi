@@ -18,7 +18,7 @@ export function AboutModal({ open, onClose }: AboutModalProps) {
         <div>
           <div className="grid gap-[120px] max-[768px]:gap-[60px]">
             <div>
-              <h2 className="text-center font-['Poppins'] text-[32px] font-bold text-[#353b3c]" id="about-modal-title">
+              <h2 className="font-poppins text-center text-[32px] font-bold text-[#353b3c]" id="about-modal-title">
                 fukidashi
               </h2>
               <div className="mt-16 text-center text-[#353b3c]">
@@ -28,7 +28,7 @@ export function AboutModal({ open, onClose }: AboutModalProps) {
               </div>
             </div>
             <div>
-              <h3 className="text-center font-['Poppins'] text-2xl font-bold text-[#353b3c]">Creater</h3>
+              <h3 className="font-poppins text-center text-2xl font-bold text-[#353b3c]">Creater</h3>
               <div className="mt-8 flex items-center justify-center gap-9 rounded-[20px] bg-[#fafafa] p-8 max-[768px]:gap-7 max-[768px]:p-4">
                 <div className="size-[104px] shrink-0">
                   <img className="h-auto w-full object-contain" src="/image/profile.png" width="104" height="104" alt="通行止め.ᐟ.ᐟ" />
@@ -51,7 +51,7 @@ export function AboutModal({ open, onClose }: AboutModalProps) {
               </div>
             </div>
             <div>
-              <h3 className="text-center font-['Poppins'] text-2xl font-bold text-[#353b3c]">Contact</h3>
+              <h3 className="font-poppins text-center text-2xl font-bold text-[#353b3c]">Contact</h3>
               <div className="mt-8 font-light text-[#353b3c]">
                 <span className="inline-block">お問い合わせはメール、</span>
                 <span className="inline-block">

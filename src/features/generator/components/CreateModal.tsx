@@ -49,7 +49,7 @@ export function CreateModal({ open, css, onCssChange, onClose }: CreateModalProp
             <img src="/assets/close-circle.svg" alt="×" />
           </button>
           <div>
-            <p className="font-['Poppins'] text-xl font-bold text-[#353b3c]" id="create-modal-title">
+            <p className="font-poppins text-xl font-bold text-[#353b3c]" id="create-modal-title">
               CSS
             </p>
             <div className="relative mt-6">
