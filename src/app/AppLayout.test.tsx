@@ -9,8 +9,8 @@ function renderLayout(path: string) {
     <MemoryRouter initialEntries={[path]}>
       <Routes>
         <Route Component={AppLayout}>
-          <Route index element={<main>Generator page</main>} />
-          <Route path="*" element={<main>Not found page</main>} />
+          <Route index element={<div>Generator page</div>} />
+          <Route path="*" element={<div>Not found page</div>} />
         </Route>
       </Routes>
     </MemoryRouter>,
@@ -25,6 +25,7 @@ describe('AppLayout', () => {
     const html = renderLayout(path)
 
     expect(html).toContain('<header')
+    expect(html).toContain('<main class="flex-1">')
     expect(html).toContain(pageContent)
     expect(html).toContain('<footer')
   })

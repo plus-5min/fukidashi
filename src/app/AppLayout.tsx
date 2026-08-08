@@ -12,11 +12,13 @@ export function AppLayout() {
   useModalScrollLock(aboutOpen)
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Header onOpenAbout={() => setAboutOpen(true)} />
-      <Outlet />
+      <main className="flex-1">
+        <Outlet />
+      </main>
       <Footer />
       <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
-    </>
+    </div>
   )
 }

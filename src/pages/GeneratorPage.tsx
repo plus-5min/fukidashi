@@ -24,24 +24,22 @@ export function GeneratorPage() {
 
   return (
     <div style={colorVariables}>
-      <main>
-        <div className="mx-auto px-6 py-16 max-[768px]:px-3 max-[768px]:py-8">
-          <div className="mx-auto flex w-full max-w-[1280px] justify-center gap-16 max-[1080px]:flex-col">
-            <CommentPreview config={config} />
-            <GeneratorControls
-              config={config}
-              activePreset={activePreset}
-              dispatch={dispatch}
-              onPresetChange={setActivePreset}
-              onCreate={() => {
-                setEditableCss(generatedCss)
-                setCreateOpen(true)
-              }}
-            />
-          </div>
-          <CreateModal open={createOpen} css={editableCss} onCssChange={setEditableCss} onClose={() => setCreateOpen(false)} />
+      <div className="mx-auto p-6 max-[768px]:px-3 max-[768px]:py-8">
+        <div className="mx-auto flex w-full max-w-[1280px] justify-center gap-16 max-[1080px]:flex-col">
+          <CommentPreview config={config} />
+          <GeneratorControls
+            config={config}
+            activePreset={activePreset}
+            dispatch={dispatch}
+            onPresetChange={setActivePreset}
+            onCreate={() => {
+              setEditableCss(generatedCss)
+              setCreateOpen(true)
+            }}
+          />
         </div>
-      </main>
+        <CreateModal open={createOpen} css={editableCss} onCssChange={setEditableCss} onClose={() => setCreateOpen(false)} />
+      </div>
     </div>
   )
 }
