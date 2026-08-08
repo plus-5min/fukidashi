@@ -24,8 +24,8 @@ describe('AppLayout', () => {
   ])('shows the site header and footer on the %s', (_, path, pageContent) => {
     const html = renderLayout(path)
 
-    expect(html).toContain('<header>')
+    expect(html).toContain('<header')
     expect(html).toContain(pageContent)
-    expect(html).toContain('<footer>')
+    expect(html).toContain('<footer')
   })
 })

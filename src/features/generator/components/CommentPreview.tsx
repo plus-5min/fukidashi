@@ -1,6 +1,4 @@
-import type { CSSProperties } from 'react'
-
-import type { Direction, GeneratorConfig } from '../generatorConfig'
+import type { GeneratorConfig } from '../generatorConfig'
 
 type CommentPreviewProps = {
   config: GeneratorConfig
@@ -10,16 +8,16 @@ export function CommentPreview({ config }: CommentPreviewProps) {
   const isTwitch = config.platform === 'twitch'
 
   return (
-    <div className="comment-contents">
-      <div className="comment-inner">
-        <div className="comment-column">
+    <div className="relative z-0 w-full max-w-[536px] max-[1080px]:max-w-none">
+      <div className="sticky top-16 z-0 rounded-[20px] bg-[#f5f5f5] p-10 max-[768px]:p-5">
+        <div className="grid gap-3">
           <TextComment config={config} name="リスナー" message="ここにコメントが入ります。" />
 
           <TextComment
             config={config}
             name="リスナー"
             message="ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。"
-            className={`twitch-member${isTwitch ? '' : ' is-twitch'}`}
+            hidden={!isTwitch}
             showBadge
           />
 
@@ -27,45 +25,45 @@ export function CommentPreview({ config }: CommentPreviewProps) {
             config={config}
             name="メンバー"
             message="ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。"
-            className={isTwitch ? 'is-twitch' : undefined}
+            hidden={isTwitch}
             member
             showBadge
           />
 
-          <div className={`superchat-contents${isTwitch ? ' is-twitch' : ''}`}>
-            <div className="superchat-header">
+          <div className={`font-['Noto_Sans_JP'] text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
+            <div className="relative flex justify-between rounded-t-[10px] bg-[var(--superchat-name-bg)] px-5 py-3 text-[var(--superchat-name)]">
               <p>リスナー </p>
               <p>￥5,000</p>
             </div>
-            <div className="superchat-message">
+            <div className="rounded-b-[10px] bg-[var(--superchat-comment-bg)] px-5 py-3 font-medium text-[var(--superchat-comment)]">
               <p>
                 ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。
               </p>
             </div>
           </div>
 
-          <div className={`membership-contents${isTwitch ? ' is-twitch' : ''}`}>
-            <div className="membership-channel">
+          <div className={`font-['Noto_Sans_JP'] text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
+            <div className="flex gap-2 rounded-t-[10px] bg-[var(--membership-name-bg)] px-5 py-3 text-[var(--membership-name)]">
               <p>リスナー</p>
               <MemberBadge />
             </div>
-            <div className="membership-text">
+            <div className="rounded-b-[10px] bg-[var(--membership-name-bg)] px-5 pt-0 pb-3 font-medium text-[var(--membership-name)]">
               <p>メンバーシップ へようこそ！</p>
             </div>
           </div>
 
-          <div className={`membership-comment-contents${isTwitch ? ' is-twitch' : ''}`}>
-            <div className="membership-comment-channel">
+          <div className={`font-['Noto_Sans_JP'] text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
+            <div className="flex gap-2 rounded-t-[10px] bg-[var(--membership-name-bg)] px-5 pt-3 pb-0 text-[var(--membership-name)]">
               <p>リスナー</p>
               <MemberBadge />
             </div>
-            <div className="membership-history">
+            <div className="bg-[var(--membership-name-bg)] px-5 text-[var(--membership-name)]">
               <p>メンバー歴 12 か月</p>
             </div>
-            <div className="membership-name">
+            <div className="bg-[var(--membership-name-bg)] px-5 pt-1.5 pb-3 font-medium text-[var(--membership-name)]">
               <p>メンバーシップ</p>
             </div>
-            <div className="membership-comment">
+            <div className="rounded-b-[10px] bg-[var(--membership-comment-bg)] px-5 py-3 text-[var(--membership-comment)]">
               <p>ここにコメントが入ります。</p>
             </div>
           </div>
@@ -79,65 +77,60 @@ type TextCommentProps = {
   config: GeneratorConfig
   name: string
   message: string
-  className?: string
+  hidden?: boolean
   member?: boolean
   showBadge?: boolean
 }
 
-function TextComment({ config, name, message, className, member = false, showBadge = false }: TextCommentProps) {
+function TextComment({ config, name, message, hidden = false, member = false, showBadge = false }: TextCommentProps) {
   const isRight = config.direction === 'right'
-  const baseClass = member ? 'member-contents' : 'listener-contents'
-  const borderColor = member ? 'var(--member-comment-border)' : 'var(--listener-comment-border)'
+  const showProfileImage = config.platform !== 'twitch' && config.showProfileImage
+  const nameColors = member ? 'bg-[var(--member-name-bg)] text-[var(--member-name)]' : 'bg-[var(--listener-name-bg)] text-[var(--listener-name)]'
+  const messageColors = member ? 'bg-[var(--member-comment-bg)] text-[var(--member-comment)]' : 'bg-[var(--listener-comment-bg)] text-[var(--listener-comment)]'
+  const borderColor = member ? 'border-[var(--member-comment-border)]' : 'border-[var(--listener-comment-border)]'
+  const pointerOuterColor = member ? 'bg-[var(--member-comment-border)]' : 'bg-[var(--listener-comment-border)]'
+  const pointerInnerColor = member ? 'bg-[var(--member-comment-bg)]' : 'bg-[var(--listener-comment-bg)]'
+  const outerPointerDirection = isRight
+    ? 'right-[-3px] [transform:rotate(-70deg)_skew(20deg,20deg)]'
+    : 'left-[-3px] [transform:rotate(-20deg)_skew(20deg,20deg)]'
+  const innerPointerDirection = isRight ? 'right-px [transform:rotate(110deg)_skew(20deg,20deg)]' : 'left-px [transform:rotate(-20deg)_skew(20deg,20deg)]'
 
   return (
-    <div className={`${baseClass}${className ? ` ${className}` : ''}`} style={{ flexDirection: isRight ? 'row-reverse' : 'row' }}>
-      <div className={`comment-icon${config.platform === 'twitch' ? ' is-twitch' : ''}`} style={{ display: config.showProfileImage ? 'block' : 'none' }}>
-        <img src="/assets/avatar.svg" height="24" width="24" alt="アイコン" />
+    <div
+      className={`gap-3 font-['Noto_Sans_JP'] text-base leading-6 font-bold tracking-[0.5px] not-italic ${
+        hidden ? 'hidden' : 'flex'
+      } ${isRight ? 'flex-row-reverse' : 'flex-row'}`}
+    >
+      <div className={`min-w-[26px] ${showProfileImage ? 'block' : 'hidden'}`}>
+        <img className="block size-[26px] rounded-[26px]" src="/assets/avatar.svg" height="24" width="24" alt="アイコン" />
       </div>
-      <div className="comment-container">
-        <div className="comment-channel" style={{ display: config.showName ? 'block' : 'none' }}>
-          <div className="comment-channel-block" style={{ justifyContent: isRight ? 'end' : 'start' }}>
-            <div className="comment-name">{name}</div>
+      <div className="grid gap-1.5">
+        <div className={config.showName ? 'block' : 'hidden'}>
+          <div className={`flex gap-2 ${isRight ? 'justify-end' : 'justify-start'}`}>
+            <div className={`flex w-fit rounded-[18px] px-3 py-1 text-xs ${nameColors}`}>{name}</div>
             {showBadge && <MemberBadge />}
           </div>
         </div>
         <div
-          className="comment-message"
-          style={{
-            border: config.showBorder ? `3px solid ${borderColor}` : 'none',
-          }}
+          className={`relative block w-fit overflow-visible rounded-[30px] px-5 py-3 font-medium ${messageColors} ${config.showBorder ? `border-[3px] border-solid ${borderColor}` : 'border-0'}`}
         >
-          <span className="comment-before" style={pointerStyle(config.direction, true, config.showBorder)} />
+          <span
+            className={`absolute top-1 z-[-1] block h-[21px] w-[21px] rounded-tl-[7px] rounded-br-[6px] ${pointerOuterColor} ${
+              config.showBorder ? 'block' : 'hidden'
+            } ${outerPointerDirection}`}
+          />
           {message}
-          <span className="comment-after" style={pointerStyle(config.direction, false, true)} />
+          <span className={`absolute top-[7px] z-0 block size-[18px] rounded-tl-sm rounded-br-[20px] ${pointerInnerColor} ${innerPointerDirection}`} />
         </div>
       </div>
     </div>
   )
 }
 
-function pointerStyle(direction: Direction, outer: boolean, visible: boolean): CSSProperties {
-  const isLeft = direction === 'left'
-  const offset = outer ? (isLeft ? '-3px' : '-3px') : '1px'
-
-  return {
-    display: visible ? 'block' : 'none',
-    left: isLeft ? offset : 'auto',
-    right: isLeft ? 'auto' : offset,
-    transform: outer
-      ? isLeft
-        ? 'rotate(-20deg) skew(20deg, 20deg)'
-        : 'rotate(-70deg) skew(20deg, 20deg)'
-      : isLeft
-        ? 'rotate(-20deg) skew(20deg, 20deg)'
-        : 'rotate(110deg) skew(20deg, 20deg)',
-  }
-}
-
 function MemberBadge() {
   return (
-    <div className="member-bagde">
-      <img src="/assets/member-badge.svg" alt="メンバーバッジ" />
+    <div className="my-auto size-[18px]">
+      <img className="block h-auto w-full object-contain" src="/assets/member-badge.svg" alt="メンバーバッジ" />
     </div>
   )
 }
