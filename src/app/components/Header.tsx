@@ -1,8 +1,8 @@
-type SiteHeaderProps = {
+type HeaderProps = {
   onOpenAbout: () => void
 }
 
-export function SiteHeader({ onOpenAbout }: SiteHeaderProps) {
+export function Header({ onOpenAbout }: HeaderProps) {
   return (
     <header>
       <div className="header-wrap">
@@ -28,15 +28,5 @@ export function SiteHeader({ onOpenAbout }: SiteHeaderProps) {
         </div>
       </div>
     </header>
-  )
-}
-
-export function SiteFooter() {
-  return (
-    <footer>
-      <div className="footer-inner">
-        <p className="footer-copyright">©2024 tsukodome</p>
-      </div>
-    </footer>
   )
 }

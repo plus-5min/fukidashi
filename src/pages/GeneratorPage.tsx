@@ -1,24 +1,21 @@
 import { useMemo, useReducer, useState, type CSSProperties } from 'react'
 
 import { CommentPreview } from '../features/generator/components/CommentPreview'
+import { CreateModal } from '../features/generator/components/CreateModal'
 import { GeneratorControls } from '../features/generator/components/GeneratorControls'
-import { AboutModal, CreateModal } from '../features/generator/components/GeneratorModals'
-import { SiteFooter, SiteHeader } from '../features/generator/components/SiteHeader'
 import { generateCss } from '../features/generator/generateCss'
 import { defaultGeneratorConfig, generatorReducer } from '../features/generator/generatorConfig'
 import type { PresetName } from '../features/generator/presets'
-import { useModalScrollLock } from '../features/generator/useModalScrollLock'
+import { useModalScrollLock } from '../hooks/useModalScrollLock'
 
 export function GeneratorPage() {
   const [config, dispatch] = useReducer(generatorReducer, defaultGeneratorConfig)
   const [activePreset, setActivePreset] = useState<PresetName | null>('blue')
-  const [aboutOpen, setAboutOpen] = useState(false)
   const [createOpen, setCreateOpen] = useState(false)
   const [editableCss, setEditableCss] = useState('')
   const generatedCss = useMemo(() => generateCss(config), [config])
-  const modalOpen = aboutOpen || createOpen
 
-  useModalScrollLock(modalOpen)
+  useModalScrollLock(createOpen)
 
   const colorVariables = useMemo(
     () => Object.fromEntries(Object.entries(config.colors).map(([key, value]) => [`--${key}`, value])) as CSSProperties,
@@ -27,7 +24,6 @@ export function GeneratorPage() {
 
   return (
     <div style={colorVariables}>
-      <SiteHeader onOpenAbout={() => setAboutOpen(true)} />
       <main className="l-main">
         <div className="main-inner">
           <div className="main-column">
@@ -44,10 +40,8 @@ export function GeneratorPage() {
             />
           </div>
           <CreateModal open={createOpen} css={editableCss} onCssChange={setEditableCss} onClose={() => setCreateOpen(false)} />
-          <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
         </div>
       </main>
-      <SiteFooter />
     </div>
   )
 }
