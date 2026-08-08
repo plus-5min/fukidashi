@@ -1,17 +1,7 @@
 import { useRef, useState, type Dispatch } from 'react'
 
-import type {
-  ColorKey,
-  Direction,
-  GeneratorAction,
-  GeneratorConfig,
-  GeneratorColors,
-  Platform,
-} from '../generatorConfig'
-import {
-  colorPresets,
-  type PresetName,
-} from '../presets'
+import type { ColorKey, Direction, GeneratorAction, GeneratorConfig, GeneratorColors, Platform } from '../generatorConfig'
+import { colorPresets, type PresetName } from '../presets'
 
 type GeneratorControlsProps = {
   config: GeneratorConfig
@@ -21,22 +11,9 @@ type GeneratorControlsProps = {
   onCreate: () => void
 }
 
-const presetNames: PresetName[] = [
-  'pink',
-  'blue',
-  'purple',
-  'orange',
-  'green',
-  'black',
-]
+const presetNames: PresetName[] = ['pink', 'blue', 'purple', 'orange', 'green', 'black']
 
-export function GeneratorControls({
-  config,
-  activePreset,
-  dispatch,
-  onPresetChange,
-  onCreate,
-}: GeneratorControlsProps) {
+export function GeneratorControls({ config, activePreset, dispatch, onPresetChange, onCreate }: GeneratorControlsProps) {
   const [detailsOpen, setDetailsOpen] = useState(false)
   const [accordionHeight, setAccordionHeight] = useState(0)
   const accordionRef = useRef<HTMLDivElement>(null)
@@ -73,9 +50,7 @@ export function GeneratorControls({
                 ['youtube', 'Youtube'],
                 ['twitch', 'Twitch'],
               ]}
-              onChange={(value) =>
-                dispatch({ type: 'platformChanged', value })
-              }
+              onChange={(value) => dispatch({ type: 'platformChanged', value })}
             />
             <RadioGroup<Direction>
               label="Direction"
@@ -85,9 +60,7 @@ export function GeneratorControls({
                 ['left', '左寄せ'],
                 ['right', '右寄せ'],
               ]}
-              onChange={(value) =>
-                dispatch({ type: 'directionChanged', value })
-              }
+              onChange={(value) => dispatch({ type: 'directionChanged', value })}
             />
             <RadioGroup<boolean>
               label="ProfileImage"
@@ -160,16 +133,9 @@ export function GeneratorControls({
             </div>
 
             <div className="custom-color-detail">
-              <button
-                type="button"
-                className="custom-color-btn"
-                aria-expanded={detailsOpen}
-                onClick={toggleDetails}
-              >
+              <button type="button" className="custom-color-btn" aria-expanded={detailsOpen} onClick={toggleDetails}>
                 <span className="custom-color-heading">詳細設定</span>
-                <span
-                  className={`custom-color-heading custom-detail-arrow${detailsOpen ? ' open' : ''}`}
-                >
+                <span className={`custom-color-heading custom-detail-arrow${detailsOpen ? ' open' : ''}`}>
                   <img src="/assets/arrow.svg" alt="" />
                 </span>
               </button>
@@ -177,9 +143,7 @@ export function GeneratorControls({
                 ref={accordionRef}
                 className={`custom-color-accordion${detailsOpen ? ' open' : ''}`}
                 style={{
-                  maxHeight: detailsOpen
-                    ? `${accordionHeight}px`
-                    : undefined,
+                  maxHeight: detailsOpen ? `${accordionHeight}px` : undefined,
                 }}
               >
                 <ColorSection
@@ -237,11 +201,7 @@ export function GeneratorControls({
         </div>
 
         <div className="custom-create-block">
-          <button
-            type="button"
-            className="custom-create-btn create-modal-open"
-            onClick={onCreate}
-          >
+          <button type="button" className="custom-create-btn create-modal-open" onClick={onCreate}>
             Create
           </button>
         </div>
@@ -259,14 +219,7 @@ type RadioGroupProps<T extends string | boolean> = {
   hidden?: boolean
 }
 
-function RadioGroup<T extends string | boolean>({
-  label,
-  name,
-  value,
-  options,
-  onChange,
-  hidden = false,
-}: RadioGroupProps<T>) {
+function RadioGroup<T extends string | boolean>({ label, name, value, options, onChange, hidden = false }: RadioGroupProps<T>) {
   return (
     <div className={`custom-label-group${hidden ? ' is-twitch' : ''}`}>
       <p className="custom-label-name">{label}</p>
@@ -275,13 +228,7 @@ function RadioGroup<T extends string | boolean>({
           const id = `${name}-${String(optionValue)}`
           return (
             <div className="custom-label-item" key={id}>
-              <input
-                type="radio"
-                id={id}
-                name={name}
-                checked={value === optionValue}
-                onChange={() => onChange(optionValue)}
-              />
+              <input type="radio" id={id} name={name} checked={value === optionValue} onChange={() => onChange(optionValue)} />
               <label htmlFor={id} className="custom-label-radio">
                 {optionLabel}
               </label>
@@ -301,25 +248,13 @@ type ColorSectionProps = {
   hidden?: boolean
 }
 
-function ColorSection({
-  heading,
-  colors,
-  fields,
-  onChange,
-  hidden = false,
-}: ColorSectionProps) {
+function ColorSection({ heading, colors, fields, onChange, hidden = false }: ColorSectionProps) {
   return (
     <div className={`custom-color-block${hidden ? ' is-twitch' : ''}`}>
       <p className="custom-color-detail-heading">{heading}</p>
       <div className="custom-color-column">
         {fields.map(([key, label]) => (
-          <ColorInput
-            key={`${key}-${colors[key]}`}
-            colorKey={key}
-            label={label}
-            value={colors[key]}
-            onChange={onChange}
-          />
+          <ColorInput key={`${key}-${colors[key]}`} colorKey={key} label={label} value={colors[key]} onChange={onChange} />
         ))}
       </div>
     </div>
@@ -337,7 +272,10 @@ function ColorInput({ colorKey, label, value, onChange }: ColorInputProps) {
   const [textValue, setTextValue] = useState(value.slice(1))
 
   const changeText = (input: string) => {
-    const nextValue = input.replace(/[^a-zA-Z0-9]/g, '').slice(0, 6).toUpperCase()
+    const nextValue = input
+      .replace(/[^a-zA-Z0-9]/g, '')
+      .slice(0, 6)
+      .toUpperCase()
     setTextValue(nextValue)
     if (/^[0-9A-F]{6}$/.test(nextValue)) {
       onChange(colorKey, `#${nextValue}`)
@@ -350,12 +288,7 @@ function ColorInput({ colorKey, label, value, onChange }: ColorInputProps) {
         {label}
       </label>
       <div className="custom-color-picker-column">
-        <input
-          type="color"
-          id={colorKey}
-          value={value}
-          onChange={(event) => onChange(colorKey, event.target.value)}
-        />
+        <input type="color" id={colorKey} value={value} onChange={(event) => onChange(colorKey, event.target.value)} />
         <span className="custom-color-sharp">#</span>
         <input
           type="text"

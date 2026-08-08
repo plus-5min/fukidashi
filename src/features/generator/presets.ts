@@ -1,12 +1,6 @@
 import type { GeneratorColors } from './generatorConfig'
 
-export type PresetName =
-  | 'pink'
-  | 'blue'
-  | 'purple'
-  | 'orange'
-  | 'green'
-  | 'black'
+export type PresetName = 'pink' | 'blue' | 'purple' | 'orange' | 'green' | 'black'
 
 export const colorPresets: Record<PresetName, GeneratorColors> = {
   pink: {

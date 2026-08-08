@@ -1,10 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { generateCss } from './generateCss'
-import {
-  defaultGeneratorConfig,
-  generatorReducer,
-} from './generatorConfig'
+import { defaultGeneratorConfig, generatorReducer } from './generatorConfig'
 
 describe('generatorReducer', () => {
   it('指定した色だけを変更する', () => {
@@ -24,9 +21,7 @@ describe('generateCss', () => {
     const css = generateCss(defaultGeneratorConfig)
 
     expect(css).toContain('--listener-name-bg: #8CCCE3;')
-    expect(css).toContain(
-      '@import url("https://plus-5min.github.io/live-chat-css/youtube/hide.css");',
-    )
+    expect(css).toContain('@import url("https://plus-5min.github.io/live-chat-css/youtube/hide.css");')
     expect(css).toContain('animation: popInLeft 0.3s ease-out forwards;')
     expect(css).toContain('border: 3px solid var(--listener-comment-border);')
     expect(css).not.toContain('{{')
@@ -37,13 +32,9 @@ describe('generateCss', () => {
 
     expect(css).toContain('border-radius: 30px;')
     expect(css).toContain('padding: 12px 20px;')
-    expect(css).toContain(
-      'ytd-sponsorships-live-chat-gift-purchase-announcement-renderer #header',
-    )
+    expect(css).toContain('ytd-sponsorships-live-chat-gift-purchase-announcement-renderer #header')
     expect(css).toContain('#price-column.yt-live-chat-paid-sticker-renderer')
-    expect(css).toContain(
-      ':has(#message.yt-live-chat-paid-message-renderer:empty)',
-    )
+    expect(css).toContain(':has(#message.yt-live-chat-paid-message-renderer:empty)')
     expect(css).toContain('yt-live-chat-app {')
   })
 
@@ -67,9 +58,7 @@ describe('generateCss', () => {
     const css = generateCss(config)
 
     expect(css).toContain('.chat-line__message')
-    expect(css).toContain(
-      '@import url("https://plus-5min.github.io/live-chat-css/twitch/hide.css");',
-    )
+    expect(css).toContain('@import url("https://plus-5min.github.io/live-chat-css/twitch/hide.css");')
     expect(css).toContain('.chat-scrollable-area__message-container')
     expect(css).toContain('overflow-wrap: anywhere;')
     expect(css).not.toContain('yt-live-chat-paid-message-renderer')

@@ -75,10 +75,7 @@ export type GeneratorAction =
   | { type: 'colorChanged'; key: ColorKey; value: string }
   | { type: 'colorsChanged'; colors: GeneratorColors }
 
-export function generatorReducer(
-  state: GeneratorConfig,
-  action: GeneratorAction,
-): GeneratorConfig {
+export function generatorReducer(state: GeneratorConfig, action: GeneratorAction): GeneratorConfig {
   switch (action.type) {
     case 'platformChanged':
       return { ...state, platform: action.value }
