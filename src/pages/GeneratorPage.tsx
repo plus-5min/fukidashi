@@ -6,7 +6,6 @@ import { GeneratorControls } from '../features/generator/components/GeneratorCon
 import { generateCss } from '../features/generator/generateCss'
 import { defaultGeneratorConfig, generatorReducer } from '../features/generator/generatorConfig'
 import type { PresetName } from '../features/generator/presets'
-import { useModalScrollLock } from '../hooks/useModalScrollLock'
 
 export function GeneratorPage() {
   const [config, dispatch] = useReducer(generatorReducer, defaultGeneratorConfig)
@@ -14,8 +13,6 @@ export function GeneratorPage() {
   const [createOpen, setCreateOpen] = useState(false)
   const [editableCss, setEditableCss] = useState('')
   const generatedCss = useMemo(() => generateCss(config), [config])
-
-  useModalScrollLock(createOpen)
 
   const colorVariables = useMemo(
     () => Object.fromEntries(Object.entries(config.colors).map(([key, value]) => [`--${key}`, value])) as CSSProperties,
