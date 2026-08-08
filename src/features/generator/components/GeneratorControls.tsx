@@ -164,7 +164,6 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
               ))}
             </div>
           </div>
-
         </div>
         <div className="rounded-lg">
           <button
@@ -187,7 +186,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
               )}
             </div>
           </div>
-          </div>
+        </div>
       </div>
 
       <div className="shrink-0 p-4 border-t border-[#c3c3c3]">

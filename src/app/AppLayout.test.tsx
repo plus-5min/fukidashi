@@ -10,6 +10,7 @@ function renderLayout(path: string) {
       <Routes>
         <Route Component={AppLayout}>
           <Route index element={<div>Generator page</div>} />
+          <Route path="terms" element={<div>Terms page</div>} />
           <Route path="*" element={<div>Not found page</div>} />
         </Route>
       </Routes>
@@ -20,6 +21,7 @@ function renderLayout(path: string) {
 describe('AppLayout', () => {
   it.each([
     ['generator page', '/', 'Generator page'],
+    ['terms page', '/terms', 'Terms page'],
     ['not found page', '/missing', 'Not found page'],
   ])('shows the site header and footer on the %s', (_, path, pageContent) => {
     const html = renderLayout(path)
@@ -28,5 +30,6 @@ describe('AppLayout', () => {
     expect(html).toContain('<main class="min-h-0 flex-1 overflow-y-auto">')
     expect(html).toContain(pageContent)
     expect(html).toContain('<footer')
+    expect(html).toContain('href="/terms"')
   })
 })
