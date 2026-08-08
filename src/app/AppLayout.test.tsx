@@ -25,7 +25,7 @@ describe('AppLayout', () => {
     const html = renderLayout(path)
 
     expect(html).toContain('<header')
-    expect(html).toContain('<main class="flex-1">')
+    expect(html).toContain('<main class="min-h-0 flex-1 overflow-y-auto">')
     expect(html).toContain(pageContent)
     expect(html).toContain('<footer')
   })

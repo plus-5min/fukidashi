@@ -23,9 +23,9 @@ export function GeneratorPage() {
   )
 
   return (
-    <div style={colorVariables}>
-      <div className="mx-auto p-6 max-[768px]:px-3 max-[768px]:py-8">
-        <div className="mx-auto flex w-full max-w-[1280px] justify-center gap-16 max-[1080px]:flex-col">
+    <div className="h-full" style={colorVariables}>
+      <div className="mx-auto h-full p-6 max-[768px]:px-3 max-[768px]:py-8">
+        <div className="mx-auto flex h-full w-full max-w-[1280px] items-start justify-center gap-16 max-[1080px]:flex-col">
           <CommentPreview config={config} />
           <GeneratorControls
             config={config}

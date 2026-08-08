@@ -4,7 +4,7 @@ type HeaderProps = {
 
 export function Header({ onOpenAbout }: HeaderProps) {
   return (
-    <header className="bg-white">
+    <header className="shrink-0 bg-white">
       <div className="px-8 py-4">
         <div className="flex justify-between gap-6">
           <div className="flex gap-6">

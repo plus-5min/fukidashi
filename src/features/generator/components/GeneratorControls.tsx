@@ -1,5 +1,7 @@
 import { useState, type Dispatch } from 'react'
 
+import { SegmentedControl } from '../../../components/ui/SegmentedControl'
+import { Switch } from '../../../components/ui/Switch'
 import type { ColorKey, Direction, GeneratorAction, GeneratorConfig, GeneratorColors, Platform } from '../generatorConfig'
 import { colorPresets, type PresetName } from '../presets'
 
@@ -11,15 +13,87 @@ type GeneratorControlsProps = {
   onCreate: () => void
 }
 
-const presetNames: PresetName[] = ['pink', 'blue', 'purple', 'orange', 'green', 'black']
-const presetBackgroundClasses: Record<PresetName, string> = {
-  pink: 'bg-[#fb83ab]',
-  blue: 'bg-[#8ccce3]',
-  purple: 'bg-[#a378ff]',
-  orange: 'bg-[#fda25f]',
-  green: 'bg-[#7ac970]',
-  black: 'bg-[#707070]',
+const presets: Array<{ name: PresetName; backgroundClass: string }> = [
+  { name: 'pink', backgroundClass: 'bg-[#fb83ab]' },
+  { name: 'blue', backgroundClass: 'bg-[#8ccce3]' },
+  { name: 'purple', backgroundClass: 'bg-[#a378ff]' },
+  { name: 'orange', backgroundClass: 'bg-[#fda25f]' },
+  { name: 'green', backgroundClass: 'bg-[#7ac970]' },
+  { name: 'black', backgroundClass: 'bg-[#707070]' },
+]
+
+const platformOptions: Array<{ value: Platform; label: string }> = [
+  { value: 'youtube', label: 'Youtube' },
+  { value: 'twitch', label: 'Twitch' },
+]
+
+const directionOptions: Array<{ value: Direction; label: string }> = [
+  { value: 'left', label: '左寄せ' },
+  { value: 'right', label: '右寄せ' },
+]
+
+type VisibilityKey = 'showProfileImage' | 'showName' | 'showBorder'
+
+const visibilityOptions: Array<{ key: VisibilityKey; label: string; hiddenOnTwitch?: boolean }> = [
+  { key: 'showProfileImage', label: 'icon', hiddenOnTwitch: true },
+  { key: 'showName', label: 'name' },
+  { key: 'showBorder', label: 'border' },
+]
+
+type ColorField = {
+  key: ColorKey
+  label: string
 }
+
+type ColorSectionDefinition = {
+  heading: string
+  fields: ColorField[]
+  hiddenOnTwitch?: boolean
+}
+
+const colorSections: ColorSectionDefinition[] = [
+  {
+    heading: 'Listener',
+    fields: [
+      { key: 'listener-name', label: '名前' },
+      { key: 'listener-name-bg', label: '名前の背景' },
+      { key: 'listener-comment', label: 'コメント' },
+      { key: 'listener-comment-bg', label: 'コメントの背景' },
+      { key: 'listener-comment-border', label: 'コメントの枠線' },
+    ],
+  },
+  {
+    heading: 'Member',
+    fields: [
+      { key: 'member-name', label: 'メンバーの名前' },
+      { key: 'member-name-bg', label: '名前の背景' },
+      { key: 'member-comment', label: 'コメント' },
+      { key: 'member-comment-bg', label: 'コメントの背景' },
+      { key: 'member-comment-border', label: 'コメントの枠線' },
+    ],
+    hiddenOnTwitch: true,
+  },
+  {
+    heading: 'SuperChat',
+    fields: [
+      { key: 'superchat-name', label: '名前' },
+      { key: 'superchat-name-bg', label: '名前の背景' },
+      { key: 'superchat-comment', label: 'コメント' },
+      { key: 'superchat-comment-bg', label: 'コメントの背景' },
+    ],
+    hiddenOnTwitch: true,
+  },
+  {
+    heading: 'MemberShip',
+    fields: [
+      { key: 'membership-name', label: '名前' },
+      { key: 'membership-name-bg', label: '名前の背景' },
+      { key: 'membership-comment', label: 'コメント' },
+      { key: 'membership-comment-bg', label: 'コメントの背景' },
+    ],
+    hiddenOnTwitch: true,
+  },
+]
 
 export function GeneratorControls({ config, activePreset, dispatch, onPresetChange, onCreate }: GeneratorControlsProps) {
   const [detailsOpen, setDetailsOpen] = useState(false)
@@ -36,214 +110,94 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
   }
 
   return (
-    <div className="w-full max-w-[488px] max-[1080px]:max-w-none">
-      <div>
-        <div>
-          <h2 className="font-poppins mb-8 text-2xl leading-9 font-bold tracking-[1.2px] text-[#353b3c]">Design</h2>
-          <div>
-            <RadioGroup<Platform>
-              label="Platform"
-              name="comment-platform"
-              value={config.platform}
-              options={[
-                ['youtube', 'Youtube'],
-                ['twitch', 'Twitch'],
-              ]}
-              onChange={(value) => dispatch({ type: 'platformChanged', value })}
-            />
-            <RadioGroup<Direction>
-              label="Direction"
-              name="comment-direction"
-              value={config.direction}
-              options={[
-                ['left', '左寄せ'],
-                ['right', '右寄せ'],
-              ]}
-              onChange={(value) => dispatch({ type: 'directionChanged', value })}
-            />
-            <RadioGroup<boolean>
-              label="ProfileImage"
-              name="icon-display"
-              value={config.showProfileImage}
-              options={[
-                [true, 'プロフィール画像あり'],
-                [false, 'プロフィール画像なし'],
-              ]}
-              onChange={(value) =>
-                dispatch({
-                  type: 'visibilityChanged',
-                  key: 'showProfileImage',
-                  value,
-                })
-              }
-              hidden={isTwitch}
-            />
-            <RadioGroup<boolean>
-              label="Name"
-              name="author-name-display"
-              value={config.showName}
-              options={[
-                [true, 'ユーザー名あり'],
-                [false, 'ユーザー名なし'],
-              ]}
-              onChange={(value) =>
-                dispatch({
-                  type: 'visibilityChanged',
-                  key: 'showName',
-                  value,
-                })
-              }
-            />
-            <RadioGroup<boolean>
-              label="Border"
-              name="border-block"
-              value={config.showBorder}
-              options={[
-                [true, '枠線あり'],
-                [false, '枠線なし'],
-              ]}
-              onChange={(value) =>
-                dispatch({
-                  type: 'visibilityChanged',
-                  key: 'showBorder',
-                  value,
-                })
-              }
-            />
-          </div>
-        </div>
-
-        <div className="mt-16">
-          <h2 className="font-poppins mb-8 text-2xl leading-9 font-bold tracking-[1.2px] text-[#353b3c]">Color</h2>
-          <div className="grid gap-6">
-            <div>
-              <p className="font-poppins mb-2 text-xl font-semibold text-[#353b3c]">Template</p>
-              <div className="grid grid-cols-6 gap-x-6 gap-y-3">
-                {presetNames.map((preset) => (
-                  <button
-                    key={preset}
-                    type="button"
-                    aria-label={`${preset} color template`}
-                    className={`block aspect-square h-full w-full rounded-lg border-4 transition-opacity duration-300 hover:opacity-70 max-[768px]:hover:opacity-100 ${
-                      activePreset === preset ? 'border-[#585858]' : 'border-[#e8e8e8]'
-                    } ${presetBackgroundClasses[preset]}`}
-                    onClick={() => applyPreset(preset)}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="my-2.5 rounded-lg">
-              <button
-                type="button"
-                className="flex w-full cursor-pointer justify-between rounded-lg bg-white py-2 text-left transition-colors duration-300 hover:bg-[#fafafa] max-[768px]:hover:bg-white"
-                aria-expanded={detailsOpen}
-                onClick={() => setDetailsOpen((open) => !open)}
-              >
-                <span className="my-auto font-sans text-xl font-semibold tracking-[0.05em] text-[#353b3c]">詳細設定</span>
-                <span className="my-auto block">
-                  <img className={`block transition-transform duration-300 ${detailsOpen ? 'rotate-180' : ''}`} src="/assets/arrow.svg" alt="" />
-                </span>
-              </button>
-              <div className={`grid transition-[grid-template-rows] duration-300 ${detailsOpen ? 'my-2 grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
-                <div className="min-h-0 overflow-hidden px-4">
-                  <ColorSection
-                    heading="Listener"
-                    colors={config.colors}
-                    fields={[
-                      ['listener-name', '名前'],
-                      ['listener-name-bg', '名前の背景'],
-                      ['listener-comment', 'コメント'],
-                      ['listener-comment-bg', 'コメントの背景'],
-                      ['listener-comment-border', 'コメントの枠線'],
-                    ]}
-                    onChange={changeColor}
-                  />
-                  <ColorSection
-                    heading="Member"
-                    colors={config.colors}
-                    fields={[
-                      ['member-name', 'メンバーの名前'],
-                      ['member-name-bg', '名前の背景'],
-                      ['member-comment', 'コメント'],
-                      ['member-comment-bg', 'コメントの背景'],
-                      ['member-comment-border', 'コメントの枠線'],
-                    ]}
-                    onChange={changeColor}
-                    hidden={isTwitch}
-                  />
-                  <ColorSection
-                    heading="SuperChat"
-                    colors={config.colors}
-                    fields={[
-                      ['superchat-name', '名前'],
-                      ['superchat-name-bg', '名前の背景'],
-                      ['superchat-comment', 'コメント'],
-                      ['superchat-comment-bg', 'コメントの背景'],
-                    ]}
-                    onChange={changeColor}
-                    hidden={isTwitch}
-                  />
-                  <ColorSection
-                    heading="MemberShip"
-                    colors={config.colors}
-                    fields={[
-                      ['membership-name', '名前'],
-                      ['membership-name-bg', '名前の背景'],
-                      ['membership-comment', 'コメント'],
-                      ['membership-comment-bg', 'コメントの背景'],
-                    ]}
-                    onChange={changeColor}
-                    hidden={isTwitch}
-                  />
+    <div className="flex h-full min-h-0 w-full max-w-sm flex-col overflow-hidden rounded-4xl bg-white max-lg:max-w-none">
+      <div className="min-h-0 p-4 flex-1 overflow-y-auto overscroll-contain">
+        <div className="flex flex-col gap-4 p-2">
+          <SegmentedControl<Platform>
+            label="Platform"
+            name="comment-platform"
+            value={config.platform}
+            options={platformOptions}
+            onChange={(value) => dispatch({ type: 'platformChanged', value })}
+          />
+          <SegmentedControl<Direction>
+            label="Direction"
+            name="comment-direction"
+            value={config.direction}
+            options={directionOptions}
+            onChange={(value) => dispatch({ type: 'directionChanged', value })}
+            renderOption={(option) => (
+              <img
+                className="size-5 object-contain"
+                src={option.value === 'left' ? '/assets/text-left.svg' : '/assets/text-right.svg'}
+                alt=""
+                aria-hidden="true"
+              />
+            )}
+          />
+          <div className="grid gap-2">
+            {visibilityOptions.map(({ key, label, hiddenOnTwitch }) =>
+              hiddenOnTwitch && isTwitch ? null : (
+                <div key={key} className="flex items-center justify-between gap-4">
+                  <label htmlFor={`visibility-${key}`} className="font-poppins cursor-pointer text-xs font-medium text-[#c3c3c3]">
+                    {label}
+                  </label>
+                  <Switch id={`visibility-${key}`} checked={config[key]} onCheckedChange={(value) => dispatch({ type: 'visibilityChanged', key, value })} />
                 </div>
-              </div>
+              ),
+            )}
+          </div>
+
+          <div>
+            <h3 className="font-poppins mb-2 text-base font-semibold text-[#353b3c]">Color</h3>
+            <div className="grid grid-cols-6 gap-x-4 gap-y-3">
+              {presets.map(({ name, backgroundClass }) => (
+                <button
+                  key={name}
+                  type="button"
+                  aria-label={`${name} color template`}
+                  className={`block aspect-square size-full rounded-full cursor-pointer border-3 transition-opacity duration-300 hover:opacity-70 max-[768px]:hover:opacity-100 ${
+                    activePreset === name ? '' : 'border-none'
+                  } ${backgroundClass}`}
+                  onClick={() => applyPreset(name)}
+                />
+              ))}
             </div>
           </div>
-        </div>
 
-        <div className="mt-16">
+        </div>
+        <div className="rounded-lg">
           <button
             type="button"
-            className="font-poppins w-full cursor-pointer rounded-lg bg-[#585858] p-3 text-center text-xl font-bold text-white transition-opacity duration-300 hover:opacity-70 max-[768px]:hover:opacity-100"
-            onClick={onCreate}
+            className="flex w-full cursor-pointer justify-between rounded-lg bg-white p-2 text-left transition-colors duration-300 hover:bg-[#fafafa] max-[768px]:hover:bg-white"
+            aria-expanded={detailsOpen}
+            onClick={() => setDetailsOpen((open) => !open)}
           >
-            Create
+            <span className="my-auto font-sans text-md font-semibold text-[#353b3c]">詳細</span>
+            <span className="my-auto block">
+              <img className={`block transition-transform duration-300 ${detailsOpen ? 'rotate-180' : ''}`} src="/assets/arrow.svg" alt="" />
+            </span>
           </button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-type RadioGroupProps<T extends string | boolean> = {
-  label: string
-  name: string
-  value: T
-  options: Array<[T, string]>
-  onChange: (value: T) => void
-  hidden?: boolean
-}
-
-function RadioGroup<T extends string | boolean>({ label, name, value, options, onChange, hidden = false }: RadioGroupProps<T>) {
-  return (
-    <div className={`mt-6 first:mt-[30px] ${hidden ? 'hidden' : ''}`}>
-      <p className="font-poppins mb-2 text-xs font-medium text-[#c3c3c3]">{label}</p>
-      <div className="flex flex-wrap gap-x-6 gap-y-3">
-        {options.map(([optionValue, optionLabel]) => {
-          const id = `${name}-${String(optionValue)}`
-          return (
-            <div key={id}>
-              <input className="peer sr-only" type="radio" id={id} name={name} checked={value === optionValue} onChange={() => onChange(optionValue)} />
-              <label
-                htmlFor={id}
-                className="relative cursor-pointer pb-px pl-5 text-xs before:absolute before:top-1/2 before:left-0 before:block before:size-4 before:-translate-y-1/2 before:rounded-full before:border before:border-[#d8d8d8] before:bg-white before:content-[''] after:absolute after:top-1/2 after:left-[3px] after:block after:size-2.5 after:-translate-y-1/2 after:rounded-full after:bg-[#9ed9ef] after:opacity-0 after:content-[''] peer-checked:after:opacity-100"
-              >
-                {optionLabel}
-              </label>
+          <div className={`grid transition-[grid-template-rows] duration-300 p-2 ${detailsOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+            <div className="min-h-0 overflow-hidden">
+              {colorSections.map(({ heading, fields, hiddenOnTwitch }) =>
+                hiddenOnTwitch && isTwitch ? null : (
+                  <ColorSection key={heading} heading={heading} colors={config.colors} fields={fields} onChange={changeColor} />
+                ),
+              )}
             </div>
-          )
-        })}
+          </div>
+          </div>
+      </div>
+
+      <div className="shrink-0 p-4 border-t border-[#c3c3c3]">
+        <button
+          type="button"
+          className="font-poppins w-full block cursor-pointer rounded-full max-w-2xs mx-auto bg-[#585858] p-3 text-center text-lg font-bold text-white transition-opacity hover:opacity-70 max-[768px]:hover:opacity-100"
+          onClick={onCreate}
+        >
+          Create
+        </button>
       </div>
     </div>
   )
@@ -252,17 +206,16 @@ function RadioGroup<T extends string | boolean>({ label, name, value, options, o
 type ColorSectionProps = {
   heading: string
   colors: GeneratorColors
-  fields: Array<[ColorKey, string]>
+  fields: ColorField[]
   onChange: (key: ColorKey, value: string) => void
-  hidden?: boolean
 }
 
-function ColorSection({ heading, colors, fields, onChange, hidden = false }: ColorSectionProps) {
+function ColorSection({ heading, colors, fields, onChange }: ColorSectionProps) {
   return (
-    <div className={`mt-6 first:mt-0 ${hidden ? 'hidden' : ''}`}>
+    <div className="mt-6 first:mt-0">
       <p className="font-poppins mb-2 text-base font-semibold text-[#353b3c]">{heading}</p>
-      <div className="grid grid-cols-2 gap-x-6 gap-y-3 max-[1080px]:gap-x-3 max-[1080px]:gap-y-1.5">
-        {fields.map(([key, label]) => (
+      <div className="grid grid-cols-2 gap-x-4 gap-y-3 max-[1080px]:gap-x-3 max-[1080px]:gap-y-1.5">
+        {fields.map(({ key, label }) => (
           <ColorInput key={`${key}-${colors[key]}`} colorKey={key} label={label} value={colors[key]} onChange={onChange} />
         ))}
       </div>

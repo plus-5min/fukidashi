@@ -1,8 +1,36 @@
-import type { GeneratorConfig } from '../generatorConfig'
+import type { GeneratorConfig, Platform } from '../generatorConfig'
 
 type CommentPreviewProps = {
   config: GeneratorConfig
 }
+
+type PreviewTextComment = {
+  name: string
+  message: string
+  platform?: Platform
+  member?: boolean
+  showBadge?: boolean
+}
+
+const previewTextComments: PreviewTextComment[] = [
+  {
+    name: 'リスナー',
+    message: 'ここにコメントが入ります。',
+  },
+  {
+    name: 'リスナー',
+    message: 'ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。',
+    platform: 'twitch',
+    showBadge: true,
+  },
+  {
+    name: 'メンバー',
+    message: 'ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。',
+    platform: 'youtube',
+    member: true,
+    showBadge: true,
+  },
+]
 
 export function CommentPreview({ config }: CommentPreviewProps) {
   const isTwitch = config.platform === 'twitch'
@@ -11,24 +39,17 @@ export function CommentPreview({ config }: CommentPreviewProps) {
     <div className="relative z-0 w-full max-w-[536px] max-[1080px]:max-w-none">
       <div className="sticky top-16 z-0 rounded-[20px] bg-[#f5f5f5] p-10 max-[768px]:p-5">
         <div className="grid gap-3">
-          <TextComment config={config} name="リスナー" message="ここにコメントが入ります。" />
-
-          <TextComment
-            config={config}
-            name="リスナー"
-            message="ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。"
-            hidden={!isTwitch}
-            showBadge
-          />
-
-          <TextComment
-            config={config}
-            name="メンバー"
-            message="ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。"
-            hidden={isTwitch}
-            member
-            showBadge
-          />
+          {previewTextComments.map(({ name, message, platform, member, showBadge }) => (
+            <TextComment
+              key={`${platform ?? 'all'}-${name}`}
+              config={config}
+              name={name}
+              message={message}
+              hidden={platform !== undefined && platform !== config.platform}
+              member={member}
+              showBadge={showBadge}
+            />
+          ))}
 
           <div className={`font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
             <div className="relative flex justify-between rounded-t-[10px] bg-[var(--superchat-name-bg)] px-5 py-3 text-[var(--superchat-name)]">
