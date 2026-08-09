@@ -14,6 +14,15 @@ describe('generatorReducer', () => {
     expect(nextConfig.colors['listener-name-bg']).toBe('#FB83AB')
     expect(defaultGeneratorConfig.colors['listener-name-bg']).toBe('#8CCCE3')
   })
+
+  it('コメントテンプレートを変更する', () => {
+    const nextConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'templateChanged',
+      value: 'card',
+    })
+
+    expect(nextConfig.template).toBe('card')
+  })
 })
 
 describe('generateCss', () => {
@@ -62,6 +71,36 @@ describe('generateCss', () => {
     expect(css).toContain('.chat-scrollable-area__message-container')
     expect(css).toContain('overflow-wrap: anywhere;')
     expect(css).not.toContain('yt-live-chat-paid-message-renderer')
+    expect(css).not.toContain('{{')
+  })
+
+  it('card用CSSを生成する', () => {
+    const config = generatorReducer(defaultGeneratorConfig, {
+      type: 'templateChanged',
+      value: 'card',
+    })
+    const css = generateCss(config)
+
+    expect(css).toContain('background-color: var(--listener-comment-bg) !important;')
+    expect(css).toContain('border-radius: 30px;')
+    expect(css).toContain('padding: 12px 20px;')
+    expect(css).toContain('border: 3px solid var(--listener-comment-border);')
+    expect(css).toContain('content: none;')
+    expect(css).not.toContain('{{')
+  })
+
+  it('normal用CSSを生成する', () => {
+    const config = generatorReducer(defaultGeneratorConfig, {
+      type: 'templateChanged',
+      value: 'normal',
+    })
+    const css = generateCss(config)
+
+    expect(css).toContain('background-color: transparent !important;')
+    expect(css).toContain('border-radius: 0;')
+    expect(css).toContain('padding: 0;')
+    expect(css).toContain('border: none;')
+    expect(css).toContain('content: none;')
     expect(css).not.toContain('{{')
   })
 })

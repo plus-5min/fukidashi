@@ -6,7 +6,7 @@ type SegmentedControlOption<T extends string> = {
 }
 
 type SegmentedControlProps<T extends string> = {
-  label: string
+  'aria-labelledby': string
   name: string
   value: T
   options: Array<SegmentedControlOption<T>>
@@ -14,11 +14,17 @@ type SegmentedControlProps<T extends string> = {
   renderOption?: (option: SegmentedControlOption<T>) => ReactNode
 }
 
-export function SegmentedControl<T extends string>({ label, name, value, options, onChange, renderOption }: SegmentedControlProps<T>) {
+export function SegmentedControl<T extends string>({
+  'aria-labelledby': ariaLabelledBy,
+  name,
+  value,
+  options,
+  onChange,
+  renderOption,
+}: SegmentedControlProps<T>) {
   return (
-    <fieldset>
-      <legend className="font-poppins mb-2 block text-xs font-medium text-[#c3c3c3]">{label}</legend>
-      <div className="grid grid-cols-2 rounded-full bg-[#f5f5f5] p-1">
+    <div role="radiogroup" aria-labelledby={ariaLabelledBy}>
+      <div className="grid grid-flow-col auto-cols-fr rounded-full bg-[#f5f5f5] p-1">
         {options.map((option) => {
           const id = `${name}-${option.value}`
 
@@ -43,6 +49,6 @@ export function SegmentedControl<T extends string>({ label, name, value, options
           )
         })}
       </div>
-    </fieldset>
+    </div>
   )
 }

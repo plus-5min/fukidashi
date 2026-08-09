@@ -1,5 +1,6 @@
 export type Platform = 'youtube' | 'twitch'
 export type Direction = 'left' | 'right'
+export type CommentTemplate = 'fukidashi' | 'card' | 'normal'
 
 export const colorKeys = [
   'listener-name',
@@ -27,6 +28,7 @@ export type GeneratorColors = Record<ColorKey, string>
 
 export type GeneratorConfig = {
   platform: Platform
+  template: CommentTemplate
   direction: Direction
   showProfileImage: boolean
   showName: boolean
@@ -57,6 +59,7 @@ export const blueColors: GeneratorColors = {
 
 export const defaultGeneratorConfig: GeneratorConfig = {
   platform: 'youtube',
+  template: 'fukidashi',
   direction: 'left',
   showProfileImage: false,
   showName: true,
@@ -66,6 +69,7 @@ export const defaultGeneratorConfig: GeneratorConfig = {
 
 export type GeneratorAction =
   | { type: 'platformChanged'; value: Platform }
+  | { type: 'templateChanged'; value: CommentTemplate }
   | { type: 'directionChanged'; value: Direction }
   | {
       type: 'visibilityChanged'
@@ -79,6 +83,8 @@ export function generatorReducer(state: GeneratorConfig, action: GeneratorAction
   switch (action.type) {
     case 'platformChanged':
       return { ...state, platform: action.value }
+    case 'templateChanged':
+      return { ...state, template: action.value }
     case 'directionChanged':
       return { ...state, direction: action.value }
     case 'visibilityChanged':

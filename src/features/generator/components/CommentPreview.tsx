@@ -1,4 +1,4 @@
-import type { GeneratorConfig, Platform } from '../generatorConfig'
+import type { CommentTemplate, GeneratorConfig, Platform } from '../generatorConfig'
 
 type CommentPreviewProps = {
   config: GeneratorConfig
@@ -105,9 +105,11 @@ type TextCommentProps = {
 
 function TextComment({ config, name, message, hidden = false, member = false, showBadge = false }: TextCommentProps) {
   const isRight = config.direction === 'right'
+  const isFukidashi = config.template === 'fukidashi'
   const showProfileImage = config.platform !== 'twitch' && config.showProfileImage
   const nameColors = member ? 'bg-[var(--member-name-bg)] text-[var(--member-name)]' : 'bg-[var(--listener-name-bg)] text-[var(--listener-name)]'
-  const messageColors = member ? 'bg-[var(--member-comment-bg)] text-[var(--member-comment)]' : 'bg-[var(--listener-comment-bg)] text-[var(--listener-comment)]'
+  const messageTextColor = member ? 'text-[var(--member-comment)]' : 'text-[var(--listener-comment)]'
+  const messageBackgroundColor = member ? 'bg-[var(--member-comment-bg)]' : 'bg-[var(--listener-comment-bg)]'
   const borderColor = member ? 'border-[var(--member-comment-border)]' : 'border-[var(--listener-comment-border)]'
   const pointerOuterColor = member ? 'bg-[var(--member-comment-border)]' : 'bg-[var(--listener-comment-border)]'
   const pointerInnerColor = member ? 'bg-[var(--member-comment-bg)]' : 'bg-[var(--listener-comment-bg)]'
@@ -115,6 +117,11 @@ function TextComment({ config, name, message, hidden = false, member = false, sh
     ? 'right-[-3px] [transform:rotate(-70deg)_skew(20deg,20deg)]'
     : 'left-[-3px] [transform:rotate(-20deg)_skew(20deg,20deg)]'
   const innerPointerDirection = isRight ? 'right-px [transform:rotate(110deg)_skew(20deg,20deg)]' : 'left-px [transform:rotate(-20deg)_skew(20deg,20deg)]'
+  const messageTemplateClasses: Record<CommentTemplate, string> = {
+    fukidashi: `rounded-[30px] px-5 py-3 ${messageBackgroundColor} ${config.showBorder ? `border-[3px] border-solid ${borderColor}` : 'border-0'}`,
+    card: `rounded-[30px] px-5 py-3 ${messageBackgroundColor} ${config.showBorder ? `border-[3px] border-solid ${borderColor}` : 'border-0'}`,
+    normal: 'bg-transparent p-0',
+  }
 
   return (
     <div
@@ -132,16 +139,18 @@ function TextComment({ config, name, message, hidden = false, member = false, sh
             {showBadge && <MemberBadge />}
           </div>
         </div>
-        <div
-          className={`relative block w-fit overflow-visible rounded-[30px] px-5 py-3 font-medium ${messageColors} ${config.showBorder ? `border-[3px] border-solid ${borderColor}` : 'border-0'}`}
-        >
-          <span
-            className={`absolute top-1 z-[-1] block h-[21px] w-[21px] rounded-tl-[7px] rounded-br-[6px] ${pointerOuterColor} ${
-              config.showBorder ? 'block' : 'hidden'
-            } ${outerPointerDirection}`}
-          />
+        <div className={`relative block w-fit overflow-visible font-medium ${messageTextColor} ${messageTemplateClasses[config.template]}`}>
+          {isFukidashi && (
+            <span
+              className={`absolute top-1 z-[-1] block h-[21px] w-[21px] rounded-tl-[7px] rounded-br-[6px] ${pointerOuterColor} ${
+                config.showBorder ? 'block' : 'hidden'
+              } ${outerPointerDirection}`}
+            />
+          )}
           {message}
-          <span className={`absolute top-[7px] z-0 block size-[18px] rounded-tl-sm rounded-br-[20px] ${pointerInnerColor} ${innerPointerDirection}`} />
+          {isFukidashi && (
+            <span className={`absolute top-[7px] z-0 block size-[18px] rounded-tl-sm rounded-br-[20px] ${pointerInnerColor} ${innerPointerDirection}`} />
+          )}
         </div>
       </div>
     </div>

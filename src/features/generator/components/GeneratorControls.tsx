@@ -1,8 +1,9 @@
 import { useState, type Dispatch } from 'react'
 
+import { RadioCardGroup } from '../../../components/ui/RadioCardGroup'
 import { SegmentedControl } from '../../../components/ui/SegmentedControl'
 import { Switch } from '../../../components/ui/Switch'
-import type { ColorKey, Direction, GeneratorAction, GeneratorConfig, GeneratorColors, Platform } from '../generatorConfig'
+import type { ColorKey, CommentTemplate, Direction, GeneratorAction, GeneratorConfig, GeneratorColors, Platform } from '../generatorConfig'
 import { colorPresets, type PresetName } from '../presets'
 
 type GeneratorControlsProps = {
@@ -27,6 +28,12 @@ const platformOptions: Array<{ value: Platform; label: string }> = [
   { value: 'twitch', label: 'Twitch' },
 ]
 
+const templateOptions: Array<{ value: CommentTemplate; label: string }> = [
+  { value: 'fukidashi', label: 'fukidashi' },
+  { value: 'card', label: 'card' },
+  { value: 'normal', label: 'normal' },
+]
+
 const directionOptions: Array<{ value: Direction; label: string }> = [
   { value: 'left', label: '左寄せ' },
   { value: 'right', label: '右寄せ' },
@@ -34,15 +41,16 @@ const directionOptions: Array<{ value: Direction; label: string }> = [
 
 type VisibilityKey = 'showProfileImage' | 'showName' | 'showBorder'
 
-const visibilityOptions: Array<{ key: VisibilityKey; label: string; hiddenOnTwitch?: boolean }> = [
+const visibilityOptions: Array<{ key: VisibilityKey; label: string; hiddenOnTwitch?: boolean; hiddenOnNormal?: boolean }> = [
   { key: 'showProfileImage', label: 'icon', hiddenOnTwitch: true },
   { key: 'showName', label: 'name' },
-  { key: 'showBorder', label: 'border' },
+  { key: 'showBorder', label: 'border', hiddenOnNormal: true },
 ]
 
 type ColorField = {
   key: ColorKey
   label: string
+  hiddenOnNormal?: boolean
 }
 
 type ColorSectionDefinition = {
@@ -59,7 +67,7 @@ const colorSections: ColorSectionDefinition[] = [
       { key: 'listener-name-bg', label: '名前の背景' },
       { key: 'listener-comment', label: 'コメント' },
       { key: 'listener-comment-bg', label: 'コメントの背景' },
-      { key: 'listener-comment-border', label: 'コメントの枠線' },
+      { key: 'listener-comment-border', label: 'コメントの枠線', hiddenOnNormal: true },
     ],
   },
   {
@@ -69,7 +77,7 @@ const colorSections: ColorSectionDefinition[] = [
       { key: 'member-name-bg', label: '名前の背景' },
       { key: 'member-comment', label: 'コメント' },
       { key: 'member-comment-bg', label: 'コメントの背景' },
-      { key: 'member-comment-border', label: 'コメントの枠線' },
+      { key: 'member-comment-border', label: 'コメントの枠線', hiddenOnNormal: true },
     ],
     hiddenOnTwitch: true,
   },
@@ -112,32 +120,55 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
   return (
     <div className="flex h-full min-h-0 w-full max-w-sm flex-col overflow-hidden rounded-4xl bg-white max-lg:max-w-none">
       <div className="min-h-0 p-4 flex-1 overflow-y-auto overscroll-contain">
-        <div className="flex flex-col gap-4 p-2">
-          <SegmentedControl<Platform>
-            label="Platform"
-            name="comment-platform"
-            value={config.platform}
-            options={platformOptions}
-            onChange={(value) => dispatch({ type: 'platformChanged', value })}
-          />
-          <SegmentedControl<Direction>
-            label="Direction"
-            name="comment-direction"
-            value={config.direction}
-            options={directionOptions}
-            onChange={(value) => dispatch({ type: 'directionChanged', value })}
-            renderOption={(option) => (
-              <img
-                className="size-5 object-contain"
-                src={option.value === 'left' ? '/assets/text-left.svg' : '/assets/text-right.svg'}
-                alt=""
-                aria-hidden="true"
-              />
-            )}
-          />
+        <div className="flex flex-col gap-4 p-4">
+          <div>
+            <p id="platform-label" className="font-poppins mb-2 text-xs font-medium text-[#c3c3c3]">
+              Platform
+            </p>
+            <SegmentedControl<Platform>
+              aria-labelledby="platform-label"
+              name="comment-platform"
+              value={config.platform}
+              options={platformOptions}
+              onChange={(value) => dispatch({ type: 'platformChanged', value })}
+            />
+          </div>
+          <div>
+            <p id="template-label" className="font-poppins mb-2 text-xs font-medium text-[#c3c3c3]">
+              Template
+            </p>
+            <RadioCardGroup<CommentTemplate>
+              aria-labelledby="template-label"
+              name="comment-template"
+              value={config.template}
+              options={templateOptions}
+              onChange={(value) => dispatch({ type: 'templateChanged', value })}
+              renderOption={(option) => <img className="size-10" src={`/assets/template-${option.value}.svg`} alt="" aria-hidden="true" />}
+            />
+          </div>
+          <div>
+            <p id="direction-label" className="font-poppins mb-2 text-xs font-medium text-[#c3c3c3]">
+              Direction
+            </p>
+            <SegmentedControl<Direction>
+              aria-labelledby="direction-label"
+              name="comment-direction"
+              value={config.direction}
+              options={directionOptions}
+              onChange={(value) => dispatch({ type: 'directionChanged', value })}
+              renderOption={(option) => (
+                <img
+                  className="size-5 object-contain"
+                  src={option.value === 'left' ? '/assets/text-left.svg' : '/assets/text-right.svg'}
+                  alt=""
+                  aria-hidden="true"
+                />
+              )}
+            />
+          </div>
           <div className="grid gap-2">
-            {visibilityOptions.map(({ key, label, hiddenOnTwitch }) =>
-              hiddenOnTwitch && isTwitch ? null : (
+            {visibilityOptions.map(({ key, label, hiddenOnTwitch, hiddenOnNormal }) =>
+              (hiddenOnTwitch && isTwitch) || (hiddenOnNormal && config.template === 'normal') ? null : (
                 <div key={key} className="flex items-center justify-between gap-4">
                   <label htmlFor={`visibility-${key}`} className="font-poppins cursor-pointer text-xs font-medium text-[#c3c3c3]">
                     {label}
@@ -150,7 +181,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
 
           <div>
             <h3 className="font-poppins mb-2 text-base font-semibold text-[#353b3c]">Color</h3>
-            <div className="grid grid-cols-6 gap-x-4 gap-y-3">
+            <div className="grid grid-cols-6 gap-2">
               {presets.map(({ name, backgroundClass }) => (
                 <button
                   key={name}
@@ -168,7 +199,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
         <div className="rounded-lg">
           <button
             type="button"
-            className="flex w-full cursor-pointer justify-between rounded-lg bg-white p-2 text-left transition-colors duration-300 hover:bg-[#fafafa] max-[768px]:hover:bg-white"
+            className="flex w-full cursor-pointer justify-between rounded-lg bg-white p-4 text-left transition-colors duration-300 hover:bg-[#fafafa] max-[768px]:hover:bg-white"
             aria-expanded={detailsOpen}
             onClick={() => setDetailsOpen((open) => !open)}
           >
@@ -177,13 +208,15 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
               <img className={`block transition-transform duration-300 ${detailsOpen ? 'rotate-180' : ''}`} src="/assets/arrow.svg" alt="" />
             </span>
           </button>
-          <div className={`grid transition-[grid-template-rows] duration-300 p-2 ${detailsOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+          <div className={`grid transition-[grid-template-rows] duration-300 p-4 ${detailsOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
             <div className="min-h-0 overflow-hidden">
-              {colorSections.map(({ heading, fields, hiddenOnTwitch }) =>
-                hiddenOnTwitch && isTwitch ? null : (
-                  <ColorSection key={heading} heading={heading} colors={config.colors} fields={fields} onChange={changeColor} />
-                ),
-              )}
+              {colorSections.map(({ heading, fields, hiddenOnTwitch }) => {
+                if (hiddenOnTwitch && isTwitch) return null
+
+                const visibleFields = fields.filter(({ hiddenOnNormal }) => !hiddenOnNormal || config.template !== 'normal')
+
+                return <ColorSection key={heading} heading={heading} colors={config.colors} fields={visibleFields} onChange={changeColor} />
+              })}
             </div>
           </div>
         </div>
@@ -213,10 +246,19 @@ function ColorSection({ heading, colors, fields, onChange }: ColorSectionProps) 
   return (
     <div className="mt-6 first:mt-0">
       <p className="font-poppins mb-2 text-base font-semibold text-[#353b3c]">{heading}</p>
-      <div className="grid grid-cols-2 gap-x-4 gap-y-3 max-[1080px]:gap-x-3 max-[1080px]:gap-y-1.5">
-        {fields.map(({ key, label }) => (
-          <ColorInput key={`${key}-${colors[key]}`} colorKey={key} label={label} value={colors[key]} onChange={onChange} />
-        ))}
+      <div className="grid grid-cols-2 gap-2 max-[1080px]:gap-x-3 max-[1080px]:gap-y-1.5">
+        {fields.map(({ key, label }) => {
+          const labelId = `${key}-label`
+
+          return (
+            <div key={`${key}-${colors[key]}`}>
+              <label id={labelId} htmlFor={`${key}-picker`} className="mb-2 block text-xs font-normal text-[#c3c3c3]">
+                {label}
+              </label>
+              <ColorInput colorKey={key} aria-labelledby={labelId} value={colors[key]} onChange={onChange} />
+            </div>
+          )
+        })}
       </div>
     </div>
   )
@@ -224,12 +266,12 @@ function ColorSection({ heading, colors, fields, onChange }: ColorSectionProps) 
 
 type ColorInputProps = {
   colorKey: ColorKey
-  label: string
+  'aria-labelledby': string
   value: string
   onChange: (key: ColorKey, value: string) => void
 }
 
-function ColorInput({ colorKey, label, value, onChange }: ColorInputProps) {
+function ColorInput({ colorKey, 'aria-labelledby': ariaLabelledBy, value, onChange }: ColorInputProps) {
   const [textValue, setTextValue] = useState(value.slice(1))
 
   const changeText = (input: string) => {
@@ -244,34 +286,31 @@ function ColorInput({ colorKey, label, value, onChange }: ColorInputProps) {
   }
 
   return (
-    <div>
-      <label htmlFor={colorKey} className="mb-2 block text-xs font-normal text-[#c3c3c3]">
-        {label}
-      </label>
-      <div className="flex items-center rounded-[10px] bg-[#fafafa] px-2 py-1 transition-colors duration-300 hover:bg-[#f5f5f5] max-[768px]:hover:bg-[#fafafa]">
-        <input
-          className="h-7 w-6 min-w-6 cursor-pointer appearance-none rounded-full border-0 bg-transparent p-0 outline-none max-[768px]:h-6 [&::-moz-color-swatch]:rounded-full [&::-moz-color-swatch]:border-0 [&::-webkit-color-swatch]:rounded-full [&::-webkit-color-swatch]:border-0"
-          type="color"
-          id={colorKey}
-          value={value}
-          onChange={(event) => onChange(colorKey, event.target.value)}
-        />
-        <span className="font-poppins mx-0.5 ml-1 font-medium text-[#c3c3c3]">#</span>
-        <input
-          type="text"
-          className="font-poppins w-full p-1 font-normal text-[#353b3c]"
-          maxLength={6}
-          pattern="[a-zA-Z0-9]{6}"
-          value={textValue}
-          onChange={(event) => changeText(event.target.value)}
-          onBlur={() => {
-            if (!/^[0-9A-F]{6}$/.test(textValue)) {
-              setTextValue(value.slice(1))
-            }
-          }}
-          required
-        />
-      </div>
+    <div className="flex items-center rounded-[10px] bg-[#fafafa] px-2 py-1 transition-colors duration-300 hover:bg-[#f5f5f5] max-[768px]:hover:bg-[#fafafa]">
+      <input
+        className="h-7 w-6 min-w-6 cursor-pointer appearance-none rounded-full border-0 bg-transparent p-0 outline-none max-[768px]:h-6 [&::-moz-color-swatch]:rounded-full [&::-moz-color-swatch]:border-0 [&::-webkit-color-swatch]:rounded-full [&::-webkit-color-swatch]:border-0"
+        type="color"
+        id={`${colorKey}-picker`}
+        aria-labelledby={ariaLabelledBy}
+        value={value}
+        onChange={(event) => onChange(colorKey, event.target.value)}
+      />
+      <span className="font-poppins mx-0.5 ml-1 font-medium text-[#c3c3c3]">#</span>
+      <input
+        type="text"
+        aria-labelledby={ariaLabelledBy}
+        className="font-poppins w-full p-1 font-normal text-[#353b3c]"
+        maxLength={6}
+        pattern="[a-zA-Z0-9]{6}"
+        value={textValue}
+        onChange={(event) => changeText(event.target.value)}
+        onBlur={() => {
+          if (!/^[0-9A-F]{6}$/.test(textValue)) {
+            setTextValue(value.slice(1))
+          }
+        }}
+        required
+      />
     </div>
   )
 }

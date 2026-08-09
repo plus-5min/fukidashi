@@ -156,15 +156,15 @@
     /* message */
     #message.yt-live-chat-text-message-renderer,
     #message.yt-live-chat-text-message-renderer a {
-      background-color: var(--listener-comment-bg) !important;
+      background-color: {{listenerCommentBackground}} !important;
       color: var(--listener-comment) !important;
     }
 
     #message.yt-live-chat-text-message-renderer {
-      border-radius: 30px;
+      border-radius: {{commentBorderRadius}};
       border: {{listenerBorder}};
       display: block !important;
-      padding: 12px 20px;
+      padding: {{commentPadding}};
       width: fit-content !important;
       position: relative;
       overflow: visible;
@@ -186,7 +186,7 @@
     }
 
     #message.yt-live-chat-text-message-renderer::after {
-      content: "";
+      content: {{pointerInnerContent}};
       position: absolute;
       top: 7px;
       {{pointerInnerPosition}}
@@ -200,7 +200,7 @@
     }
 
     yt-live-chat-text-message-renderer[author-type="member"] #message.yt-live-chat-text-message-renderer {
-      background-color: var(--member-comment-bg) !important;
+      background-color: {{memberCommentBackground}} !important;
       color: var(--member-comment) !important;
       border: {{memberBorder}};
       {{autoMarginSide}} : auto;
@@ -221,7 +221,7 @@
     }
 
     yt-live-chat-text-message-renderer[author-type="member"] #message.yt-live-chat-text-message-renderer::after {
-      content: "";
+      content: {{pointerInnerContent}};
       position: absolute;
       top: 7px;
       {{pointerInnerPosition}}
