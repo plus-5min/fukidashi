@@ -1,10 +1,12 @@
-    /* ---------------------------------------------------- 
+    /* ----------------------------------------------------
       ©︎通行止め.ᐟ.ᐟ
     ---------------------------------------------------- */
     @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+SC:wght@400;700&family=Noto+Sans+TC:wght@400;700&family=Noto+Sans+KR:wght@400;700&family=Noto+Sans:wght@400;700&display=swap");
     @import url("https://plus-5min.github.io/live-chat-css/twitch/hide.css");
 
     :root {
+      --font: "Noto Sans JP", sans-serif;
+
       --listener-name: {{listener-name}};
       --listener-name-bg: {{listener-name-bg}};
       --listener-comment: {{listener-comment}};
@@ -34,17 +36,27 @@
       }
     }
 
+    /* ----------------------------------------------------
+      app settings
+    ---------------------------------------------------- */
     html,
     body,
     #root,
     .chat-room,
     .chat-line__moderation,
     .chat-line__status,
-    .chat-line__message,
-    .chat-author__display-name {
+    .chat-line__message {
       margin: 0 auto;
       background-color: transparent !important;
-      font-family: "Noto Sans JP";
+    }
+
+    body,
+    .chat-room,
+    .chat-line__moderation,
+    .chat-line__status,
+    .chat-line__message,
+    .chat-line__message * {
+      font-family: var(--font) !important;
       font-size: 16px !important;
       font-style: normal !important;
       font-weight: 700 !important;
@@ -53,7 +65,8 @@
     }
 
     body,
-    .chat-room {
+    .chat-room,
+    .scrollable-area {
       overflow: hidden !important;
     }
 
@@ -61,47 +74,44 @@
       padding-block-start: 0 !important;
     }
 
-    body .chat-line__message,
+    /* ----------------------------------------------------
+      text message
+    ---------------------------------------------------- */
     .chat-line__message {
-      display: block !important;
+      --chat-name: var(--listener-name);
+      --chat-name-bg: var(--listener-name-bg);
+      --chat-comment: var(--listener-comment);
+      --chat-comment-bg: var(--listener-comment-bg);
+      --chat-comment-rendered-bg: {{listenerCommentBackground}};
+      --chat-comment-border: var(--listener-comment-border);
+      --chat-comment-border-style: {{listenerBorder}};
+
       position: relative;
-      width: 100%;
+      display: block !important;
       box-sizing: border-box;
+      width: 100%;
       padding: 8px 16px !important;
       overflow: visible !important;
       animation: {{animationName}} 0.3s ease-out forwards;
     }
 
-    .user-notice-line {
-      background-color: transparent !important;
-      border: none !important;
-      margin: 0 !important;
-      padding: 8px 16px !important;
-    }
-
-    .user-notice-line .chat-line__message {
-      padding: 0 !important;
-    }
-
-    body .chat-line__no-background,
     .chat-line__no-background {
       display: grid !important;
       grid-gap: 6px;
       width: fit-content;
-      {{autoMarginSide}} : auto;
+      {{autoMarginSide}}: auto;
     }
 
-    /* ユーザー名 */
     .chat-line__username-container,
     .chat-line__username-container.chat-line__username-container--hoverable {
       display: flex !important;
       flex-direction: row-reverse;
       grid-gap: 8px;
       width: fit-content;
+      margin-bottom: 6px;
       white-space: nowrap;
       text-overflow: ellipsis;
-      margin-bottom: 6px;
-      {{autoMarginSide}} : auto;
+      {{autoMarginSide}}: auto;
     }
 
     .chat-line__username-container span {
@@ -110,46 +120,43 @@
 
     .chat-line__username {
       display: {{authorDisplay}} !important;
-      background-color: var(--listener-name-bg) !important;
       padding: 4px 12px;
       border-radius: 18px;
+      background-color: var(--chat-name-bg) !important;
     }
 
-    body .chat-author__display-name,
     .chat-author__display-name {
       display: {{authorDisplay}} !important;
       width: fit-content;
+      color: var(--chat-name) !important;
+      font-weight: 700;
       text-wrap: wrap;
-      color: var(--listener-name) !important;
-      font-weight: bold;
     }
 
-    body .chat-badge,
     .chat-badge {
       display: {{authorDisplay}} !important;
       margin-bottom: 0 !important;
       vertical-align: bottom !important;
     }
 
-    /* テキストボックス */
     span[data-a-target="chat-line-message-body"] {
-      background-color: {{listenerCommentBackground}} !important;
-      color: var(--listener-comment) !important;
-      border-radius: {{commentBorderRadius}};
-      border: {{listenerBorder}};
+      position: relative;
       display: block !important;
-      padding: {{commentPadding}};
+      box-sizing: border-box;
       width: fit-content !important;
       max-width: 100%;
-      box-sizing: border-box;
-      position: relative;
+      padding: {{commentPadding}};
+      border: var(--chat-comment-border-style);
+      border-radius: {{commentBorderRadius}};
+      background-color: var(--chat-comment-rendered-bg) !important;
+      color: var(--chat-comment) !important;
       overflow: visible;
       overflow-wrap: anywhere;
-      {{autoMarginSide}} : auto;
+      {{autoMarginSide}}: auto;
     }
 
     span[data-a-target="chat-line-message-body"] a {
-      color: var(--listener-comment) !important;
+      color: var(--chat-comment) !important;
     }
 
     span[data-a-target="chat-line-message-body"]::before {
@@ -160,7 +167,7 @@
       width: 21px;
       height: 21px;
       transform: {{pointerOuterTransform}};
-      background-color: var(--listener-comment-border);
+      background-color: var(--chat-comment-border);
       border-top-left-radius: 7px;
       border-bottom-right-radius: 6px;
       z-index: -1;
@@ -174,107 +181,12 @@
       width: 18px;
       height: 18px;
       transform: {{pointerInnerTransform}};
-      background-color: var(--listener-comment-bg);
+      background-color: var(--chat-comment-bg);
       border-top-left-radius: 4px;
       border-bottom-right-radius: 20px;
       z-index: 0;
     }
 
-    /* emote */
-    .chat-line__message--emote{
+    .chat-line__message--emote {
       margin: 0 !important;
-    }
-
-    /* スクロールバー削除 */
-    .simplebar-scrollbar {
-      display: none !important;
-    }
-
-    /* ログイン名非表示 */
-    .chat-author__intl-login {
-      display: none !important;
-    }
-
-    span[aria-hidden="true"] {
-      display: none !important;
-    }
-
-    .chat-line__timestamp {
-      display: none !important;
-    }
-
-    div[data-a-target="chat-resubscription-message__custom-message"] {
-      display: inline !important;
-      margin: 0 !important;
-    }
-
-    .chat-line__username-container.chat-line__username-container--hoverable span div {
-      display: none !important;
-    }
-
-    .stream-chat-header,
-    .channel-leaderboard-container,
-    .tw-interactable,
-    .tw-z-default,
-    .chat-input,
-    .chat-line__status {
-      visibility: hidden !important;
-      display: none !important;
-      width: 0 !important;
-      height: 0 !important;
-      border: none !important;
-    }
-
-    .InjectLayout-sc-1i43xsx-0,
-    .user-notice-line {
-      display: none;
-    }
-
-    .community-highlight-stack__scroll-area--disable {
-      display: none !important;
-    }
-
-    .community-highlight-stack__backlog-card,
-    .community-highlight-stack__nav-target {
-      display: none !important;
-    }
-
-    .paid-pinned-chat-message-list {
-      display: none;
-    }
-
-    .paid-pinned-chat-message-content-wrapper {
-      display: none !important;
-    }
-
-    .fiHaCw {
-      border: none !important;
-    }
-
-    .stream-chat-header {
-      display: none !important;
-    }
-
-    .pMQwv,
-    .scrollable-trigger__trigger-area {
-      display: none !important;
-    }
-
-    /* 返信 */
-    .jIBntd {
-      display: none !important;
-    }
-
-    /* 新着 */
-    .xxjeD {
-      display: none !important;
-    }
-
-    .announcement-line {
-      background-color: transparent !important;
-      border: none !important;
-    }
-
-    .cBRHGH {
-      display: none !important;
     }
