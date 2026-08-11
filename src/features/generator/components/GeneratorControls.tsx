@@ -14,17 +14,17 @@ type GeneratorControlsProps = {
   onCreate: () => void
 }
 
-const presets: Array<{ name: PresetName; backgroundClass: string }> = [
-  { name: 'pink', backgroundClass: 'bg-[#fb83ab]' },
-  { name: 'blue', backgroundClass: 'bg-[#8ccce3]' },
-  { name: 'purple', backgroundClass: 'bg-[#a378ff]' },
-  { name: 'orange', backgroundClass: 'bg-[#fda25f]' },
-  { name: 'green', backgroundClass: 'bg-[#7ac970]' },
-  { name: 'black', backgroundClass: 'bg-[#707070]' },
+const presets: Array<{ name: PresetName; label: string; backgroundClass: string }> = [
+  { name: 'pink', label: 'ピンク', backgroundClass: 'bg-[#fb83ab]' },
+  { name: 'blue', label: 'ブルー', backgroundClass: 'bg-[#8ccce3]' },
+  { name: 'purple', label: 'パープル', backgroundClass: 'bg-[#a378ff]' },
+  { name: 'orange', label: 'オレンジ', backgroundClass: 'bg-[#fda25f]' },
+  { name: 'green', label: 'グリーン', backgroundClass: 'bg-[#7ac970]' },
+  { name: 'black', label: 'ブラック', backgroundClass: 'bg-[#707070]' },
 ]
 
 const platformOptions: Array<{ value: Platform; label: string }> = [
-  { value: 'youtube', label: 'Youtube' },
+  { value: 'youtube', label: 'YouTube' },
   { value: 'twitch', label: 'Twitch' },
 ]
 
@@ -118,11 +118,11 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
   }
 
   return (
-    <div className="flex h-full min-h-0 w-full max-w-md flex-col overflow-hidden rounded-4xl bg-white max-md:h-auto max-md:overflow-visible max-lg:max-w-none">
-      <div className="min-h-0 p-8 flex-1 overflow-y-auto overscroll-contain max-md:p-4 max-md:flex-none max-md:overflow-visible">
-        <div className="flex flex-col gap-12 p-4">
+    <div className="flex h-full min-h-0 w-full max-w-md flex-col overflow-hidden rounded-4xl bg-white max-lg:h-auto max-lg:max-w-none max-lg:overflow-visible">
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-8 max-lg:flex-none max-lg:overflow-visible max-lg:p-4">
+        <div className="flex flex-col gap-8 p-4 max-lg:gap-2 max-lg:p-2">
           <div>
-            <h3 id="platform-label" className="font-poppins mb-4 text-base font-semibold text-[#353b3c]">
+            <h3 id="platform-label" className="font-poppins mb-4 text-base font-semibold text-primary">
               Platform
             </h3>
             <SegmentedControl<Platform>
@@ -134,7 +134,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
             />
           </div>
           <div>
-            <h3 id="template-label" className="font-poppins mb-4 text-base font-semibold text-[#353b3c]">
+            <h3 id="template-label" className="font-poppins mb-4 text-base font-semibold text-primary">
               Template
             </h3>
             <RadioCardGroup<CommentTemplate>
@@ -146,7 +146,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
               renderOption={(option) => (
                 <span className="flex flex-col items-center">
                   <img
-                    className={`size-10 transition-opacity ${config.template === option.value ? 'opacity-100' : 'opacity-[0.47]'}`}
+                    className={`size-10 transition-opacity duration-200 motion-reduce:transition-none ${config.template === option.value ? 'opacity-100' : 'opacity-[0.47]'}`}
                     src={`/assets/template-${option.value}.svg`}
                     alt=""
                     aria-hidden="true"
@@ -157,7 +157,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
             />
           </div>
           <div>
-            <h3 id="direction-label" className="font-poppins mb-4 text-base font-semibold text-[#353b3c]">
+            <h3 id="direction-label" className="font-poppins mb-4 text-base font-semibold text-primary">
               Layout
             </h3>
             <SegmentedControl<Direction>
@@ -179,10 +179,19 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
               {visibilityOptions.map(({ key, label, hiddenOnTwitch, hiddenOnNormal }) =>
                 (hiddenOnTwitch && isTwitch) || (hiddenOnNormal && config.template === 'normal') ? null : (
                   <div key={key} className="flex items-center justify-between gap-4">
-                    <label htmlFor={`visibility-${key}`} className="font-poppins cursor-pointer text-xs font-medium text-[#c3c3c3]">
+                    <label
+                      id={`visibility-${key}-label`}
+                      htmlFor={`visibility-${key}`}
+                      className="font-poppins cursor-pointer text-xs font-medium text-primary-muted"
+                    >
                       {label}
                     </label>
-                    <Switch id={`visibility-${key}`} checked={config[key]} onCheckedChange={(value) => dispatch({ type: 'visibilityChanged', key, value })} />
+                    <Switch
+                      id={`visibility-${key}`}
+                      aria-labelledby={`visibility-${key}-label`}
+                      checked={config[key]}
+                      onCheckedChange={(value) => dispatch({ type: 'visibilityChanged', key, value })}
+                    />
                   </div>
                 ),
               )}
@@ -190,14 +199,14 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
           </div>
 
           <div>
-            <h3 className="font-poppins mb-2 text-base font-semibold text-[#353b3c]">Color</h3>
+            <h3 className="font-poppins mb-2 text-base font-semibold text-primary">Color</h3>
             <div className="grid grid-cols-6 gap-4">
-              {presets.map(({ name, backgroundClass }) => (
+              {presets.map(({ name, label, backgroundClass }) => (
                 <button
                   key={name}
                   type="button"
-                  aria-label={`${name} color template`}
-                  className={`block aspect-square size-full rounded-full cursor-pointer border-3 transition-opacity duration-300 hover:opacity-70 max-md:hover:opacity-100 ${
+                  aria-label={`${label}のカラープリセット`}
+                  className={`block aspect-square size-full cursor-pointer rounded-full border-3 transition-opacity duration-200 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none max-lg:hover:opacity-100 ${
                     activePreset === name ? '' : 'border-none'
                   } ${backgroundClass}`}
                   onClick={() => applyPreset(name)}
@@ -206,19 +215,29 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
             </div>
           </div>
         </div>
-        <div className="rounded-lg">
+        <div className="mt-4 rounded-lg">
           <button
             type="button"
-            className="flex w-full cursor-pointer justify-between rounded-lg bg-white p-4 text-left transition-colors duration-300 hover:bg-[#fafafa] max-md:hover:bg-white"
+            className="flex w-full cursor-pointer justify-between rounded-lg bg-white p-4 text-left transition-colors duration-200 hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none max-lg:p-2 max-lg:hover:bg-white"
             aria-expanded={detailsOpen}
+            aria-controls="color-details"
             onClick={() => setDetailsOpen((open) => !open)}
           >
-            <span className="my-auto font-sans text-md font-semibold text-[#353b3c]">詳細</span>
+            <span className="my-auto font-sans text-base font-semibold text-primary">詳細</span>
             <span className="my-auto block">
-              <img className={`block transition-transform duration-300 ${detailsOpen ? 'rotate-180' : ''}`} src="/assets/arrow.svg" alt="" />
+              <img
+                className={`block transition-transform duration-200 motion-reduce:transition-none ${detailsOpen ? 'rotate-180' : ''}`}
+                src="/assets/arrow.svg"
+                alt=""
+              />
             </span>
           </button>
-          <div className={`grid transition-[grid-template-rows] duration-300 p-4 ${detailsOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+          <div
+            id="color-details"
+            className={`grid p-4 transition-[grid-template-rows] duration-200 motion-reduce:transition-none max-lg:p-2 ${detailsOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+            aria-hidden={!detailsOpen}
+            inert={!detailsOpen}
+          >
             <div className="min-h-0 overflow-hidden">
               {colorSections.map(({ heading, fields, hiddenOnTwitch }) => {
                 if (hiddenOnTwitch && isTwitch) return null
@@ -232,10 +251,10 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
         </div>
       </div>
 
-      <div className="shrink-0 p-4 border-t border-[#c3c3c3]">
+      <div className="shrink-0 border-t border-secondary p-4">
         <button
           type="button"
-          className="font-poppins w-full block cursor-pointer rounded-full max-w-2xs mx-auto bg-[#585858] p-3 text-center text-lg font-bold text-white transition-opacity hover:opacity-70 max-md:hover:opacity-100"
+          className="font-poppins mx-auto flex min-h-12 w-full max-w-2xs cursor-pointer items-center justify-center rounded-full bg-primary px-4 py-2 text-center text-lg font-bold text-white transition-opacity duration-200 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none max-lg:hover:opacity-100"
           onClick={onCreate}
         >
           Create
@@ -254,15 +273,15 @@ type ColorSectionProps = {
 
 function ColorSection({ heading, colors, fields, onChange }: ColorSectionProps) {
   return (
-    <div className="mt-6 first:mt-0">
-      <p className="font-poppins mb-2 text-base font-semibold text-[#353b3c]">{heading}</p>
-      <div className="grid grid-cols-1 gap-2 md:grid-cols-2 max-lg:gap-x-3 max-lg:gap-y-1.5">
+    <div className="mt-4 first:mt-0">
+      <p className="font-poppins mb-2 text-base font-semibold text-primary">{heading}</p>
+      <div className="grid grid-cols-2 gap-2 max-lg:grid-cols-1">
         {fields.map(({ key, label }) => {
           const labelId = `${key}-label`
 
           return (
             <div key={key}>
-              <label id={labelId} htmlFor={`${key}-picker`} className="mb-2 block text-xs font-normal text-[#c3c3c3]">
+              <label id={labelId} htmlFor={`${key}-picker`} className="mb-1 inline-block text-xs font-normal text-primary-muted">
                 {label}
               </label>
               <ColorInput colorKey={key} aria-labelledby={labelId} value={colors[key]} onChange={onChange} />
@@ -294,21 +313,26 @@ function ColorInput({ colorKey, 'aria-labelledby': ariaLabelledBy, value, onChan
   }
 
   return (
-    <div className="flex items-center rounded-lg border border-transparent bg-[#f6f6f6] px-2 py-1 transition-colors duration-300 hover:bg-[#f5f5f5] focus-within:border-[#3f3f3f] max-md:hover:bg-[#fafafa]">
-      <input
-        className="size-6 shrink-0 cursor-pointer appearance-none overflow-hidden rounded-full border-0 bg-transparent p-0 outline-none [&::-moz-color-swatch]:rounded-full [&::-moz-color-swatch]:border-0 [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-full [&::-webkit-color-swatch]:border-0"
-        type="color"
-        id={`${colorKey}-picker`}
-        aria-labelledby={ariaLabelledBy}
-        value={value}
-        onChange={(event) => onChange(colorKey, event.target.value)}
-      />
-      <span className="font-poppins mx-0.5 ml-1 font-medium text-[#c3c3c3]">#</span>
+    <div className="flex items-center gap-2 rounded-lg border border-transparent bg-secondary px-2 py-0 transition-colors duration-200 hover:bg-secondary focus-within:border-primary motion-reduce:transition-none max-lg:hover:bg-secondary">
+      <div className="relative size-6 shrink-0">
+        <input
+          className="absolute inset-0 z-10 size-full cursor-pointer opacity-0"
+          type="color"
+          id={`${colorKey}-picker`}
+          aria-labelledby={ariaLabelledBy}
+          value={value}
+          onChange={(event) => onChange(colorKey, event.target.value)}
+        />
+        <span className="pointer-events-none block size-6 rounded-full" style={{ backgroundColor: value }} aria-hidden="true" />
+      </div>
+      <span className="font-poppins font-medium text-primary-subtle" aria-hidden="true">
+        #
+      </span>
       <input
         key={value}
         type="text"
         aria-labelledby={ariaLabelledBy}
-        className="font-poppins w-full p-1 font-normal text-[#353b3c] outline-none"
+        className="font-poppins min-h-10 w-full p-0 font-normal text-primary outline-none"
         maxLength={6}
         pattern="[a-zA-Z0-9]{6}"
         defaultValue={value.slice(1).toUpperCase()}

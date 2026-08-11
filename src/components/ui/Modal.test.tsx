@@ -26,6 +26,8 @@ describe('Modal', () => {
     expect(html).toContain('aria-labelledby="modal-title"')
     expect(html).toContain('Modal title')
     expect(html).toContain('aria-label="閉じる"')
+    expect(html).toContain('size-5')
+    expect(html).toContain('motion-reduce:transition-none')
     expect(html).toContain('min-h-96')
     expect(html).toContain('max-h-160')
     expect(html).toContain('min-w-2xl')
@@ -41,10 +43,9 @@ describe('Modal', () => {
       </Modal>,
     )
 
-    expect(html).toContain('md:overflow-y-auto')
-    expect(html).toContain('md:h-auto')
-    expect(html).toContain('md:max-h-none')
-    expect(html).toContain('md:flex-none')
-    expect(html).toContain('md:overflow-visible')
+    expect(html).toContain('overflow-y-auto max-lg:overflow-hidden')
+    expect(html).toContain('h-auto max-h-none max-lg:h-full max-lg:max-h-160')
+    expect(html).toContain('flex-none overflow-visible max-lg:flex-1')
+    expect(html).toContain('max-lg:overflow-x-hidden max-lg:overflow-y-auto')
   })
 })

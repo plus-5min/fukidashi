@@ -30,9 +30,9 @@ export function GeneratorPage() {
   return (
     <>
       <PageMetadata {...metadata} />
-      <div className="h-full max-md:h-auto" style={colorVariables}>
-        <div className="mx-auto h-full p-6 max-md:h-auto max-md:p-4">
-          <div className="mx-auto flex h-full w-full max-w-7xl items-start justify-center gap-16 max-md:h-auto max-md:flex-col">
+      <div className="h-full max-lg:h-auto" style={colorVariables}>
+        <div className="mx-auto h-full p-8 max-lg:h-auto max-lg:p-4">
+          <div className="mx-auto flex h-full w-full max-w-7xl items-start justify-center gap-8 max-lg:h-auto max-lg:flex-col max-lg:gap-4">
             <CommentPreview config={config} />
             <GeneratorControls
               config={config}

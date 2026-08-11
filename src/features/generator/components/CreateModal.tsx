@@ -30,31 +30,38 @@ export function CreateModal({ open, css, onCssChange, onClose }: CreateModalProp
   return (
     <Modal open={open} titleId="create-modal-title" onClose={onClose}>
       <div className="flex min-h-0 flex-1 flex-col">
-        <p className="font-poppins shrink-0 text-xl font-bold text-[#353b3c]" id="create-modal-title">
+        <h2 className="font-poppins shrink-0 text-xl font-bold text-primary" id="create-modal-title">
           CSS
-        </p>
-        <div className="relative mt-6 flex min-h-0 flex-1 flex-col">
+        </h2>
+        <div className="relative mt-4 flex min-h-0 flex-1 flex-col">
+          <label className="sr-only" htmlFor="custom-css">
+            生成されたCSS
+          </label>
           <textarea
             id="custom-css"
-            className="relative min-h-48 w-full flex-1 resize-none rounded-2xl bg-[#f5f5f5] px-12 py-6 text-left [&::-webkit-scrollbar]:hidden max-md:px-8"
+            className="relative min-h-48 w-full flex-1 resize-none rounded-2xl bg-secondary p-8 pr-16 text-left font-mono focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-scrollbar]:hidden max-lg:p-4 max-lg:pr-16"
             value={css}
             onChange={(event) => onCssChange(event.target.value)}
           />
-          <p className="mt-5 shrink-0 text-xs text-[#888]">対応環境：OBS幅300px以上</p>
+          <p className="mt-4 shrink-0 text-xs text-primary-muted">対応環境：OBS幅300px以上</p>
           <button
             type="button"
             id="copyBtn"
-            className="absolute top-3 right-3 cursor-pointer rounded-full bg-[#d8d8d8] p-2 transition-opacity duration-300 hover:opacity-70"
+            className="absolute top-2 right-2 flex size-12 cursor-pointer items-center justify-center rounded-full bg-primary-subtle transition-opacity duration-200 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none max-lg:hover:opacity-100"
             aria-label="CSSをコピー"
             onClick={() => void copyCss()}
           >
-            <img className="block size-4 object-contain" src="/assets/copy.svg" alt="copy" />
+            {copied ? (
+              <svg className="size-5 animate-copy-success text-primary motion-reduce:animate-none" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            ) : (
+              <img className="block size-4 object-contain" src="/assets/copy.svg" alt="" />
+            )}
           </button>
-          <div
-            className={`absolute -top-8 right-0 w-fit rounded-xl bg-[#707070] px-4 py-2 transition-opacity duration-500 before:absolute before:-bottom-1.5 before:left-1/2 before:h-0 before:w-0 before:-translate-x-1/2 before:border-x-6 before:border-t-8 before:border-x-transparent before:border-t-[#707070] before:content-[''] ${copied ? 'opacity-100' : 'opacity-0'}`}
-          >
-            <p className="text-xs text-white">コピーしました！</p>
-          </div>
+          <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+            {copied ? 'CSSをコピーしました' : ''}
+          </p>
         </div>
       </div>
     </Modal>

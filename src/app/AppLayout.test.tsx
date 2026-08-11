@@ -37,7 +37,7 @@ describe('AppLayout', () => {
     const generatorHtml = renderLayout('/', GeneratorLayout)
     const termsHtml = renderLayout('/terms')
 
-    expect(generatorHtml).toContain('md:h-dvh md:overflow-hidden')
-    expect(termsHtml).not.toContain('md:h-dvh md:overflow-hidden')
+    expect(generatorHtml).toContain('max-lg:h-auto max-lg:overflow-visible')
+    expect(termsHtml).not.toContain('max-lg:h-auto max-lg:overflow-visible')
   })
 })

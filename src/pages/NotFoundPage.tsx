@@ -12,16 +12,16 @@ export function NotFoundPage() {
   return (
     <>
       <PageMetadata {...metadata} />
-      <div className="flex flex-1 items-center justify-center overflow-y-auto px-4 py-12 sm:px-6">
-        <section className="mx-auto w-full max-w-xl rounded-4xl bg-white px-6 py-16 text-center sm:px-12" aria-labelledby="not-found-heading">
-          <p className="font-poppins text-7xl leading-none font-bold text-[#c3c3c3] sm:text-8xl">404</p>
-          <h1 id="not-found-heading" className="mt-6 text-2xl font-bold text-[#353b3c] sm:text-3xl">
+      <div className="flex flex-1 items-center justify-center overflow-y-auto px-8 py-12 max-lg:px-4">
+        <section className="mx-auto w-full max-w-xl rounded-4xl bg-white px-12 py-16 text-center max-lg:px-4" aria-labelledby="not-found-heading">
+          <p className="font-poppins text-8xl leading-none font-bold text-primary-muted max-lg:text-7xl">404</p>
+          <h1 id="not-found-heading" className="mt-4 text-3xl font-bold text-primary max-lg:text-2xl">
             ページが見つかりませんでした
           </h1>
-          <p className="mt-4 leading-8 text-[#555]">URLが正しいか確認して、もう一度お試しください。</p>
+          <p className="mt-4 leading-8 text-primary">URLが正しいか確認して、もう一度お試しください。</p>
           <Link
             to="/"
-            className="font-poppins mx-auto mt-8 flex w-fit min-w-52 items-center justify-center rounded-full bg-[#585858] px-8 py-3 text-base font-bold text-white transition-opacity hover:opacity-70 max-md:hover:opacity-100"
+            className="font-poppins mx-auto mt-8 flex min-h-12 w-fit min-w-52 items-center justify-center rounded-full bg-primary px-8 py-2 text-base font-bold text-white transition-opacity duration-200 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none max-lg:hover:opacity-100"
           >
             トップへ戻る
           </Link>

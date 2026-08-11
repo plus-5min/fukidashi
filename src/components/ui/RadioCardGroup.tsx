@@ -34,7 +34,7 @@ export function RadioCardGroup<T extends string>({ 'aria-labelledby': ariaLabell
               />
               <label
                 htmlFor={id}
-                className="flex aspect-[4/3] cursor-pointer items-center justify-center rounded-2xl border-2 border-[#e0e0e0] bg-white text-[#888] transition-colors peer-checked:border-[3px] peer-checked:border-[#3f3f3f] peer-checked:text-[#353b3c] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#9ed9ef]"
+                className="flex aspect-[4/3] cursor-pointer items-center justify-center rounded-2xl border-2 border-primary-subtle bg-white text-primary-muted transition-colors duration-200 peer-checked:border-[3px] peer-checked:border-primary peer-checked:text-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary motion-reduce:transition-none"
               >
                 {renderOption(option)}
               </label>

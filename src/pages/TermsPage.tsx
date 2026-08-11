@@ -13,7 +13,7 @@ function renderInline(text: string): ReactNode[] {
   return text.split(/(\*\*.+?\*\*)/g).map((part, index) => {
     if (part.startsWith('**') && part.endsWith('**')) {
       return (
-        <strong key={`${part}-${index}`} className="font-bold text-[#353b3c]">
+        <strong key={`${part}-${index}`} className="font-bold text-primary">
           {part.slice(2, -2)}
         </strong>
       )
@@ -43,19 +43,19 @@ export function MarkdownDocument({ markdown }: { markdown: string }) {
 
       if (level === 1) {
         blocks.push(
-          <h1 key={`heading-${index}`} className="text-2xl font-bold text-[#353b3c] sm:text-3xl">
+          <h1 key={`heading-${index}`} className="text-3xl font-bold text-primary max-lg:text-2xl">
             {content}
           </h1>,
         )
       } else if (level === 2) {
         blocks.push(
-          <h2 key={`heading-${index}`} className="mt-10 border-b border-[#dedede] pb-3 text-xl font-bold text-[#353b3c]">
+          <h2 key={`heading-${index}`} className="mt-8 border-b border-primary-subtle pb-2 text-xl font-bold text-primary">
             {content}
           </h2>,
         )
       } else {
         blocks.push(
-          <h3 key={`heading-${index}`} className="mt-7 text-base font-bold text-[#353b3c]">
+          <h3 key={`heading-${index}`} className="mt-8 text-base font-bold text-primary">
             {content}
           </h3>,
         )
@@ -79,7 +79,7 @@ export function MarkdownDocument({ markdown }: { markdown: string }) {
       }
 
       blocks.push(
-        <ul key={`list-${startIndex}`} className="mt-4 list-disc space-y-2 pl-6 text-[#555] marker:text-[#9d9d9d]">
+        <ul key={`list-${startIndex}`} className="mt-4 list-disc space-y-2 pl-4 text-primary marker:text-primary-muted">
           {items}
         </ul>,
       )
@@ -95,7 +95,7 @@ export function MarkdownDocument({ markdown }: { markdown: string }) {
     }
 
     blocks.push(
-      <p key={`paragraph-${paragraphStart}`} className="mt-4 leading-8 text-[#555]">
+      <p key={`paragraph-${paragraphStart}`} className="mt-4 leading-8 text-primary">
         {renderInline(paragraphLines.join(' '))}
       </p>,
     )
@@ -109,7 +109,7 @@ export function TermsPage() {
     <>
       <PageMetadata {...metadata} />
       <div className="h-full overflow-y-auto">
-        <article className="mx-auto w-full max-w-3xl px-6 py-12 pb-20">
+        <article className="mx-auto w-full max-w-3xl px-8 py-12 pb-16 max-lg:px-4">
           <MarkdownDocument markdown={termsMarkdown} />
         </article>
       </div>

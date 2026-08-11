@@ -25,7 +25,7 @@ function SiteLayout({ className }: SiteLayoutProps) {
 }
 
 export function GeneratorLayout() {
-  return <SiteLayout className="flex min-h-dvh flex-col md:h-dvh md:overflow-hidden" />
+  return <SiteLayout className="flex h-dvh min-h-dvh flex-col overflow-hidden max-lg:h-auto max-lg:overflow-visible" />
 }
 
 export function AppLayout() {
