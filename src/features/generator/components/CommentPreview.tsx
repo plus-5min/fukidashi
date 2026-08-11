@@ -107,7 +107,16 @@ function TextComment({ config, name, message, hidden = false, member = false, sh
   const isRight = config.direction === 'right'
   const isFukidashi = config.template === 'fukidashi'
   const showProfileImage = config.platform !== 'twitch' && config.showProfileImage
-  const nameColors = member ? 'bg-[var(--member-name-bg)] text-[var(--member-name)]' : 'bg-[var(--listener-name-bg)] text-[var(--listener-name)]'
+  const nameTextColor =
+    config.template === 'normal'
+      ? member
+        ? 'text-[var(--member-comment)]'
+        : 'text-[var(--listener-comment)]'
+      : member
+        ? 'text-[var(--member-name)]'
+        : 'text-[var(--listener-name)]'
+  const nameBackgroundColor = config.template === 'normal' ? 'bg-transparent' : member ? 'bg-[var(--member-name-bg)]' : 'bg-[var(--listener-name-bg)]'
+  const nameHorizontalPadding = config.template === 'normal' ? 'px-0' : 'px-3'
   const messageTextColor = member ? 'text-[var(--member-comment)]' : 'text-[var(--listener-comment)]'
   const messageBackgroundColor = member ? 'bg-[var(--member-comment-bg)]' : 'bg-[var(--listener-comment-bg)]'
   const borderColor = member ? 'border-[var(--member-comment-border)]' : 'border-[var(--listener-comment-border)]'
@@ -135,7 +144,7 @@ function TextComment({ config, name, message, hidden = false, member = false, sh
       <div className="grid gap-1.5">
         <div className={config.showName ? 'block' : 'hidden'}>
           <div className={`flex gap-2 ${isRight ? 'justify-end' : 'justify-start'}`}>
-            <div className={`flex w-fit rounded-[18px] px-3 py-1 text-xs ${nameColors}`}>{name}</div>
+            <div className={`flex w-fit rounded-[18px] py-1 text-xs ${nameHorizontalPadding} ${nameBackgroundColor} ${nameTextColor}`}>{name}</div>
             {showBadge && <MemberBadge />}
           </div>
         </div>

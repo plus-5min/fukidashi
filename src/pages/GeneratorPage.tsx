@@ -20,7 +20,7 @@ export function GeneratorPage() {
   const [activePreset, setActivePreset] = useState<PresetName | null>('blue')
   const [createOpen, setCreateOpen] = useState(false)
   const [editableCss, setEditableCss] = useState('')
-  const generatedCss = useMemo(() => generateCss(config), [config])
+  const generatedCss = useMemo(() => generateCss(config, location.origin), [config])
 
   const colorVariables = useMemo(
     () => Object.fromEntries(Object.entries(config.colors).map(([key, value]) => [`--${key}`, value])) as CSSProperties,

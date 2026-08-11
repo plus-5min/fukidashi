@@ -1,39 +1,101 @@
-import twitchTemplate from './templates/twitch.txt?raw'
-import youtubeTemplate from './templates/youtube.txt?raw'
-import { colorKeys, type GeneratorConfig } from './generatorConfig'
+import { colorKeys, type ColorKey, type GeneratorConfig, type Platform } from './generatorConfig'
 
-export function generateCss(config: GeneratorConfig): string {
+const platformColorKeys: Record<Platform, readonly ColorKey[]> = {
+  youtube: colorKeys,
+  twitch: ['listener-name', 'listener-name-bg', 'listener-comment', 'listener-comment-bg', 'listener-comment-border'],
+}
+
+const normalPlatformColorKeys: Record<Platform, readonly ColorKey[]> = {
+  youtube: [
+    'listener-name',
+    'listener-name-bg',
+    'listener-comment',
+    'member-name',
+    'member-name-bg',
+    'member-comment',
+    'superchat-name',
+    'superchat-name-bg',
+    'superchat-comment',
+    'superchat-comment-bg',
+    'membership-name',
+    'membership-name-bg',
+    'membership-comment',
+    'membership-comment-bg',
+  ],
+  twitch: ['listener-name', 'listener-name-bg', 'listener-comment'],
+}
+
+function formatVariables(variables: Readonly<Record<string, string>>): string {
+  return Object.entries(variables)
+    .map(([name, value]) => `  --${name}: ${value};`)
+    .join('\n')
+}
+
+export function generateCss(config: GeneratorConfig, stylesheetOrigin: string): string {
   const isLeft = config.direction === 'left'
   const isFukidashi = config.template === 'fukidashi'
   const hasBorder = config.template !== 'normal' && config.showBorder
-  const commentBorderRadius = config.template === 'normal' ? '0' : '30px'
-  const commentPadding = config.template === 'normal' ? '0' : '12px 20px'
-  const replacements: Record<string, string> = {
-    animationName: isLeft ? 'popInLeft' : 'popInRight',
-    flexDirection: isLeft ? 'row' : 'row-reverse',
-    justifyContent: isLeft ? 'start' : 'end',
-    authorDisplay: config.showName ? 'block' : 'none',
-    iconDisplay: config.showProfileImage ? 'block' : 'none',
-    listenerCommentBackground: config.template === 'normal' ? 'transparent' : 'var(--listener-comment-bg)',
-    memberCommentBackground: config.template === 'normal' ? 'transparent' : 'var(--member-comment-bg)',
-    commentBorderRadius,
-    commentPadding,
-    listenerBorder: hasBorder ? '3px solid var(--listener-comment-border)' : 'none',
-    memberBorder: hasBorder ? '3px solid var(--member-comment-border)' : 'none',
-    pointerContent: isFukidashi && hasBorder ? '""' : 'none',
-    pointerInnerContent: isFukidashi ? '""' : 'none',
-    autoMarginSide: isLeft ? 'margin-right' : 'margin-left',
-    pointerOuterPosition: isLeft ? 'left: -3px; right: auto;' : 'left: auto; right: -3px;',
-    pointerOuterTransform: isLeft ? 'rotate(-20deg) skew(20deg, 20deg)' : 'rotate(-70deg) skew(20deg, 20deg)',
-    pointerInnerPosition: isLeft ? 'left: 1px; right: auto;' : 'left: auto; right: 1px;',
-    pointerInnerTransform: isLeft ? 'rotate(-20deg) skew(20deg, 20deg)' : 'rotate(110deg) skew(20deg, 20deg)',
+
+  const layoutVariables: Record<string, string> = {}
+
+  if (!isLeft) {
+    layoutVariables['animation-name'] = 'popInRight'
+    layoutVariables['auto-margin-inline'] = 'auto 0'
+
+    if (config.platform === 'youtube') {
+      layoutVariables['message-flex-direction'] = 'row-reverse'
+      layoutVariables['message-justify-content'] = 'end'
+    }
   }
 
-  for (const key of colorKeys) {
-    replacements[key] = config.colors[key]
+  if (!config.showName) {
+    layoutVariables['name-display'] = 'none'
   }
 
-  const template = config.platform === 'youtube' ? youtubeTemplate : twitchTemplate
+  if (config.platform === 'youtube' && config.showProfileImage) {
+    layoutVariables['profile-image-display'] = 'block'
+  }
 
-  return Object.entries(replacements).reduce((css, [key, value]) => css.replaceAll(`{{${key}}}`, value), template)
+  if (!hasBorder && config.template !== 'normal') {
+    layoutVariables['comment-border-width'] = '0'
+
+    if (isFukidashi) {
+      layoutVariables['pointer-display'] = 'none'
+    }
+  }
+
+  if (isFukidashi && !isLeft) {
+    layoutVariables['pointer-inner-inset-inline'] = 'auto 1px'
+    layoutVariables['pointer-inner-transform'] = 'rotate(110deg) skew(20deg, 20deg)'
+
+    if (hasBorder) {
+      layoutVariables['pointer-outer-inset-inline'] = 'auto -3px'
+      layoutVariables['pointer-outer-transform'] = 'rotate(-70deg) skew(20deg, 20deg)'
+    }
+  }
+
+  const activeColorKeys = config.template === 'normal' ? normalPlatformColorKeys[config.platform] : platformColorKeys[config.platform]
+  const colorVariables = Object.fromEntries(
+    activeColorKeys.map((key) => {
+      const textCommentColorKey = key === 'listener-name' ? 'listener-comment' : key === 'member-name' ? 'member-comment' : null
+      const isTextCommentNameBackground = key === 'listener-name-bg' || key === 'member-name-bg'
+      let value = config.colors[key]
+
+      if (config.template === 'normal' && textCommentColorKey) {
+        value = config.colors[textCommentColorKey]
+      } else if (config.template === 'normal' && isTextCommentNameBackground) {
+        value = 'transparent'
+      }
+
+      return [key, value]
+    }),
+  )
+  const stylesheetUrl = `${stylesheetOrigin}/css/v1/${config.platform}/${config.template}.css`
+  const variables = [layoutVariables, colorVariables].map(formatVariables).filter(Boolean).join('\n\n')
+
+  return `@import url("${stylesheetUrl}");
+
+:root {
+${variables}
+}`
 }

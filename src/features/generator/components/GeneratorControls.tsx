@@ -63,20 +63,20 @@ const colorSections: ColorSectionDefinition[] = [
   {
     heading: 'Listener',
     fields: [
-      { key: 'listener-name', label: '名前' },
-      { key: 'listener-name-bg', label: '名前の背景' },
+      { key: 'listener-name', label: '名前', hiddenOnNormal: true },
+      { key: 'listener-name-bg', label: '名前の背景', hiddenOnNormal: true },
       { key: 'listener-comment', label: 'コメント' },
-      { key: 'listener-comment-bg', label: 'コメントの背景' },
+      { key: 'listener-comment-bg', label: 'コメントの背景', hiddenOnNormal: true },
       { key: 'listener-comment-border', label: 'コメントの枠線', hiddenOnNormal: true },
     ],
   },
   {
     heading: 'Member',
     fields: [
-      { key: 'member-name', label: 'メンバーの名前' },
-      { key: 'member-name-bg', label: '名前の背景' },
+      { key: 'member-name', label: 'メンバーの名前', hiddenOnNormal: true },
+      { key: 'member-name-bg', label: '名前の背景', hiddenOnNormal: true },
       { key: 'member-comment', label: 'コメント' },
-      { key: 'member-comment-bg', label: 'コメントの背景' },
+      { key: 'member-comment-bg', label: 'コメントの背景', hiddenOnNormal: true },
       { key: 'member-comment-border', label: 'コメントの枠線', hiddenOnNormal: true },
     ],
     hiddenOnTwitch: true,
