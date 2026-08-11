@@ -15,7 +15,7 @@ function SiteLayout({ className }: SiteLayoutProps) {
   return (
     <div className={className}>
       <Header onOpenAbout={() => setAboutOpen(true)} />
-      <main className="min-h-0 flex-1">
+      <main className="flex min-h-0 flex-1 flex-col">
         <Outlet />
       </main>
       <Footer />
