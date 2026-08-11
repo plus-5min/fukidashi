@@ -2,13 +2,13 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { MemoryRouter, Route, Routes } from 'react-router'
 import { describe, expect, it } from 'vitest'
 
-import { AppLayout } from './AppLayout'
+import { AppLayout, GeneratorLayout } from './AppLayout'
 
-function renderLayout(path: string) {
+function renderLayout(path: string, Layout = AppLayout) {
   return renderToStaticMarkup(
     <MemoryRouter initialEntries={[path]}>
       <Routes>
-        <Route Component={AppLayout}>
+        <Route Component={Layout}>
           <Route index element={<div>Generator page</div>} />
           <Route path="terms" element={<div>Terms page</div>} />
           <Route path="*" element={<div>Not found page</div>} />
@@ -20,16 +20,24 @@ function renderLayout(path: string) {
 
 describe('AppLayout', () => {
   it.each([
-    ['generator page', '/', 'Generator page'],
-    ['terms page', '/terms', 'Terms page'],
-    ['not found page', '/missing', 'Not found page'],
-  ])('shows the site header and footer on the %s', (_, path, pageContent) => {
-    const html = renderLayout(path)
+    ['generator page', GeneratorLayout, '/', 'Generator page'],
+    ['terms page', AppLayout, '/terms', 'Terms page'],
+    ['not found page', AppLayout, '/missing', 'Not found page'],
+  ])('shows the site header and footer on the %s', (_, Layout, path, pageContent) => {
+    const html = renderLayout(path, Layout)
 
     expect(html).toContain('<header')
     expect(html).toContain('<main class="min-h-0 flex-1">')
     expect(html).toContain(pageContent)
     expect(html).toContain('<footer')
     expect(html).toContain('href="/terms"')
+  })
+
+  it('only constrains the generator page to the desktop viewport', () => {
+    const generatorHtml = renderLayout('/', GeneratorLayout)
+    const termsHtml = renderLayout('/terms')
+
+    expect(generatorHtml).toContain('md:h-dvh md:overflow-hidden')
+    expect(termsHtml).not.toContain('md:h-dvh md:overflow-hidden')
   })
 })

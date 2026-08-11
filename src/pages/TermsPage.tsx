@@ -1,6 +1,13 @@
 import type { ReactNode } from 'react'
 
 import termsMarkdown from '../../TERMS.md?raw'
+import { PageMetadata, type PageMetadataProps } from '../app/components/PageMetadata'
+
+const metadata = {
+  title: '利用規約 | fukidashi',
+  description: 'fukidashiの利用規約です。ご利用前に内容をご確認ください。',
+  path: '/terms',
+} satisfies PageMetadataProps
 
 function renderInline(text: string): ReactNode[] {
   return text.split(/(\*\*.+?\*\*)/g).map((part, index) => {
@@ -99,10 +106,13 @@ export function MarkdownDocument({ markdown }: { markdown: string }) {
 
 export function TermsPage() {
   return (
-    <div className="h-full overflow-y-auto">
-      <article className="mx-auto w-full max-w-3xl px-6 py-12 pb-20">
-        <MarkdownDocument markdown={termsMarkdown} />
-      </article>
-    </div>
+    <>
+      <PageMetadata {...metadata} />
+      <div className="h-full overflow-y-auto">
+        <article className="mx-auto w-full max-w-3xl px-6 py-12 pb-20">
+          <MarkdownDocument markdown={termsMarkdown} />
+        </article>
+      </div>
+    </>
   )
 }
