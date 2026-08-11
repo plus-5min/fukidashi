@@ -16,7 +16,7 @@ function renderInline(text: string): ReactNode[] {
   })
 }
 
-function MarkdownDocument({ markdown }: { markdown: string }) {
+export function MarkdownDocument({ markdown }: { markdown: string }) {
   const lines = markdown.trim().split(/\r?\n/)
   const blocks: ReactNode[] = []
 
