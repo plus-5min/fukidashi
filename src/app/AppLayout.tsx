@@ -9,9 +9,9 @@ export function AppLayout() {
   const [aboutOpen, setAboutOpen] = useState(false)
 
   return (
-    <div className="flex h-dvh flex-col overflow-hidden">
+    <div className="flex min-h-dvh flex-col md:h-dvh md:overflow-hidden">
       <Header onOpenAbout={() => setAboutOpen(true)} />
-      <main className="min-h-0 flex-1 overflow-y-auto">
+      <main className="min-h-0 flex-1">
         <Outlet />
       </main>
       <Footer />

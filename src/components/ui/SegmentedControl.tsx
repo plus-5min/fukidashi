@@ -24,7 +24,7 @@ export function SegmentedControl<T extends string>({
 }: SegmentedControlProps<T>) {
   return (
     <div role="radiogroup" aria-labelledby={ariaLabelledBy}>
-      <div className="grid grid-flow-col auto-cols-fr rounded-full bg-[#f5f5f5] p-1">
+      <div className="grid grid-flow-col auto-cols-fr rounded-full bg-[#f6f6f6] p-1">
         {options.map((option) => {
           const id = `${name}-${option.value}`
 
@@ -41,7 +41,7 @@ export function SegmentedControl<T extends string>({
               />
               <label
                 htmlFor={id}
-                className="flex cursor-pointer items-center justify-center rounded-full px-4 py-2 text-center text-sm font-medium text-[#888] transition-all peer-checked:bg-white peer-checked:text-[#353b3c] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#9ed9ef]"
+                className="flex cursor-pointer items-center justify-center rounded-full px-4 py-2.5 text-center text-sm font-medium text-[#888] transition-all peer-checked:bg-white peer-checked:text-[#353b3c] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[#9ed9ef]"
               >
                 {renderOption ? renderOption(option) : option.label}
               </label>
