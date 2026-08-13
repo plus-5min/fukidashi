@@ -2,11 +2,12 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
 import { defaultGeneratorConfig, generatorReducer, type GeneratorConfig } from '../generatorConfig'
+import type { PresetName } from '../presets'
 import { GeneratorControls } from './GeneratorControls'
 
-function renderControls(config: GeneratorConfig): string {
+function renderControls(config: GeneratorConfig, activePreset: PresetName | null = null): string {
   return renderToStaticMarkup(
-    <GeneratorControls config={config} activePreset={null} dispatch={() => undefined} onPresetChange={() => undefined} onCreate={() => undefined} />,
+    <GeneratorControls config={config} activePreset={activePreset} dispatch={() => undefined} onPresetChange={() => undefined} onCreate={() => undefined} />,
   )
 }
 
@@ -41,5 +42,13 @@ describe('GeneratorControls', () => {
     expect(html).toContain('id="member-name-picker"')
     expect(html).toContain('id="member-name-bg-picker"')
     expect(html).toContain('id="member-comment-bg-picker"')
+  })
+
+  it('選択中のプリセットと実際に適用される色を公開する', () => {
+    const html = renderControls(defaultGeneratorConfig, 'purple')
+
+    expect(html).toContain('aria-label="パープルのカラープリセット" aria-pressed="true"')
+    expect(html).toContain('style="background-color:#B77CEB"')
+    expect(html).toContain('aria-label="ブルーのカラープリセット" aria-pressed="false"')
   })
 })

@@ -33,11 +33,12 @@ describe('AppLayout', () => {
     expect(html).toContain('href="/terms"')
   })
 
-  it('only constrains the generator page to the desktop viewport', () => {
+  it('keeps the footer at the bottom without constraining the generator to the viewport', () => {
     const generatorHtml = renderLayout('/', GeneratorLayout)
     const termsHtml = renderLayout('/terms')
 
-    expect(generatorHtml).toContain('max-lg:h-auto max-lg:overflow-visible')
-    expect(termsHtml).not.toContain('max-lg:h-auto max-lg:overflow-visible')
+    expect(generatorHtml).toContain('min-h-dvh')
+    expect(generatorHtml).not.toContain('class="flex h-dvh')
+    expect(termsHtml).toContain('min-h-dvh')
   })
 })

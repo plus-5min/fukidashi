@@ -1,4 +1,4 @@
-import { useState, type Dispatch } from 'react'
+import { useEffect, useRef, useState, type Dispatch } from 'react'
 
 import { RadioCardGroup } from '../../../components/ui/RadioCardGroup'
 import { SegmentedControl } from '../../../components/ui/SegmentedControl'
@@ -14,13 +14,13 @@ type GeneratorControlsProps = {
   onCreate: () => void
 }
 
-const presets: Array<{ name: PresetName; label: string; backgroundClass: string }> = [
-  { name: 'pink', label: 'ピンク', backgroundClass: 'bg-[#fb83ab]' },
-  { name: 'blue', label: 'ブルー', backgroundClass: 'bg-[#8ccce3]' },
-  { name: 'purple', label: 'パープル', backgroundClass: 'bg-[#a378ff]' },
-  { name: 'orange', label: 'オレンジ', backgroundClass: 'bg-[#fda25f]' },
-  { name: 'green', label: 'グリーン', backgroundClass: 'bg-[#7ac970]' },
-  { name: 'black', label: 'ブラック', backgroundClass: 'bg-[#707070]' },
+const presets: Array<{ name: PresetName; label: string }> = [
+  { name: 'pink', label: 'ピンク' },
+  { name: 'blue', label: 'ブルー' },
+  { name: 'purple', label: 'パープル' },
+  { name: 'orange', label: 'オレンジ' },
+  { name: 'green', label: 'グリーン' },
+  { name: 'black', label: 'ブラック' },
 ]
 
 const platformOptions: Array<{ value: Platform; label: string }> = [
@@ -201,14 +201,16 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
           <div>
             <h3 className="font-poppins mb-2 text-base font-semibold text-primary">Color</h3>
             <div className="grid grid-cols-6 gap-4">
-              {presets.map(({ name, label, backgroundClass }) => (
+              {presets.map(({ name, label }) => (
                 <button
                   key={name}
                   type="button"
                   aria-label={`${label}のカラープリセット`}
+                  aria-pressed={activePreset === name}
                   className={`block aspect-square size-full cursor-pointer rounded-full border-3 transition-opacity duration-200 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none max-lg:hover:opacity-100 ${
                     activePreset === name ? '' : 'border-none'
-                  } ${backgroundClass}`}
+                  }`}
+                  style={{ backgroundColor: colorPresets[name]['listener-name-bg'] }}
                   onClick={() => applyPreset(name)}
                 />
               ))}
@@ -301,6 +303,14 @@ type ColorInputProps = {
 }
 
 function ColorInput({ colorKey, 'aria-labelledby': ariaLabelledBy, value, onChange }: ColorInputProps) {
+  const textInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (textInputRef.current) {
+      textInputRef.current.value = value.slice(1).toUpperCase()
+    }
+  }, [value])
+
   const changeText = (input: HTMLInputElement) => {
     const nextValue = input.value
       .replace(/[^a-zA-Z0-9]/g, '')
@@ -329,12 +339,12 @@ function ColorInput({ colorKey, 'aria-labelledby': ariaLabelledBy, value, onChan
         #
       </span>
       <input
-        key={value}
+        ref={textInputRef}
         type="text"
         aria-labelledby={ariaLabelledBy}
         className="font-poppins min-h-10 w-full p-0 font-normal text-primary outline-none"
         maxLength={6}
-        pattern="[a-zA-Z0-9]{6}"
+        pattern="[0-9A-Fa-f]{6}"
         defaultValue={value.slice(1).toUpperCase()}
         onChange={(event) => changeText(event.currentTarget)}
         onBlur={(event) => {

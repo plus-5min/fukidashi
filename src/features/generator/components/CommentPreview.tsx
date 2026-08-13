@@ -36,8 +36,8 @@ export function CommentPreview({ config }: CommentPreviewProps) {
   const isTwitch = config.platform === 'twitch'
 
   return (
-    <div className="relative z-0 w-full max-lg:max-w-none">
-      <div className="sticky top-16 z-0 rounded-4xl bg-secondary p-8 max-lg:p-4">
+    <div className="relative z-0 min-w-0 flex-1 max-lg:w-full max-lg:max-w-none">
+      <div className="relative z-0 rounded-4xl bg-secondary p-8 max-lg:p-4">
         <div className="grid gap-3">
           {previewTextComments.map(({ name, message, platform, member, showBadge }) => (
             <TextComment

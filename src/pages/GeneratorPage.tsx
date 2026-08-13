@@ -30,20 +30,24 @@ export function GeneratorPage() {
   return (
     <>
       <PageMetadata {...metadata} />
-      <div className="h-full max-lg:h-auto" style={colorVariables}>
-        <div className="mx-auto h-full p-8 max-lg:h-auto max-lg:p-4">
-          <div className="mx-auto flex h-full w-full max-w-7xl items-start justify-center gap-8 max-lg:h-auto max-lg:flex-col max-lg:gap-4">
+      <div style={colorVariables}>
+        <div className="mx-auto p-8 max-lg:p-4">
+          <div className="mx-auto flex w-full max-w-7xl items-stretch justify-center gap-8 max-lg:flex-col max-lg:gap-4">
             <CommentPreview config={config} />
-            <GeneratorControls
-              config={config}
-              activePreset={activePreset}
-              dispatch={dispatch}
-              onPresetChange={setActivePreset}
-              onCreate={() => {
-                setEditableCss(generatedCss)
-                setCreateOpen(true)
-              }}
-            />
+            <div className="relative min-h-0 w-full max-w-md shrink-0 max-lg:max-w-none">
+              <div className="absolute inset-0 max-lg:static">
+                <GeneratorControls
+                  config={config}
+                  activePreset={activePreset}
+                  dispatch={dispatch}
+                  onPresetChange={setActivePreset}
+                  onCreate={() => {
+                    setEditableCss(generatedCss)
+                    setCreateOpen(true)
+                  }}
+                />
+              </div>
+            </div>
           </div>
           <CreateModal open={createOpen} css={editableCss} onCssChange={setEditableCss} onClose={() => setCreateOpen(false)} />
         </div>

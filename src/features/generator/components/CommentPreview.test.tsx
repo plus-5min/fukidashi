@@ -24,6 +24,7 @@ describe('CommentPreview', () => {
   it('fukidashiでは通常コメントの名前背景を表示する', () => {
     const html = renderToStaticMarkup(<CommentPreview config={defaultGeneratorConfig} />)
 
+    expect(html).toContain('relative z-0 rounded-4xl bg-secondary')
     expect(html).toContain('bg-[var(--listener-name-bg)]')
     expect(html).toContain('bg-[var(--member-name-bg)]')
     expect(html).toContain('text-[var(--listener-name)]')
