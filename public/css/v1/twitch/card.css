@@ -1,0 +1,11 @@
+@import url('../twitch.css');
+
+:root {
+  --name-padding-inline: 12px;
+  --comment-padding-block: 12px;
+  --comment-padding-inline: 20px;
+  --comment-radius: 30px;
+  --comment-border-width: 3px;
+  --pointer-display: none;
+  --pointer-inner-display: none;
+}

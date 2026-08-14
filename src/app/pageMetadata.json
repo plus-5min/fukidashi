@@ -1,0 +1,22 @@
+{
+  "siteOrigin": "https://fukidashi-css.com",
+  "ogImageUrl": "https://fukidashi-css.com/image/ogp.png",
+  "pages": {
+    "home": {
+      "title": "fukidashi | YouTube・TwitchコメントCSSジェネレーター",
+      "description": "YouTube・Twitchの配信コメントを、カラーやレイアウト、テンプレートを組み合わせてカスタマイズできるCSSジェネレーターです。",
+      "path": "/",
+      "keywords": ["YouTube", "Twitch", "コメントCSS", "カスタムCSS", "配信", "ライブ配信", "チャット", "吹き出し", "fukidashi"]
+    },
+    "terms": {
+      "title": "利用規約 | fukidashi",
+      "description": "fukidashiの利用規約です。ご利用前に内容をご確認ください。",
+      "path": "/terms"
+    },
+    "notFound": {
+      "title": "ページが見つかりません | fukidashi",
+      "description": "お探しのページは見つかりませんでした。",
+      "noIndex": true
+    }
+  }
+}

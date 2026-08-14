@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Noto Sans JP', sans-serif;
+  --font-poppins: 'Poppins', sans-serif;
+  --color-primary: #3f3f3f;
+  --color-primary-muted: #707070;
+  --color-primary-subtle: #c3c3c3;
+  --color-secondary: #f6f6f6;
+  --animate-copy-success: copy-success 240ms ease-out;
+}
+
+@keyframes copy-success {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) rotate(-8deg);
+  }
+
+  70% {
+    transform: scale(1.12) rotate(0deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+body {
+  min-height: 100%;
+  width: 100%;
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+  font-family: var(--font-sans);
+}

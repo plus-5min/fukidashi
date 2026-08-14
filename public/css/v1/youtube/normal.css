@@ -1,0 +1,7 @@
+@import url('../youtube.css');
+
+:root {
+  --comment-background: transparent;
+  --pointer-display: none;
+  --pointer-inner-display: none;
+}
