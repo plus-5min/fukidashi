@@ -1,17 +1,12 @@
 import { Link } from 'react-router'
 
-import { PageMetadata, type PageMetadataProps } from '../app/components/PageMetadata'
-
-const metadata = {
-  title: 'ページが見つかりません | fukidashi',
-  description: 'お探しのページは見つかりませんでした。',
-  noIndex: true,
-} satisfies PageMetadataProps
+import { PageMetadata } from '../app/components/PageMetadata'
+import { pageMetadata } from '../app/pageMetadata'
 
 export function NotFoundPage() {
   return (
     <>
-      <PageMetadata {...metadata} />
+      <PageMetadata {...pageMetadata.notFound} />
       <div className="flex flex-1 items-center justify-center overflow-y-auto px-8 py-12 max-lg:px-4">
         <section className="mx-auto w-full max-w-xl rounded-4xl bg-white px-12 py-16 text-center max-lg:px-4" aria-labelledby="not-found-heading">
           <p className="font-poppins text-8xl leading-none font-bold text-primary-muted max-lg:text-7xl">404</p>

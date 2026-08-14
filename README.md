@@ -29,6 +29,8 @@ npm run test:watch
 
 Cloudflare Pagesでは、ビルドコマンドに`npm run build`、出力先に`dist`を指定します。
 
+ページごとのメタデータは`src/app/pageMetadata.json`で管理します。ビルド後のスクリプトが`dist/index.html`を基に`terms.html`と`404.html`を生成し、JavaScriptを実行しないクローラーにもURL固有のメタデータを返します。
+
 ## Hosted CSS
 
 ジェネレーターがコピーするCSSは、設定用の`:root`変数と次の配信CSSへの`@import`で構成します。

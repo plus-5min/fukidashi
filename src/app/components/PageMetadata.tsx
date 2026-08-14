@@ -1,13 +1,6 @@
-export type PageMetadataProps = {
-  title: string
-  description: string
-  path?: string
-  keywords?: string[]
-  noIndex?: boolean
-}
+import { ogImageUrl, siteOrigin, type PageMetadataConfig } from '../pageMetadata'
 
-const siteOrigin = 'https://fukidashi-css.com'
-const ogImageUrl = `${siteOrigin}/image/ogp.png`
+export type PageMetadataProps = PageMetadataConfig
 
 export function PageMetadata({ title, description, path, keywords, noIndex = false }: PageMetadataProps) {
   const pageUrl = path ? `${siteOrigin}${path}` : null

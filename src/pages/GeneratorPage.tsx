@@ -1,19 +1,13 @@
 import { useMemo, useReducer, useState, type CSSProperties } from 'react'
 
-import { PageMetadata, type PageMetadataProps } from '../app/components/PageMetadata'
+import { PageMetadata } from '../app/components/PageMetadata'
+import { pageMetadata } from '../app/pageMetadata'
 import { CommentPreview } from '../features/generator/components/CommentPreview'
 import { CreateModal } from '../features/generator/components/CreateModal'
 import { GeneratorControls } from '../features/generator/components/GeneratorControls'
 import { generateCss } from '../features/generator/generateCss'
 import { defaultGeneratorConfig, generatorReducer } from '../features/generator/generatorConfig'
 import type { PresetName } from '../features/generator/presets'
-
-const metadata = {
-  title: 'fukidashi | YouTube・TwitchコメントCSSジェネレーター',
-  description: 'YouTube・Twitchの配信コメントを、カラーやレイアウト、テンプレートを組み合わせてカスタマイズできるCSSジェネレーターです。',
-  path: '/',
-  keywords: ['YouTube', 'Twitch', 'コメントCSS', 'カスタムCSS', '配信', 'ライブ配信', 'チャット', '吹き出し', 'fukidashi'],
-} satisfies PageMetadataProps
 
 export function GeneratorPage() {
   const [config, dispatch] = useReducer(generatorReducer, defaultGeneratorConfig)
@@ -29,7 +23,7 @@ export function GeneratorPage() {
 
   return (
     <>
-      <PageMetadata {...metadata} />
+      <PageMetadata {...pageMetadata.home} />
       <div style={colorVariables}>
         <div className="mx-auto p-8 max-lg:p-4">
           <div className="mx-auto flex w-full max-w-7xl items-stretch justify-center gap-8 max-lg:flex-col max-lg:gap-4">
