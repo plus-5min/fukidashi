@@ -31,4 +31,18 @@ describe('CommentPreview', () => {
     expect(html).toContain('text-[var(--member-name)]')
     expect(html).toContain('px-3')
   })
+
+  it('プラットフォームを切り替えてもプレビューと設定パネルの高さを維持する', () => {
+    const twitchConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'platformChanged',
+      value: 'twitch',
+    })
+    const youtubeHtml = renderToStaticMarkup(<CommentPreview config={defaultGeneratorConfig} />)
+    const twitchHtml = renderToStaticMarkup(<CommentPreview config={twitchConfig} />)
+
+    expect(youtubeHtml).toContain('col-start-1 row-start-1 grid gap-3')
+    expect(youtubeHtml).toContain('col-start-1 row-start-1 grid content-start invisible')
+    expect(twitchHtml).toContain('col-start-1 row-start-1 grid gap-3 invisible')
+    expect(twitchHtml).toContain('col-start-1 row-start-1 grid content-start')
+  })
 })

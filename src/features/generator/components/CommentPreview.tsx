@@ -1,4 +1,4 @@
-import type { CommentTemplate, GeneratorConfig, Platform } from '../generatorConfig'
+import type { CommentTemplate, GeneratorConfig } from '../generatorConfig'
 
 type CommentPreviewProps = {
   config: GeneratorConfig
@@ -7,30 +7,27 @@ type CommentPreviewProps = {
 type PreviewTextComment = {
   name: string
   message: string
-  platform?: Platform
   member?: boolean
   showBadge?: boolean
 }
 
-const previewTextComments: PreviewTextComment[] = [
-  {
-    name: 'リスナー',
-    message: 'ここにコメントが入ります。',
-  },
-  {
-    name: 'リスナー',
-    message: 'ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。',
-    platform: 'twitch',
-    showBadge: true,
-  },
-  {
-    name: 'メンバー',
-    message: 'ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。',
-    platform: 'youtube',
-    member: true,
-    showBadge: true,
-  },
-]
+const sharedPreviewComment: PreviewTextComment = {
+  name: 'リスナー',
+  message: 'ここにコメントが入ります。',
+}
+
+const twitchPreviewComment: PreviewTextComment = {
+  name: 'リスナー',
+  message: 'ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。',
+  showBadge: true,
+}
+
+const youtubePreviewComment: PreviewTextComment = {
+  name: 'メンバー',
+  message: 'ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。',
+  member: true,
+  showBadge: true,
+}
 
 export function CommentPreview({ config }: CommentPreviewProps) {
   const isTwitch = config.platform === 'twitch'
@@ -39,53 +36,53 @@ export function CommentPreview({ config }: CommentPreviewProps) {
     <div className="relative z-0 min-w-0 flex-1 max-lg:w-full max-lg:max-w-none">
       <div className="relative z-0 rounded-4xl bg-secondary p-8 max-lg:p-4">
         <div className="grid gap-3">
-          {previewTextComments.map(({ name, message, platform, member, showBadge }) => (
-            <TextComment
-              key={`${platform ?? 'all'}-${name}`}
-              config={config}
-              name={name}
-              message={message}
-              hidden={platform !== undefined && platform !== config.platform}
-              member={member}
-              showBadge={showBadge}
-            />
-          ))}
+          <TextComment config={config} {...sharedPreviewComment} />
 
-          <div className={`font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
-            <div className="relative flex justify-between rounded-t-[10px] bg-[var(--superchat-name-bg)] px-5 py-3 text-[var(--superchat-name)]">
-              <p>リスナー </p>
-              <p>￥5,000</p>
-            </div>
-            <div className="rounded-b-[10px] bg-[var(--superchat-comment-bg)] px-5 py-3 font-medium text-[var(--superchat-comment)]">
-              <p>
-                ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。
-              </p>
-            </div>
-          </div>
+          <div className="grid">
+            <div className={`col-start-1 row-start-1 grid gap-3 ${isTwitch ? 'invisible' : ''}`} aria-hidden={isTwitch}>
+              <TextComment config={config} {...youtubePreviewComment} />
 
-          <div className={`font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
-            <div className="flex gap-2 rounded-t-[10px] bg-[var(--membership-name-bg)] px-5 py-3 text-[var(--membership-name)]">
-              <p>リスナー</p>
-              <MemberBadge />
-            </div>
-            <div className="rounded-b-[10px] bg-[var(--membership-name-bg)] px-5 pt-0 pb-3 font-medium text-[var(--membership-name)]">
-              <p>メンバーシップ へようこそ！</p>
-            </div>
-          </div>
+              <div className="font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic">
+                <div className="relative flex justify-between rounded-t-[10px] bg-[var(--superchat-name-bg)] px-5 py-3 text-[var(--superchat-name)]">
+                  <p>リスナー </p>
+                  <p>￥5,000</p>
+                </div>
+                <div className="rounded-b-[10px] bg-[var(--superchat-comment-bg)] px-5 py-3 font-medium text-[var(--superchat-comment)]">
+                  <p>
+                    ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。
+                  </p>
+                </div>
+              </div>
 
-          <div className={`font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic ${isTwitch ? 'hidden' : ''}`}>
-            <div className="flex gap-2 rounded-t-[10px] bg-[var(--membership-name-bg)] px-5 pt-3 pb-0 text-[var(--membership-name)]">
-              <p>リスナー</p>
-              <MemberBadge />
+              <div className="font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic">
+                <div className="flex gap-2 rounded-t-[10px] bg-[var(--membership-name-bg)] px-5 py-3 text-[var(--membership-name)]">
+                  <p>リスナー</p>
+                  <MemberBadge />
+                </div>
+                <div className="rounded-b-[10px] bg-[var(--membership-name-bg)] px-5 pt-0 pb-3 font-medium text-[var(--membership-name)]">
+                  <p>メンバーシップ へようこそ！</p>
+                </div>
+              </div>
+
+              <div className="font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic">
+                <div className="flex gap-2 rounded-t-[10px] bg-[var(--membership-name-bg)] px-5 pt-3 pb-0 text-[var(--membership-name)]">
+                  <p>リスナー</p>
+                  <MemberBadge />
+                </div>
+                <div className="bg-[var(--membership-name-bg)] px-5 text-[var(--membership-name)]">
+                  <p>メンバー歴 12 か月</p>
+                </div>
+                <div className="bg-[var(--membership-name-bg)] px-5 pt-1.5 pb-3 font-medium text-[var(--membership-name)]">
+                  <p>メンバーシップ</p>
+                </div>
+                <div className="rounded-b-[10px] bg-[var(--membership-comment-bg)] px-5 py-3 text-[var(--membership-comment)]">
+                  <p>ここにコメントが入ります。</p>
+                </div>
+              </div>
             </div>
-            <div className="bg-[var(--membership-name-bg)] px-5 text-[var(--membership-name)]">
-              <p>メンバー歴 12 か月</p>
-            </div>
-            <div className="bg-[var(--membership-name-bg)] px-5 pt-1.5 pb-3 font-medium text-[var(--membership-name)]">
-              <p>メンバーシップ</p>
-            </div>
-            <div className="rounded-b-[10px] bg-[var(--membership-comment-bg)] px-5 py-3 text-[var(--membership-comment)]">
-              <p>ここにコメントが入ります。</p>
+
+            <div className={`col-start-1 row-start-1 grid content-start ${isTwitch ? '' : 'invisible'}`} aria-hidden={!isTwitch}>
+              <TextComment config={config} {...twitchPreviewComment} />
             </div>
           </div>
         </div>
@@ -98,12 +95,11 @@ type TextCommentProps = {
   config: GeneratorConfig
   name: string
   message: string
-  hidden?: boolean
   member?: boolean
   showBadge?: boolean
 }
 
-function TextComment({ config, name, message, hidden = false, member = false, showBadge = false }: TextCommentProps) {
+function TextComment({ config, name, message, member = false, showBadge = false }: TextCommentProps) {
   const isRight = config.direction === 'right'
   const isFukidashi = config.template === 'fukidashi'
   const showProfileImage = config.platform !== 'twitch' && config.showProfileImage
@@ -133,11 +129,7 @@ function TextComment({ config, name, message, hidden = false, member = false, sh
   }
 
   return (
-    <div
-      className={`gap-3 font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic ${
-        hidden ? 'hidden' : 'flex'
-      } ${isRight ? 'flex-row-reverse' : 'flex-row'}`}
-    >
+    <div className={`flex gap-3 font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic ${isRight ? 'flex-row-reverse' : 'flex-row'}`}>
       <div className={`min-w-[26px] ${showProfileImage ? 'block' : 'hidden'}`}>
         <img className="block size-[26px] rounded-[26px]" src="/assets/avatar.svg" height="24" width="24" alt="アイコン" />
       </div>
