@@ -33,7 +33,29 @@ describe('CommentPreview', () => {
     expect(html).toContain('px-3')
     expect(html).toContain('src="/image/icon.jpg"')
     expect(html).toContain('min-w-6 block')
+    expect(html).toContain('tracking-[0.5px]')
+    expect(html).not.toContain('tracking-wide')
+    expect(html).toContain('rounded-t-[10px] bg-(--superchat-name-bg)')
+    expect(html).toContain('rounded-b-[10px] bg-(--superchat-comment-bg)')
+    expect(html).toContain('rounded-t-[10px] bg-(--membership-name-bg)')
+    expect(html).toContain('rounded-b-[10px] bg-(--membership-comment-bg)')
+    expect(html).toContain('rounded-[30px]')
+    expect(html).toContain('rounded-[18px]')
+    expect(html).toContain('left-[-3px] [transform:rotate(-20deg)_skew(20deg,20deg)]')
+    expect(html).toContain('h-[21px] w-[21px] rounded-tl-[7px] rounded-br-[6px]')
+    expect(html).toContain('top-[7px] z-0 block size-[18px] rounded-tl-sm rounded-br-[20px]')
     expect(html).toContain('border-0')
+  })
+
+  it('右寄せでも吹き出しポインターを生成CSSと同じ位置と変形で表示する', () => {
+    const rightConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'directionChanged',
+      value: 'right',
+    })
+    const html = renderToStaticMarkup(<CommentPreview config={rightConfig} />)
+
+    expect(html).toContain('right-[-3px] [transform:rotate(-70deg)_skew(20deg,20deg)]')
+    expect(html).toContain('right-px [transform:rotate(110deg)_skew(20deg,20deg)]')
   })
 
   it('プラットフォームを切り替えてもプレビューと設定パネルの高さを維持する', () => {

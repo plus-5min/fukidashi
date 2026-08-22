@@ -60,7 +60,7 @@ export function Header({ onOpenAbout }: HeaderProps) {
               About
             </button>
             <Link
-              className="shrink-0 rounded-full text-secondary-strong transition-opacity duration-200 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none max-lg:hover:opacity-100"
+              className="flex size-12 shrink-0 items-center justify-center rounded-full text-secondary-strong transition-opacity duration-200 hover:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none max-lg:hover:opacity-100"
               to="/guide"
               aria-label="使い方を開く"
             >
