@@ -26,6 +26,19 @@ export const colorKeys = [
 export type ColorKey = (typeof colorKeys)[number]
 export type GeneratorColors = Record<ColorKey, string>
 
+export const primaryColorKeys = [
+  'listener-name-bg',
+  'listener-comment',
+  'listener-comment-border',
+  'member-name-bg',
+  'member-comment',
+  'member-comment-border',
+  'superchat-name-bg',
+  'superchat-comment-bg',
+  'membership-name-bg',
+  'membership-comment-bg',
+] as const satisfies readonly ColorKey[]
+
 export type GeneratorConfig = {
   platform: Platform
   template: CommentTemplate
@@ -80,6 +93,7 @@ export type GeneratorAction =
       value: boolean
     }
   | { type: 'colorChanged'; key: ColorKey; value: string }
+  | { type: 'primaryColorChanged'; value: string }
   | { type: 'colorsChanged'; colors: GeneratorColors }
 
 export function generatorReducer(state: GeneratorConfig, action: GeneratorAction): GeneratorConfig {
@@ -97,6 +111,15 @@ export function generatorReducer(state: GeneratorConfig, action: GeneratorAction
         ...state,
         colors: { ...state.colors, [action.key]: action.value.toUpperCase() },
       }
+    case 'primaryColorChanged': {
+      const colors = { ...state.colors }
+
+      for (const key of primaryColorKeys) {
+        colors[key] = action.value.toUpperCase()
+      }
+
+      return { ...state, colors }
+    }
     case 'colorsChanged':
       return { ...state, colors: action.colors }
   }

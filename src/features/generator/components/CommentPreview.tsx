@@ -34,7 +34,7 @@ export function CommentPreview({ config }: CommentPreviewProps) {
 
   return (
     <div className="relative z-0 min-w-0 flex-1 max-lg:w-full max-lg:max-w-none">
-      <div className="relative z-0 rounded-4xl bg-background p-8 max-lg:p-4">
+      <div className="relative z-0 rounded-4xl tracking-[0.5px] bg-background p-8 max-lg:p-4">
         <div className="grid gap-6">
           <TextComment config={config} {...sharedPreviewComment} />
 

@@ -24,7 +24,7 @@ export function RadioCardGroup<T extends string>({ 'aria-labelledby': ariaLabell
           return (
             <div className="relative min-w-0" key={id}>
               <input
-                className="peer sr-only"
+                className="peer sr-only focus-visible:outline-none"
                 type="radio"
                 id={id}
                 name={name}
@@ -34,14 +34,20 @@ export function RadioCardGroup<T extends string>({ 'aria-labelledby': ariaLabell
               />
               <label
                 htmlFor={id}
-                className="group flex aspect-4/3 cursor-pointer items-center justify-center rounded-2xl border-2 border-border bg-surface-raised text-foreground-muted transition-colors duration-200 hover:bg-surface-hover hover:text-foreground peer-checked:border-3 peer-checked:border-primary peer-checked:text-primary peer-checked:hover:text-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary motion-reduce:transition-none max-lg:hover:bg-surface-raised max-lg:hover:text-foreground-muted max-lg:peer-checked:hover:text-primary"
+                className="group flex aspect-4/3 cursor-pointer items-center justify-center rounded-2xl border-0 border-primary bg-surface-raised text-foreground-muted outline-primary transition-colors duration-200 hover:bg-surface-hover hover:text-foreground peer-checked:border-3 peer-checked:text-primary peer-checked:hover:text-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 motion-reduce:transition-none max-lg:hover:bg-surface-raised max-lg:hover:text-foreground-muted max-lg:peer-checked:hover:text-primary"
               >
                 {renderOption(option)}
               </label>
               <span className="pointer-events-none absolute -top-2 -right-2 hidden size-7 peer-checked:block" aria-hidden="true">
                 <svg className="size-full" viewBox="0 0 27 27" fill="none">
                   <circle cx="13.5" cy="13.5" r="13.5" fill="var(--color-primary)" />
-                  <path d="M8 12.4418 12.7179 17.2733 19.8218 10" stroke="var(--color-on-primary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M8 12.4418 12.7179 17.2733 19.8218 10"
+                    stroke="var(--color-on-primary)"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </span>
             </div>

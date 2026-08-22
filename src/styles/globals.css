@@ -41,4 +41,9 @@ body {
   color: var(--color-foreground);
   color-scheme: dark;
   font-family: var(--font-sans);
+  letter-spacing: 5%;
+}
+
+:where(a, button, input, textarea, select, summary, [tabindex]) {
+  outline-color: var(--color-primary);
 }

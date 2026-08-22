@@ -31,7 +31,7 @@ export function SegmentedControl<T extends string>({
           return (
             <div className="min-w-0" key={id}>
               <input
-                className="peer sr-only"
+                className="peer sr-only focus-visible:outline-none"
                 type="radio"
                 id={id}
                 name={name}
@@ -41,7 +41,7 @@ export function SegmentedControl<T extends string>({
               />
               <label
                 htmlFor={id}
-                className="group flex min-h-10 cursor-pointer items-center justify-center rounded-full px-4 py-0 text-center text-sm font-medium text-foreground-muted transition-all duration-200 hover:bg-surface-hover hover:text-foreground peer-checked:bg-primary peer-checked:text-on-primary peer-checked:hover:bg-primary peer-checked:hover:text-on-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary motion-reduce:transition-none max-lg:hover:bg-transparent max-lg:hover:text-foreground-muted max-lg:peer-checked:hover:bg-primary max-lg:peer-checked:hover:text-on-primary"
+                className="font-poppins group flex min-h-10 cursor-pointer items-center justify-center rounded-full px-4 py-0 text-center text-sm font-medium text-foreground-muted outline-primary transition-all duration-200 hover:bg-surface-hover hover:text-foreground peer-checked:bg-primary peer-checked:text-on-primary peer-checked:hover:bg-primary peer-checked:hover:text-on-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 motion-reduce:transition-none max-lg:hover:bg-transparent max-lg:hover:text-foreground-muted max-lg:peer-checked:hover:bg-primary max-lg:peer-checked:hover:text-on-primary"
               >
                 {renderOption ? renderOption(option) : option.label}
               </label>

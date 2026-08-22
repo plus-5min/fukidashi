@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
 import { generateCss } from './generateCss'
-import { defaultGeneratorConfig, generatorReducer } from './generatorConfig'
+import { defaultGeneratorConfig, generatorReducer, primaryColorKeys } from './generatorConfig'
 
 const youtubeStylesheet = readFileSync(new URL('../../../public/css/v1/youtube.css', import.meta.url), 'utf8')
 const twitchStylesheet = readFileSync(new URL('../../../public/css/v1/twitch.css', import.meta.url), 'utf8')
@@ -38,6 +38,22 @@ describe('generatorReducer', () => {
 
     expect(nextConfig.colors['listener-name-bg']).toBe('#FB83AB')
     expect(defaultGeneratorConfig.colors['listener-name-bg']).toBe('#5997F2')
+  })
+
+  it('Primaryに対応する色だけを一括で変更する', () => {
+    const nextConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'primaryColorChanged',
+      value: '#fb83ab',
+    })
+
+    for (const key of primaryColorKeys) {
+      expect(nextConfig.colors[key]).toBe('#FB83AB')
+    }
+    expect(nextConfig.colors['member-name-bg']).toBe('#FB83AB')
+    expect(nextConfig.colors['member-comment']).toBe('#FB83AB')
+    expect(nextConfig.colors['member-comment-border']).toBe('#FB83AB')
+    expect(nextConfig.colors['member-name']).toBe('#FFFFFF')
+    expect(nextConfig.colors['listener-comment-bg']).toBe('#FFFFFF')
   })
 
   it('コメントテンプレートを変更する', () => {
