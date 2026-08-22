@@ -11,7 +11,7 @@ import type { PresetName } from '../features/generator/presets'
 
 export function GeneratorPage() {
   const [config, dispatch] = useReducer(generatorReducer, defaultGeneratorConfig)
-  const [activePreset, setActivePreset] = useState<PresetName | null>('blue')
+  const [activePreset, setActivePreset] = useState<PresetName | null>(null)
   const [createOpen, setCreateOpen] = useState(false)
   const [editableCss, setEditableCss] = useState('')
   const generatedCss = useMemo(() => generateCss(config, location.origin), [config])

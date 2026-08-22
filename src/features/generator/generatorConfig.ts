@@ -36,35 +36,38 @@ export type GeneratorConfig = {
   colors: GeneratorColors
 }
 
-export const blueColors: GeneratorColors = {
+const defaultPrimary = '#5997F2'
+const defaultSecondary = '#FFB5D5'
+
+export const defaultColors: GeneratorColors = {
   'listener-name': '#FFFFFF',
-  'listener-name-bg': '#8CCCE3',
+  'listener-name-bg': defaultPrimary,
   'member-name': '#FFFFFF',
-  'member-name-bg': '#8CCCE3',
-  'listener-comment': '#333333',
+  'member-name-bg': defaultSecondary,
+  'listener-comment': defaultPrimary,
   'listener-comment-bg': '#FFFFFF',
-  'listener-comment-border': '#8CCCE3',
-  'member-comment': '#333333',
+  'listener-comment-border': defaultPrimary,
+  'member-comment': defaultSecondary,
   'member-comment-bg': '#FFFFFF',
-  'member-comment-border': '#8CCCE3',
+  'member-comment-border': defaultSecondary,
   'superchat-name': '#FFFFFF',
-  'superchat-name-bg': '#9ED9EF',
+  'superchat-name-bg': defaultPrimary,
   'superchat-comment': '#FFFFFF',
-  'superchat-comment-bg': '#8CCCE3',
+  'superchat-comment-bg': defaultPrimary,
   'membership-name': '#FFFFFF',
-  'membership-name-bg': '#9ED9EF',
+  'membership-name-bg': defaultPrimary,
   'membership-comment': '#FFFFFF',
-  'membership-comment-bg': '#8CCCE3',
+  'membership-comment-bg': defaultPrimary,
 }
 
 export const defaultGeneratorConfig: GeneratorConfig = {
   platform: 'youtube',
   template: 'fukidashi',
   direction: 'left',
-  showProfileImage: false,
+  showProfileImage: true,
   showName: true,
-  showBorder: true,
-  colors: blueColors,
+  showBorder: false,
+  colors: defaultColors,
 }
 
 export type GeneratorAction =

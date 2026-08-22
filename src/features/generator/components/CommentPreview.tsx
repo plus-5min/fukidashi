@@ -34,12 +34,12 @@ export function CommentPreview({ config }: CommentPreviewProps) {
 
   return (
     <div className="relative z-0 min-w-0 flex-1 max-lg:w-full max-lg:max-w-none">
-      <div className="relative z-0 rounded-4xl bg-secondary p-8 max-lg:p-4">
-        <div className="grid gap-3">
+      <div className="relative z-0 rounded-4xl bg-background p-8 max-lg:p-4">
+        <div className="grid gap-6">
           <TextComment config={config} {...sharedPreviewComment} />
 
           <div className="grid">
-            <div className={`col-start-1 row-start-1 grid gap-3 ${isTwitch ? 'invisible' : ''}`} aria-hidden={isTwitch}>
+            <div className={`col-start-1 row-start-1 grid gap-6 ${isTwitch ? 'invisible' : ''}`} aria-hidden={isTwitch}>
               <TextComment config={config} {...youtubePreviewComment} />
 
               <div className="font-sans text-base leading-6 font-bold tracking-wide not-italic">
@@ -129,7 +129,7 @@ function TextComment({ config, name, message, member = false, showBadge = false 
   return (
     <div className={`flex gap-3 font-sans text-base leading-6 font-bold not-italic ${isRight ? 'flex-row-reverse' : 'flex-row'}`}>
       <div className={`min-w-6 ${showProfileImage ? 'block' : 'hidden'}`}>
-        <img className="block size-6 rounded-full" src="/assets/avatar.svg" height="24" width="24" alt="アイコン" />
+        <img className="block size-6 rounded-full object-cover" src="/image/icon.jpg" height="24" width="24" alt="アイコン" />
       </div>
       <div className="grid gap-1.5">
         <div className={config.showName ? 'block' : 'hidden'}>

@@ -24,12 +24,15 @@ describe('CommentPreview', () => {
   it('fukidashiでは通常コメントの名前背景を表示する', () => {
     const html = renderToStaticMarkup(<CommentPreview config={defaultGeneratorConfig} />)
 
-    expect(html).toContain('relative z-0 rounded-4xl bg-secondary')
+    expect(html).toContain('relative z-0 rounded-4xl bg-background')
     expect(html).toContain('bg-(--listener-name-bg)')
     expect(html).toContain('bg-(--member-name-bg)')
     expect(html).toContain('text-(--listener-name)')
     expect(html).toContain('text-(--member-name)')
     expect(html).toContain('px-3')
+    expect(html).toContain('src="/image/icon.jpg"')
+    expect(html).toContain('min-w-6 block')
+    expect(html).toContain('border-0')
   })
 
   it('プラットフォームを切り替えてもプレビューと設定パネルの高さを維持する', () => {
@@ -40,9 +43,9 @@ describe('CommentPreview', () => {
     const youtubeHtml = renderToStaticMarkup(<CommentPreview config={defaultGeneratorConfig} />)
     const twitchHtml = renderToStaticMarkup(<CommentPreview config={twitchConfig} />)
 
-    expect(youtubeHtml).toContain('col-start-1 row-start-1 grid gap-3')
+    expect(youtubeHtml).toContain('col-start-1 row-start-1 grid gap-6')
     expect(youtubeHtml).toContain('col-start-1 row-start-1 grid content-start invisible')
-    expect(twitchHtml).toContain('col-start-1 row-start-1 grid gap-3 invisible')
+    expect(twitchHtml).toContain('col-start-1 row-start-1 grid gap-6 invisible')
     expect(twitchHtml).toContain('col-start-1 row-start-1 grid content-start')
   })
 })

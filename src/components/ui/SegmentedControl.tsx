@@ -24,7 +24,7 @@ export function SegmentedControl<T extends string>({
 }: SegmentedControlProps<T>) {
   return (
     <div role="radiogroup" aria-labelledby={ariaLabelledBy}>
-      <div className="grid grid-flow-col auto-cols-fr gap-2 rounded-full border-2 border-secondary bg-secondary p-1">
+      <div className="grid grid-flow-col auto-cols-fr gap-2 rounded-full border-2 border-surface-raised bg-surface-raised p-1">
         {options.map((option) => {
           const id = `${name}-${option.value}`
 
@@ -41,7 +41,7 @@ export function SegmentedControl<T extends string>({
               />
               <label
                 htmlFor={id}
-                className="flex min-h-10 cursor-pointer items-center justify-center rounded-full px-4 py-0 text-center text-sm font-medium text-primary-muted transition-all duration-200 peer-checked:bg-white peer-checked:text-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary motion-reduce:transition-none"
+                className="group flex min-h-10 cursor-pointer items-center justify-center rounded-full px-4 py-0 text-center text-sm font-medium text-foreground-muted transition-all duration-200 hover:bg-surface-hover hover:text-foreground peer-checked:bg-primary peer-checked:text-on-primary peer-checked:hover:bg-primary peer-checked:hover:text-on-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary motion-reduce:transition-none max-lg:hover:bg-transparent max-lg:hover:text-foreground-muted max-lg:peer-checked:hover:bg-primary max-lg:peer-checked:hover:text-on-primary"
               >
                 {renderOption ? renderOption(option) : option.label}
               </label>

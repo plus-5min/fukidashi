@@ -8,7 +8,7 @@ function renderInline(text: string): ReactNode[] {
   return text.split(/(\*\*.+?\*\*)/g).map((part, index) => {
     if (part.startsWith('**') && part.endsWith('**')) {
       return (
-        <strong key={`${part}-${index}`} className="font-bold text-primary">
+        <strong key={`${part}-${index}`} className="font-bold text-foreground">
           {part.slice(2, -2)}
         </strong>
       )
@@ -38,19 +38,19 @@ export function MarkdownDocument({ markdown }: { markdown: string }) {
 
       if (level === 1) {
         blocks.push(
-          <h1 key={`heading-${index}`} className="text-3xl font-bold text-primary max-lg:text-2xl">
+          <h1 key={`heading-${index}`} className="text-3xl font-bold text-foreground max-lg:text-2xl">
             {content}
           </h1>,
         )
       } else if (level === 2) {
         blocks.push(
-          <h2 key={`heading-${index}`} className="mt-8 border-b border-primary-subtle pb-2 text-xl font-bold text-primary">
+          <h2 key={`heading-${index}`} className="mt-8 border-b border-border pb-2 text-xl font-bold text-foreground">
             {content}
           </h2>,
         )
       } else {
         blocks.push(
-          <h3 key={`heading-${index}`} className="mt-8 text-base font-bold text-primary">
+          <h3 key={`heading-${index}`} className="mt-8 text-base font-bold text-foreground">
             {content}
           </h3>,
         )
@@ -74,7 +74,7 @@ export function MarkdownDocument({ markdown }: { markdown: string }) {
       }
 
       blocks.push(
-        <ul key={`list-${startIndex}`} className="mt-4 list-disc space-y-2 pl-4 text-primary marker:text-primary-muted">
+        <ul key={`list-${startIndex}`} className="mt-4 list-disc space-y-2 pl-4 text-foreground marker:text-foreground-muted">
           {items}
         </ul>,
       )
@@ -90,7 +90,7 @@ export function MarkdownDocument({ markdown }: { markdown: string }) {
     }
 
     blocks.push(
-      <p key={`paragraph-${paragraphStart}`} className="mt-4 leading-8 text-primary">
+      <p key={`paragraph-${paragraphStart}`} className="mt-4 leading-8 text-foreground">
         {renderInline(paragraphLines.join(' '))}
       </p>,
     )

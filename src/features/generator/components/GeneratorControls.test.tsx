@@ -2,7 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 
 import { defaultGeneratorConfig, generatorReducer, type GeneratorConfig } from '../generatorConfig'
-import type { PresetName } from '../presets'
+import { colorPresets, type PresetName } from '../presets'
 import { GeneratorControls } from './GeneratorControls'
 
 function renderControls(config: GeneratorConfig, activePreset: PresetName | null = null): string {
@@ -12,6 +12,13 @@ function renderControls(config: GeneratorConfig, activePreset: PresetName | null
 }
 
 describe('GeneratorControls', () => {
+  it('カラープリセットのmessage文字色を選択色へ揃える', () => {
+    for (const colors of Object.values(colorPresets)) {
+      expect(colors['listener-comment']).toBe(colors['listener-name-bg'])
+      expect(colors['member-comment']).toBe(colors['member-name-bg'])
+    }
+  })
+
   it('normalでは通常コメントの名前背景設定を表示しない', () => {
     const config = generatorReducer(defaultGeneratorConfig, {
       type: 'templateChanged',
@@ -50,5 +57,7 @@ describe('GeneratorControls', () => {
     expect(html).toContain('aria-label="パープルのカラープリセット" aria-pressed="true"')
     expect(html).toContain('style="background-color:#B77CEB"')
     expect(html).toContain('aria-label="ブルーのカラープリセット" aria-pressed="false"')
+    expect(html).toContain('aria-label="イエローのカラープリセット" aria-pressed="false"')
+    expect(html).toContain('style="background-color:#FAFFCE"')
   })
 })

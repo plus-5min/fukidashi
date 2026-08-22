@@ -17,8 +17,8 @@ export function Switch({ 'aria-labelledby': ariaLabelledBy, id, checked, onCheck
         checked={checked}
         onChange={(event) => onCheckedChange(event.target.checked)}
       />
-      <span className="absolute inset-0 rounded-full bg-primary-subtle transition-colors duration-200 peer-checked:bg-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary motion-reduce:transition-none" />
-      <span className="pointer-events-none absolute top-1 left-1 size-6 rounded-full bg-white shadow-sm transition-transform duration-200 peer-checked:translate-x-8 motion-reduce:transition-none" />
+      <span className="absolute inset-0 rounded-full bg-surface-raised transition-colors duration-200 peer-hover:bg-surface-hover peer-checked:bg-primary peer-checked:peer-hover:bg-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary motion-reduce:transition-none max-lg:peer-hover:bg-surface-raised max-lg:peer-checked:peer-hover:bg-primary" />
+      <span className="pointer-events-none absolute top-1 left-1 size-6 rounded-full bg-foreground shadow-sm transition duration-200 peer-checked:translate-x-8 motion-reduce:transition-none" />
     </span>
   )
 }

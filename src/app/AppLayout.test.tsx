@@ -31,6 +31,8 @@ describe('AppLayout', () => {
     expect(html).toContain(pageContent)
     expect(html).toContain('<footer')
     expect(html).toContain('href="/terms"')
+    expect(html).toContain('href="https://x.com/asahinapipi_5m"')
+    expect(html).toContain('aria-label="アサヒナピピのXを開く"')
   })
 
   it('keeps the footer at the bottom without constraining the generator to the viewport', () => {

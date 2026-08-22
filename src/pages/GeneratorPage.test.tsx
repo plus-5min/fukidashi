@@ -19,5 +19,6 @@ describe('GeneratorPage', () => {
     expect(html).toContain('items-stretch')
     expect(html).toContain('relative min-h-0 w-full max-w-md shrink-0')
     expect(html).toContain('absolute inset-0 max-lg:static')
+    expect(html).toContain('aria-label="ブルーのカラープリセット" aria-pressed="false"')
   })
 })
