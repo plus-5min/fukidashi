@@ -23,7 +23,7 @@ function SiteLayout({ className }: SiteLayoutProps) {
   const [aboutOpen, setAboutOpen] = useState(false)
 
   return (
-    <div className={className}>
+    <div className={`${className} pt-16`}>
       <ScrollToTop />
       <Header onOpenAbout={() => setAboutOpen(true)} />
       <main className="flex min-h-0 flex-1 flex-col">

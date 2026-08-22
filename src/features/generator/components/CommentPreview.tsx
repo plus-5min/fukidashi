@@ -34,48 +34,48 @@ export function CommentPreview({ config }: CommentPreviewProps) {
 
   return (
     <div className="relative z-0 min-w-0 flex-1 max-lg:w-full max-lg:max-w-none">
-      <div className="relative z-0 rounded-4xl bg-secondary p-8 max-lg:p-4">
-        <div className="grid gap-3">
+      <div className="relative z-0 rounded-4xl tracking-[0.5px] bg-background p-8 max-lg:p-4">
+        <div className="grid gap-6">
           <TextComment config={config} {...sharedPreviewComment} />
 
           <div className="grid">
-            <div className={`col-start-1 row-start-1 grid gap-3 ${isTwitch ? 'invisible' : ''}`} aria-hidden={isTwitch}>
+            <div className={`col-start-1 row-start-1 grid gap-6 ${isTwitch ? 'invisible' : ''}`} aria-hidden={isTwitch}>
               <TextComment config={config} {...youtubePreviewComment} />
 
-              <div className="font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic">
-                <div className="relative flex justify-between rounded-t-[10px] bg-[var(--superchat-name-bg)] px-5 py-3 text-[var(--superchat-name)]">
+              <div className="font-sans text-base leading-6 font-bold not-italic">
+                <div className="relative flex justify-between rounded-t-[10px] bg-(--superchat-name-bg) px-5 py-3 text-(--superchat-name)">
                   <p>リスナー </p>
                   <p>￥5,000</p>
                 </div>
-                <div className="rounded-b-[10px] bg-[var(--superchat-comment-bg)] px-5 py-3 font-medium text-[var(--superchat-comment)]">
+                <div className="rounded-b-[10px] bg-(--superchat-comment-bg) px-5 py-3 font-medium text-(--superchat-comment)">
                   <p>
                     ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。
                   </p>
                 </div>
               </div>
 
-              <div className="font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic">
-                <div className="flex gap-2 rounded-t-[10px] bg-[var(--membership-name-bg)] px-5 py-3 text-[var(--membership-name)]">
+              <div className="font-sans text-base leading-6 font-bold not-italic">
+                <div className="flex gap-2 rounded-t-[10px] bg-(--membership-name-bg) px-5 py-3 text-(--membership-name)">
                   <p>リスナー</p>
                   <MemberBadge />
                 </div>
-                <div className="rounded-b-[10px] bg-[var(--membership-name-bg)] px-5 pt-0 pb-3 font-medium text-[var(--membership-name)]">
+                <div className="rounded-b-[10px] bg-(--membership-name-bg) px-5 pt-0 pb-3 font-medium text-(--membership-name)">
                   <p>メンバーシップ へようこそ！</p>
                 </div>
               </div>
 
-              <div className="font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic">
-                <div className="flex gap-2 rounded-t-[10px] bg-[var(--membership-name-bg)] px-5 pt-3 pb-0 text-[var(--membership-name)]">
+              <div className="font-sans text-base leading-6 font-bold not-italic">
+                <div className="flex gap-2 rounded-t-[10px] bg-(--membership-name-bg) px-5 pt-3 pb-0 text-(--membership-name)">
                   <p>リスナー</p>
                   <MemberBadge />
                 </div>
-                <div className="bg-[var(--membership-name-bg)] px-5 text-[var(--membership-name)]">
+                <div className="bg-(--membership-name-bg) px-5 text-(--membership-name)">
                   <p>メンバー歴 12 か月</p>
                 </div>
-                <div className="bg-[var(--membership-name-bg)] px-5 pt-1.5 pb-3 font-medium text-[var(--membership-name)]">
+                <div className="bg-(--membership-name-bg) px-5 pt-1.5 pb-3 font-medium text-(--membership-name)">
                   <p>メンバーシップ</p>
                 </div>
-                <div className="rounded-b-[10px] bg-[var(--membership-comment-bg)] px-5 py-3 text-[var(--membership-comment)]">
+                <div className="rounded-b-[10px] bg-(--membership-comment-bg) px-5 py-3 text-(--membership-comment)">
                   <p>ここにコメントが入ります。</p>
                 </div>
               </div>
@@ -106,18 +106,18 @@ function TextComment({ config, name, message, member = false, showBadge = false 
   const nameTextColor =
     config.template === 'normal'
       ? member
-        ? 'text-[var(--member-comment)]'
-        : 'text-[var(--listener-comment)]'
+        ? 'text-(--member-comment)'
+        : 'text-(--listener-comment)'
       : member
-        ? 'text-[var(--member-name)]'
-        : 'text-[var(--listener-name)]'
-  const nameBackgroundColor = config.template === 'normal' ? 'bg-transparent' : member ? 'bg-[var(--member-name-bg)]' : 'bg-[var(--listener-name-bg)]'
+        ? 'text-(--member-name)'
+        : 'text-(--listener-name)'
+  const nameBackgroundColor = config.template === 'normal' ? 'bg-transparent' : member ? 'bg-(--member-name-bg)' : 'bg-(--listener-name-bg)'
   const nameHorizontalPadding = config.template === 'normal' ? 'px-0' : 'px-3'
-  const messageTextColor = member ? 'text-[var(--member-comment)]' : 'text-[var(--listener-comment)]'
-  const messageBackgroundColor = member ? 'bg-[var(--member-comment-bg)]' : 'bg-[var(--listener-comment-bg)]'
-  const borderColor = member ? 'border-[var(--member-comment-border)]' : 'border-[var(--listener-comment-border)]'
-  const pointerOuterColor = member ? 'bg-[var(--member-comment-border)]' : 'bg-[var(--listener-comment-border)]'
-  const pointerInnerColor = member ? 'bg-[var(--member-comment-bg)]' : 'bg-[var(--listener-comment-bg)]'
+  const messageTextColor = member ? 'text-(--member-comment)' : 'text-(--listener-comment)'
+  const messageBackgroundColor = member ? 'bg-(--member-comment-bg)' : 'bg-(--listener-comment-bg)'
+  const borderColor = member ? 'border-(--member-comment-border)' : 'border-(--listener-comment-border)'
+  const pointerOuterColor = member ? 'bg-(--member-comment-border)' : 'bg-(--listener-comment-border)'
+  const pointerInnerColor = member ? 'bg-(--member-comment-bg)' : 'bg-(--listener-comment-bg)'
   const outerPointerDirection = isRight
     ? 'right-[-3px] [transform:rotate(-70deg)_skew(20deg,20deg)]'
     : 'left-[-3px] [transform:rotate(-20deg)_skew(20deg,20deg)]'
@@ -129,9 +129,9 @@ function TextComment({ config, name, message, member = false, showBadge = false 
   }
 
   return (
-    <div className={`flex gap-3 font-sans text-base leading-6 font-bold tracking-[0.5px] not-italic ${isRight ? 'flex-row-reverse' : 'flex-row'}`}>
-      <div className={`min-w-[26px] ${showProfileImage ? 'block' : 'hidden'}`}>
-        <img className="block size-[26px] rounded-[26px]" src="/assets/avatar.svg" height="24" width="24" alt="アイコン" />
+    <div className={`flex gap-3 font-sans text-base leading-6 font-bold not-italic ${isRight ? 'flex-row-reverse' : 'flex-row'}`}>
+      <div className={`min-w-6 ${showProfileImage ? 'block' : 'hidden'}`}>
+        <img className="block size-6 rounded-full object-cover" src="/image/icon.jpg" height="24" width="24" alt="アイコン" />
       </div>
       <div className="grid gap-1.5">
         <div className={config.showName ? 'block' : 'hidden'}>
@@ -160,7 +160,7 @@ function TextComment({ config, name, message, member = false, showBadge = false 
 
 function MemberBadge() {
   return (
-    <div className="my-auto size-[18px]">
+    <div className="my-auto size-4.5">
       <img className="block h-auto w-full object-contain" src="/assets/member-badge.svg" alt="メンバーバッジ" />
     </div>
   )

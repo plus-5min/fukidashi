@@ -74,14 +74,14 @@ export function Modal({ open, titleId, onClose, children, fitContentOnDesktop = 
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex bg-black/50 p-4 transition-opacity duration-200 ease-out starting:opacity-0 motion-reduce:transition-none ${fitContentOnDesktop ? 'overflow-y-auto max-lg:overflow-hidden' : 'overflow-hidden'}`}
+      className={`fixed inset-0 z-50 flex bg-overlay p-4 transition-opacity duration-200 ease-out starting:opacity-0 motion-reduce:transition-none ${fitContentOnDesktop ? 'overflow-y-auto max-lg:overflow-hidden' : 'overflow-hidden'}`}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}
     >
       <div
         ref={dialogRef}
-        className={`relative m-auto flex min-h-96 w-full min-w-2xl max-w-3xl flex-col overflow-hidden rounded-4xl bg-white text-center transition-[opacity,transform] duration-200 ease-out starting:translate-y-4 starting:scale-95 starting:opacity-0 motion-reduce:transition-none max-lg:min-w-0 ${
+        className={`relative m-auto flex min-h-96 w-full min-w-2xl max-w-3xl flex-col overflow-hidden rounded-4xl bg-surface text-center transition duration-200 ease-out starting:translate-y-4 starting:scale-95 starting:opacity-0 motion-reduce:transition-none max-lg:min-w-0 ${
           fitContentOnDesktop ? 'h-auto max-h-none max-lg:h-full max-lg:max-h-160' : 'h-full max-h-160'
         }`}
         role="dialog"
@@ -95,7 +95,7 @@ export function Modal({ open, titleId, onClose, children, fitContentOnDesktop = 
           aria-label="閉じる"
           onClick={onClose}
         >
-          <img className="block size-5" src="/assets/close.svg" alt="" />
+          <img className="block size-5 brightness-0 invert" src="/assets/close.svg" alt="" />
         </button>
         <div
           className={`flex min-h-0 flex-col p-16 max-lg:px-8 max-lg:pt-16 max-lg:pb-8 ${

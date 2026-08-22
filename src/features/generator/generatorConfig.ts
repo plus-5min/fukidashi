@@ -26,6 +26,19 @@ export const colorKeys = [
 export type ColorKey = (typeof colorKeys)[number]
 export type GeneratorColors = Record<ColorKey, string>
 
+export const primaryColorKeys = [
+  'listener-name-bg',
+  'listener-comment',
+  'listener-comment-border',
+  'member-name-bg',
+  'member-comment',
+  'member-comment-border',
+  'superchat-name-bg',
+  'superchat-comment-bg',
+  'membership-name-bg',
+  'membership-comment-bg',
+] as const satisfies readonly ColorKey[]
+
 export type GeneratorConfig = {
   platform: Platform
   template: CommentTemplate
@@ -36,35 +49,38 @@ export type GeneratorConfig = {
   colors: GeneratorColors
 }
 
-export const blueColors: GeneratorColors = {
+const defaultPrimary = '#5997F2'
+const defaultSecondary = '#FFB5D5'
+
+export const defaultColors: GeneratorColors = {
   'listener-name': '#FFFFFF',
-  'listener-name-bg': '#8CCCE3',
+  'listener-name-bg': defaultPrimary,
   'member-name': '#FFFFFF',
-  'member-name-bg': '#8CCCE3',
-  'listener-comment': '#333333',
+  'member-name-bg': defaultSecondary,
+  'listener-comment': defaultPrimary,
   'listener-comment-bg': '#FFFFFF',
-  'listener-comment-border': '#8CCCE3',
-  'member-comment': '#333333',
+  'listener-comment-border': defaultPrimary,
+  'member-comment': defaultSecondary,
   'member-comment-bg': '#FFFFFF',
-  'member-comment-border': '#8CCCE3',
+  'member-comment-border': defaultSecondary,
   'superchat-name': '#FFFFFF',
-  'superchat-name-bg': '#9ED9EF',
+  'superchat-name-bg': defaultPrimary,
   'superchat-comment': '#FFFFFF',
-  'superchat-comment-bg': '#8CCCE3',
+  'superchat-comment-bg': defaultPrimary,
   'membership-name': '#FFFFFF',
-  'membership-name-bg': '#9ED9EF',
+  'membership-name-bg': defaultPrimary,
   'membership-comment': '#FFFFFF',
-  'membership-comment-bg': '#8CCCE3',
+  'membership-comment-bg': defaultPrimary,
 }
 
 export const defaultGeneratorConfig: GeneratorConfig = {
   platform: 'youtube',
   template: 'fukidashi',
   direction: 'left',
-  showProfileImage: false,
+  showProfileImage: true,
   showName: true,
-  showBorder: true,
-  colors: blueColors,
+  showBorder: false,
+  colors: defaultColors,
 }
 
 export type GeneratorAction =
@@ -77,6 +93,7 @@ export type GeneratorAction =
       value: boolean
     }
   | { type: 'colorChanged'; key: ColorKey; value: string }
+  | { type: 'primaryColorChanged'; value: string }
   | { type: 'colorsChanged'; colors: GeneratorColors }
 
 export function generatorReducer(state: GeneratorConfig, action: GeneratorAction): GeneratorConfig {
@@ -94,6 +111,15 @@ export function generatorReducer(state: GeneratorConfig, action: GeneratorAction
         ...state,
         colors: { ...state.colors, [action.key]: action.value.toUpperCase() },
       }
+    case 'primaryColorChanged': {
+      const colors = { ...state.colors }
+
+      for (const key of primaryColorKeys) {
+        colors[key] = action.value.toUpperCase()
+      }
+
+      return { ...state, colors }
+    }
     case 'colorsChanged':
       return { ...state, colors: action.colors }
   }

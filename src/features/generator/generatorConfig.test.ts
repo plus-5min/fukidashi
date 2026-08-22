@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
 import { generateCss } from './generateCss'
-import { defaultGeneratorConfig, generatorReducer } from './generatorConfig'
+import { defaultGeneratorConfig, generatorReducer, primaryColorKeys } from './generatorConfig'
 
 const youtubeStylesheet = readFileSync(new URL('../../../public/css/v1/youtube.css', import.meta.url), 'utf8')
 const twitchStylesheet = readFileSync(new URL('../../../public/css/v1/twitch.css', import.meta.url), 'utf8')
@@ -18,6 +18,17 @@ function generateTestCss(config: Parameters<typeof generateCss>[0]): string {
 }
 
 describe('generatorReducer', () => {
+  it('初回表示は吹き出し、アイコンあり、枠線なしにする', () => {
+    expect(defaultGeneratorConfig.template).toBe('fukidashi')
+    expect(defaultGeneratorConfig.showProfileImage).toBe(true)
+    expect(defaultGeneratorConfig.showBorder).toBe(false)
+    expect(defaultGeneratorConfig.colors['listener-name-bg']).toBe('#5997F2')
+    expect(defaultGeneratorConfig.colors['listener-comment']).toBe('#5997F2')
+    expect(defaultGeneratorConfig.colors['member-name-bg']).toBe('#FFB5D5')
+    expect(defaultGeneratorConfig.colors['member-comment']).toBe('#FFB5D5')
+    expect(defaultGeneratorConfig.colors['member-comment-border']).toBe('#FFB5D5')
+  })
+
   it('指定した色だけを変更する', () => {
     const nextConfig = generatorReducer(defaultGeneratorConfig, {
       type: 'colorChanged',
@@ -26,7 +37,23 @@ describe('generatorReducer', () => {
     })
 
     expect(nextConfig.colors['listener-name-bg']).toBe('#FB83AB')
-    expect(defaultGeneratorConfig.colors['listener-name-bg']).toBe('#8CCCE3')
+    expect(defaultGeneratorConfig.colors['listener-name-bg']).toBe('#5997F2')
+  })
+
+  it('Primaryに対応する色だけを一括で変更する', () => {
+    const nextConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'primaryColorChanged',
+      value: '#fb83ab',
+    })
+
+    for (const key of primaryColorKeys) {
+      expect(nextConfig.colors[key]).toBe('#FB83AB')
+    }
+    expect(nextConfig.colors['member-name-bg']).toBe('#FB83AB')
+    expect(nextConfig.colors['member-comment']).toBe('#FB83AB')
+    expect(nextConfig.colors['member-comment-border']).toBe('#FB83AB')
+    expect(nextConfig.colors['member-name']).toBe('#FFFFFF')
+    expect(nextConfig.colors['listener-comment-bg']).toBe('#FFFFFF')
   })
 
   it('コメントテンプレートを変更する', () => {
@@ -46,11 +73,11 @@ describe('generateCss', () => {
     expect(css).toContain('@import url("https://fukidashi-css.com/css/v1/youtube/fukidashi.css");')
     expect(css).toContain(':root {')
     expect(css).not.toContain(':root {\n\n')
-    expect(css).toContain('--listener-name-bg: #8CCCE3;')
-    expect(css).not.toContain('--comment-border-width:')
+    expect(css).toContain('--listener-name-bg: #5997F2;')
+    expect(css).toContain('--comment-border-width: 0;')
     expect(css).not.toContain('--animation-name:')
     expect(css).not.toContain('--auto-margin-inline:')
-    expect(css).not.toContain('--profile-image-display:')
+    expect(css).toContain('--profile-image-display: block;')
     expect(css).not.toContain('yt-live-chat-text-message-renderer')
   })
 
@@ -97,13 +124,8 @@ describe('generateCss', () => {
     expect(youtubeNormalStylesheet).toContain('--comment-background: transparent;')
   })
 
-  it('枠線なしをCSSへ反映する', () => {
-    const config = generatorReducer(defaultGeneratorConfig, {
-      type: 'visibilityChanged',
-      key: 'showBorder',
-      value: false,
-    })
-    const css = generateTestCss(config)
+  it('初回表示の枠線なしをCSSへ反映する', () => {
+    const css = generateTestCss(defaultGeneratorConfig)
 
     expect(css).toContain('--comment-border-width: 0;')
     expect(css).toContain('--pointer-display: none;')
@@ -118,7 +140,7 @@ describe('generateCss', () => {
     const css = generateTestCss(config)
 
     expect(css).toContain('@import url("https://fukidashi-css.com/css/v1/twitch/fukidashi.css");')
-    expect(css).toContain('--listener-comment-border: #8CCCE3;')
+    expect(css).toContain('--listener-comment-border: #5997F2;')
     expect(css).not.toContain('--member-name:')
     expect(css).not.toContain('.chat-line__message')
   })
@@ -160,7 +182,7 @@ describe('generateCss', () => {
 
     expect(css).not.toContain('--comment-background:')
     expect(css).toContain('@import url("https://fukidashi-css.com/css/v1/twitch/card.css");')
-    expect(css).not.toContain('--comment-border-width:')
+    expect(css).toContain('--comment-border-width: 0;')
     expect(css).not.toContain('--pointer-content:')
     expect(css).not.toContain('--pointer-inner-content:')
   })
@@ -176,7 +198,7 @@ describe('generateCss', () => {
     expect(css).toContain('@import url("https://fukidashi-css.com/css/v1/youtube/card.css");')
     expect(css).not.toContain('--comment-border-radius:')
     expect(css).not.toContain('--comment-padding:')
-    expect(css).not.toContain('--comment-border-width:')
+    expect(css).toContain('--comment-border-width: 0;')
     expect(css).not.toContain('--pointer-content:')
     expect(css).not.toContain('--pointer-inner-content:')
   })
@@ -190,12 +212,12 @@ describe('generateCss', () => {
 
     expect(css).toContain('@import url("https://fukidashi-css.com/css/v1/youtube/normal.css");')
     expect(css).not.toContain('--comment-background:')
-    expect(css).toContain('--listener-name: #333333;')
+    expect(css).toContain('--listener-name: #5997F2;')
     expect(css).toContain('--listener-name-bg: transparent;')
-    expect(css).toContain('--listener-comment: #333333;')
-    expect(css).toContain('--member-name: #333333;')
+    expect(css).toContain('--listener-comment: #5997F2;')
+    expect(css).toContain('--member-name: #FFB5D5;')
     expect(css).toContain('--member-name-bg: transparent;')
-    expect(css).toContain('--member-comment: #333333;')
+    expect(css).toContain('--member-comment: #FFB5D5;')
     expect(css).not.toContain('--listener-comment-bg:')
     expect(css).not.toContain('--listener-comment-border:')
     expect(css).not.toContain('--member-comment-bg:')
@@ -211,7 +233,7 @@ describe('generateCss', () => {
     expect(css).not.toContain('--auto-margin-inline:')
     expect(css).not.toContain('--message-flex-direction:')
     expect(css).not.toContain('--message-justify-content:')
-    expect(css).not.toContain('--profile-image-display:')
+    expect(css).toContain('--profile-image-display: block;')
   })
 
   it('Twitchのnormalではコメント文字色だけを生成する', () => {
@@ -226,15 +248,20 @@ describe('generateCss', () => {
     const css = generateTestCss(config)
 
     expect(css).toContain('@import url("https://fukidashi-css.com/css/v1/twitch/normal.css");')
-    expect(css).toContain('--listener-name: #333333;')
+    expect(css).toContain('--listener-name: #5997F2;')
     expect(css).toContain('--listener-name-bg: transparent;')
-    expect(css).toContain('--listener-comment: #333333;')
+    expect(css).toContain('--listener-comment: #5997F2;')
     expect(css).not.toContain('--listener-comment-bg:')
     expect(css).not.toContain('--listener-comment-border:')
   })
 
   it('右寄せ用の変数を生成する', () => {
-    const config = generatorReducer(defaultGeneratorConfig, {
+    const borderedConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'visibilityChanged',
+      key: 'showBorder',
+      value: true,
+    })
+    const config = generatorReducer(borderedConfig, {
       type: 'directionChanged',
       value: 'right',
     })
@@ -248,7 +275,7 @@ describe('generateCss', () => {
     expect(css).toContain('--pointer-inner-inset-inline: auto 1px;')
   })
 
-  it('既定値と異なる表示設定だけを生成する', () => {
+  it('名前とアイコンの非表示をCSSへ反映する', () => {
     const hiddenNameConfig = generatorReducer(defaultGeneratorConfig, {
       type: 'visibilityChanged',
       key: 'showName',
@@ -257,11 +284,11 @@ describe('generateCss', () => {
     const config = generatorReducer(hiddenNameConfig, {
       type: 'visibilityChanged',
       key: 'showProfileImage',
-      value: true,
+      value: false,
     })
     const css = generateTestCss(config)
 
     expect(css).toContain('--name-display: none;')
-    expect(css).toContain('--profile-image-display: block;')
+    expect(css).not.toContain('--profile-image-display:')
   })
 })

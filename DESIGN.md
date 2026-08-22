@@ -15,31 +15,41 @@
 fukidashi は、やわらかく親しみやすい印象と、設定ツールとしての明快さを両立します。
 
 - 余白を広めに取り、情報を詰め込みすぎない
-- 白とライトグレーを基調にし、色は選択状態やプレビューを伝えるために使う
+- 深いチャコールを基調にし、サーフェスの明度差と明るい文字色で情報の階層を伝える
 - 大きな角丸とピル型の操作要素で、吹き出しらしいやわらかさを表現する
 - 装飾よりも、現在の状態と次に行う操作のわかりやすさを優先する
 - 日本語と英語が混在しても、文字の役割と階層が自然に伝わるようにする
 
 ## 2. カラー
 
-既存 UI の基準色は次のとおりです。新しい色を追加する前に、既存色で目的を満たせないか確認してください。
+アプリ UI はダークテーマを標準とし、色名ではなく役割に基づくセマンティックトークンを使用します。新しい色を追加する前に、既存トークンで目的を満たせないか確認してください。
 
-| 用途           | 色                 | 使用例                             |
-| -------------- | ------------------ | ---------------------------------- |
-| Primary        | `#3F3F3F`          | 見出し、本文、選択状態、主要ボタン |
-| Primary Muted  | `#707070`          | 補足、未選択ラベル、通知           |
-| Primary Subtle | `#C3C3C3`          | 枠線、OFF、装飾的な要素            |
-| Secondary      | `#F6F6F6`          | ページ、入力欄、セグメント背景     |
-| 基本サーフェス | `#FFFFFF`          | 設定パネル、モーダル               |
-| オーバーレイ   | `rgb(0 0 0 / 50%)` | モーダル背景                       |
+| トークン         | 色                 | 使用例                                     |
+| ---------------- | ------------------ | ------------------------------------------ |
+| Primary          | `#5997F2`          | 選択状態、スイッチ ON、主要操作、フォーカス |
+| Secondary        | `#FFB5D5`          | 補助アクセント、完了状態、装飾アイコン     |
+| Secondary Strong | `#FFA3CB`          | 主要操作に添える小さなアクセントアイコン   |
+| Background       | `#1A1B20`          | ページ背景、最も低い階層                   |
+| Surface          | `#27292C`          | ヘッダー、設定パネル、モーダル             |
+| Surface Raised   | `#383A3D`          | 入力欄、セグメント、サーフェス内の操作要素 |
+| Surface Hover    | `#44464A`          | Surface 系操作要素の hover                 |
+| Action Surface   | `#3B3D3E`          | Create ボタンの背景                        |
+| Foreground       | `#FFFFFF`          | 見出し、本文、主要アイコン                 |
+| Foreground Muted | `#A9A9AD`          | 補足、未選択ラベル、通知                   |
+| Border           | `#5B5D63`          | 枠線、OFF、区切り                          |
+| On Primary       | `#1A1B20`          | Primary 上の文字とアイコン                 |
+| Overlay          | `rgb(0 0 0 / 70%)` | モーダル背景                               |
 
-Primary 系は `--color-primary`、`--color-primary-muted`、`--color-primary-subtle` の3色だけを使用します。Tailwind CSS では `text-primary`、`text-primary-muted`、`border-primary-subtle` などを指定します。3色はすべて不透明な実色です。`text-primary/60` のような透明度指定で濃淡を作らず、新しい段階も安易に追加しません。スイッチ ON とフォーカスリングは Primary、ページや入力欄の背景は Secondary を使います。コメントのカラープリセットは生成対象のテーマ色であり、アプリ UI の Primary / Secondary とは分けて扱います。
+実装ではそれぞれ `--color-primary`、`--color-secondary`、`--color-secondary-strong`、`--color-background`、`--color-surface`、`--color-surface-raised`、`--color-surface-hover`、`--color-action-surface`、`--color-foreground`、`--color-foreground-muted`、`--color-border`、`--color-on-primary`、`--color-overlay` を使用します。Tailwind CSS では `bg-primary`、`bg-surface`、`text-foreground`、`border-border` など、役割が読み取れるクラスを指定します。
+
+Primary は操作の選択と進行を示す色、Secondary は補助的な強調色として使い分けます。透明度指定によって独自の色段階を作らず、Surface 系の hover には Surface Hover を使います。画像・アニメーションに対する一時的な opacity や brightness の変化と、透明であること自体に意味がある Overlay は例外です。コメントのカラープリセットは生成対象のテーマ色であり、アプリ UI の Primary / Secondary とは分けて扱います。
 
 ### コントラスト
 
-- 通常の本文は原則として Primary を使用する
-- Primary Muted は通常サイズの文字でも WCAG 2.1 AA を満たす組み合わせで使用する
-- Primary Subtle は意味を持つ文字に使わず、枠線や装飾など主要情報ではない箇所に限定する
+- 通常の本文は原則として Foreground を使用する
+- Foreground Muted は Background、Surface、Surface Raised のいずれとの組み合わせでも、通常サイズの文字で WCAG 2.1 AA を満たす範囲で使用する
+- Border は意味を持つ文字に使わず、枠線、区切り、OFF など主要情報ではない箇所に限定する
+- Primary 上の文字とアイコンには On Primary を使用する。Foreground は Primary 上の通常サイズの文字には使わない
 - 色だけに状態を依存させず、枠線、チェック、ラベルなどを併用する
 - 新しい組み合わせは WCAG 2.1 AA のコントラストを目安に確認する
 
@@ -128,8 +138,9 @@ Primary 系は `--color-primary`、`--color-primary-muted`、`--color-primary-su
 
 ### ボタン
 
-- 主要操作は濃いグレーの背景、白い文字、ピル型を基本にする
-- 二次操作は白またはライトグレーの背景とし、主要操作より目立たせない
+- 主要操作は Primary の背景、On Primary の文字、ピル型を基本にする
+- Create ボタンは Action Surface の背景、Foreground の文字、Secondary Strong のアイコンを使用する
+- 二次操作は Surface Raised の背景または Border の枠線とし、主要操作より目立たせない
 - アイコンだけのボタンには必ずアクセス可能な名前を付ける
 - 背景色や枠線などで外形が見える操作要素は、全体をクリック可能にし、最低 `44 × 44px` を目安にする
 - クリック領域は見えている外形と一致させる。`44 × 44px` を満たすために、何も表示されていない透明な領域だけを広げない
@@ -144,7 +155,7 @@ Primary 系は `--color-primary`、`--color-primary-muted`、`--color-primary-su
 
 ### 入力欄
 
-- 入力欄はライトグレーの背景を基本とし、フォーカス時は濃い枠線またはアクセント色のリングを表示する
+- 入力欄は Surface Raised の背景を基本とし、フォーカス時は Primary の枠線またはリングを表示する
 - ラベルは入力欄とプログラム上で関連付ける
 - エラーは原因と修正方法がわかる文章で表示し、色だけで示さない
 
@@ -158,8 +169,13 @@ Primary 系は `--color-primary`、`--color-primary-muted`、`--color-primary-su
 ## 7. インタラクションとモーション
 
 - 色や不透明度の変化は `200–300ms` を基本にする
+- テキストリンクと背景のないボタンは、hover で Secondary に変化させる
+- Surface 系のカード、入力欄、ボタンは、hover で Surface Hover に変化させる
+- Primary の操作は、hover で明度を少し上げる。選択済みコントロールの Primary は維持する
+- アイコンだけのボタンとカラースウォッチは、hover で opacity を下げる
+- hover のトランジションは `200ms` を基本とし、同じ役割の操作要素で揃える
 - 完了メッセージなど、一時的なフィードバックは十分に読める時間表示する
-- hover は補助的な表現とし、タッチ操作でも意味が失われないようにする
+- hover は補助的な表現とし、`max-lg:hover:*` で通常状態へ戻してタッチ操作でも意味が失われないようにする
 - フォーカス表示を消さない。キーボード操作時には明確なリングを表示する
 - `prefers-reduced-motion` が有効な場合は、大きな移動や拡大縮小を抑える
 - アニメーションは状態変化の理解を助ける目的で使い、常時動かさない
