@@ -13,6 +13,12 @@
       "description": "fukidashiの利用規約です。ご利用前に内容をご確認ください。",
       "path": "/terms"
     },
+    "guide": {
+      "title": "使い方 | fukidashi",
+      "description": "YouTube・TwitchのコメントをOBSへ表示し、コメントCSSを適用する手順をご案内します。",
+      "path": "/guide",
+      "keywords": ["OBS", "YouTube", "Twitch", "コメントCSS", "使い方"]
+    },
     "notFound": {
       "title": "ページが見つかりません | fukidashi",
       "description": "お探しのページは見つかりませんでした。",

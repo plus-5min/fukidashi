@@ -57,6 +57,7 @@ export async function generateStaticPages() {
 
   await Promise.all(
     [
+      ['guide.html', metadataFile.pages.guide],
       ['terms.html', metadataFile.pages.terms],
       ['404.html', metadataFile.pages.notFound],
     ].map(([fileName, metadata]) => writeFile(new URL(`../dist/${fileName}`, import.meta.url), injectPageMetadata(indexHtml, metadata))),

@@ -7,6 +7,7 @@ import { injectPageMetadata } from './generate-static-pages.mjs'
 const metadataFile = JSON.parse(await readFile(new URL('../src/app/pageMetadata.json', import.meta.url), 'utf8'))
 const indexTemplate = await readFile(new URL('../index.html', import.meta.url), 'utf8')
 const indexHtml = injectPageMetadata(indexTemplate, metadataFile.pages.home)
+const guideHtml = injectPageMetadata(indexHtml, metadataFile.pages.guide)
 const termsHtml = injectPageMetadata(indexHtml, metadataFile.pages.terms)
 const notFoundHtml = injectPageMetadata(indexHtml, metadataFile.pages.notFound)
 
@@ -23,6 +24,13 @@ describe('generate-static-pages', () => {
     expect(termsHtml).toContain('<link rel="canonical" href="https://fukidashi-css.com/terms" />')
     expect(termsHtml).toContain('<meta property="og:url" content="https://fukidashi-css.com/terms" />')
     expect(termsHtml).not.toContain('<link rel="canonical" href="https://fukidashi-css.com/" />')
+  })
+
+  it('includes guide metadata without the homepage canonical URL', () => {
+    expect(guideHtml).toContain('<title>使い方 | fukidashi</title>')
+    expect(guideHtml).toContain('<link rel="canonical" href="https://fukidashi-css.com/guide" />')
+    expect(guideHtml).toContain('<meta property="og:url" content="https://fukidashi-css.com/guide" />')
+    expect(guideHtml).not.toContain('<link rel="canonical" href="https://fukidashi-css.com/" />')
   })
 
   it('marks the not-found HTML as noindex without a canonical URL', () => {
