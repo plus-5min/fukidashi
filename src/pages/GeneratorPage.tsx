@@ -24,9 +24,9 @@ export function GeneratorPage() {
   return (
     <>
       <PageMetadata {...pageMetadata.home} />
-      <div style={colorVariables}>
-        <div className="mx-auto p-8 max-lg:p-4">
-          <div className="mx-auto flex w-full max-w-7xl items-stretch justify-center gap-8 max-lg:flex-col max-lg:gap-4">
+      <div className="flex min-h-0 flex-1 flex-col" style={colorVariables}>
+        <div className="mx-auto flex min-h-0 w-full flex-1 p-8 max-lg:block max-lg:p-4">
+          <div className="mx-auto flex min-h-0 w-full max-w-7xl flex-1 items-stretch justify-center gap-8 max-lg:flex-col max-lg:gap-4">
             <CommentPreview config={config} />
             <div className="relative min-h-0 w-full max-w-md shrink-0 max-lg:max-w-none">
               <div className="absolute inset-0 max-lg:static">

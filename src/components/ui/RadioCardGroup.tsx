@@ -34,11 +34,11 @@ export function RadioCardGroup<T extends string>({ 'aria-labelledby': ariaLabell
               />
               <label
                 htmlFor={id}
-                className="flex aspect-[4/3] cursor-pointer items-center justify-center rounded-2xl border-2 border-primary-subtle bg-white text-primary-muted transition-colors duration-200 peer-checked:border-[3px] peer-checked:border-primary peer-checked:text-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary motion-reduce:transition-none"
+                className="flex aspect-4/3 cursor-pointer items-center justify-center rounded-2xl border-2 border-primary-subtle bg-white text-primary-muted transition-colors duration-200 peer-checked:border-3 peer-checked:border-primary peer-checked:text-primary peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary motion-reduce:transition-none"
               >
                 {renderOption(option)}
               </label>
-              <span className="pointer-events-none absolute -top-2 -right-2 hidden size-[27px] peer-checked:block" aria-hidden="true">
+              <span className="pointer-events-none absolute -top-2 -right-2 hidden size-7 peer-checked:block" aria-hidden="true">
                 <img className="size-full" src="/assets/check.svg" alt="" />
               </span>
             </div>

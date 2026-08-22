@@ -118,7 +118,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
   }
 
   return (
-    <div className="flex h-full min-h-0 w-full max-w-md flex-col overflow-hidden rounded-4xl bg-white max-lg:h-auto max-lg:max-w-none max-lg:overflow-visible">
+    <div className="flex h-full min-h-0 w-full max-w-md flex-col overflow-hidden rounded-4xl bg-primary max-lg:h-auto max-lg:max-w-none max-lg:overflow-visible">
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-8 max-lg:flex-none max-lg:overflow-visible max-lg:p-4">
         <div className="flex flex-col gap-8 p-4 max-lg:gap-2 max-lg:p-2">
           <div>
@@ -146,7 +146,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
               renderOption={(option) => (
                 <span className="flex flex-col items-center">
                   <img
-                    className={`size-10 transition-opacity duration-200 motion-reduce:transition-none ${config.template === option.value ? 'opacity-100' : 'opacity-[0.47]'}`}
+                    className={`size-10 transition-opacity duration-200 motion-reduce:transition-none ${config.template === option.value ? 'opacity-100' : 'opacity-50'}`}
                     src={`/assets/template-${option.value}.svg`}
                     alt=""
                     aria-hidden="true"
@@ -234,12 +234,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
               />
             </span>
           </button>
-          <div
-            id="color-details"
-            className={`grid p-4 transition-[grid-template-rows] duration-200 motion-reduce:transition-none max-lg:p-2 ${detailsOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
-            aria-hidden={!detailsOpen}
-            inert={!detailsOpen}
-          >
+          <div id="color-details" className={detailsOpen ? 'block p-4 max-lg:p-2' : 'hidden'} aria-hidden={!detailsOpen} inert={!detailsOpen}>
             <div className="min-h-0 overflow-hidden">
               {colorSections.map(({ heading, fields, hiddenOnTwitch }) => {
                 if (hiddenOnTwitch && isTwitch) return null

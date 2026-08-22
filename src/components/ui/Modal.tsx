@@ -81,7 +81,7 @@ export function Modal({ open, titleId, onClose, children, fitContentOnDesktop = 
     >
       <div
         ref={dialogRef}
-        className={`relative m-auto flex min-h-96 w-full min-w-2xl max-w-3xl flex-col overflow-hidden rounded-4xl bg-white text-center transition-[opacity,transform] duration-200 ease-out starting:translate-y-4 starting:scale-95 starting:opacity-0 motion-reduce:transition-none max-lg:min-w-0 ${
+        className={`relative m-auto flex min-h-96 w-full min-w-2xl max-w-3xl flex-col overflow-hidden rounded-4xl bg-white text-center transition duration-200 ease-out starting:translate-y-4 starting:scale-95 starting:opacity-0 motion-reduce:transition-none max-lg:min-w-0 ${
           fitContentOnDesktop ? 'h-auto max-h-none max-lg:h-full max-lg:max-h-160' : 'h-full max-h-160'
         }`}
         role="dialog"

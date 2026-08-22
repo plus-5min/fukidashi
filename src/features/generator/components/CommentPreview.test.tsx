@@ -12,12 +12,12 @@ describe('CommentPreview', () => {
     })
     const html = renderToStaticMarkup(<CommentPreview config={config} />)
 
-    expect(html).not.toContain('bg-[var(--listener-name-bg)]')
-    expect(html).not.toContain('bg-[var(--member-name-bg)]')
-    expect(html).not.toContain('text-[var(--listener-name)]')
-    expect(html).not.toContain('text-[var(--member-name)]')
-    expect(html).toContain('text-[var(--listener-comment)]')
-    expect(html).toContain('text-[var(--member-comment)]')
+    expect(html).not.toContain('bg-(--listener-name-bg)')
+    expect(html).not.toContain('bg-(--member-name-bg)')
+    expect(html).not.toContain('text-(--listener-name)')
+    expect(html).not.toContain('text-(--member-name)')
+    expect(html).toContain('text-(--listener-comment)')
+    expect(html).toContain('text-(--member-comment)')
     expect(html).toContain('px-0')
   })
 
@@ -25,10 +25,10 @@ describe('CommentPreview', () => {
     const html = renderToStaticMarkup(<CommentPreview config={defaultGeneratorConfig} />)
 
     expect(html).toContain('relative z-0 rounded-4xl bg-secondary')
-    expect(html).toContain('bg-[var(--listener-name-bg)]')
-    expect(html).toContain('bg-[var(--member-name-bg)]')
-    expect(html).toContain('text-[var(--listener-name)]')
-    expect(html).toContain('text-[var(--member-name)]')
+    expect(html).toContain('bg-(--listener-name-bg)')
+    expect(html).toContain('bg-(--member-name-bg)')
+    expect(html).toContain('text-(--listener-name)')
+    expect(html).toContain('text-(--member-name)')
     expect(html).toContain('px-3')
   })
 

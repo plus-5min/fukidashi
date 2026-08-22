@@ -39,7 +39,7 @@ export function CreateModal({ open, css, onCssChange, onClose }: CreateModalProp
           </label>
           <textarea
             id="custom-css"
-            className="relative min-h-48 w-full flex-1 resize-none rounded-2xl bg-secondary p-8 pr-16 text-left font-mono focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-scrollbar]:hidden max-lg:p-4 max-lg:pr-16"
+            className="relative min-h-48 w-full flex-1 resize-none rounded-2xl bg-secondary p-8 pr-16 text-left font-mono focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary max-lg:p-4 max-lg:pr-16"
             value={css}
             onChange={(event) => onCssChange(event.target.value)}
           />
