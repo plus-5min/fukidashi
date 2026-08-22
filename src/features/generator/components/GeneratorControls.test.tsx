@@ -16,6 +16,8 @@ describe('GeneratorControls', () => {
     const html = renderControls(defaultGeneratorConfig)
 
     expect(html.match(/gap-2 text-xl font-semibold/g)).toHaveLength(4)
+    expect(html).toContain('flex flex-col gap-12 max-lg:gap-4')
+    expect(html).not.toContain('flex flex-col gap-10')
     expect(html).toContain('id="visibility-showProfileImage-label"')
     expect(html).toContain('cursor-pointer text-base font-medium')
   })
@@ -106,6 +108,9 @@ describe('GeneratorControls', () => {
     expect(html).toContain('id="primary-color-picker"')
     expect(html).toContain('aria-label="メインカラーを一括変更"')
     expect(html).toContain('value="#5997F2"')
+    expect(html).not.toContain('primary-color-status')
+    expect(html).not.toContain('複数色が設定されています')
+    expect(html).not.toContain('表示色に統一')
   })
 
   it('詳細カラー設定をCustomとして表示する', () => {
@@ -121,6 +126,10 @@ describe('GeneratorControls', () => {
     const html = renderControls(defaultGeneratorConfig)
 
     expect(html).toContain('hover:bg-secondary hover:text-on-primary')
+    expect(html).toContain('group-hover:rotate-y-180')
+    expect(html).toContain('motion-reduce:group-hover:rotate-y-0')
+    expect(html).toContain('max-lg:group-hover:rotate-y-0')
+    expect(html).not.toContain('group-hover:rotate-180')
     expect(html).toContain('group-hover:text-on-primary')
     expect(html).toContain('max-lg:hover:bg-action-surface max-lg:hover:text-foreground')
   })

@@ -4,7 +4,15 @@ import { MaskedIcon } from '../../../components/ui/MaskedIcon'
 import { RadioCardGroup } from '../../../components/ui/RadioCardGroup'
 import { SegmentedControl } from '../../../components/ui/SegmentedControl'
 import { Switch } from '../../../components/ui/Switch'
-import type { ColorKey, CommentTemplate, Direction, GeneratorAction, GeneratorConfig, GeneratorColors, Platform } from '../generatorConfig'
+import {
+  type ColorKey,
+  type CommentTemplate,
+  type Direction,
+  type GeneratorAction,
+  type GeneratorConfig,
+  type GeneratorColors,
+  type Platform,
+} from '../generatorConfig'
 import { colorPresets, type PresetName } from '../presets'
 import { ColorIcon, CreateIcon, DesignIcon, PlatformIcon, TemplateIcon } from './GeneratorIcons'
 
@@ -109,6 +117,7 @@ const colorSections: ColorSectionDefinition[] = [
 export function GeneratorControls({ config, activePreset, dispatch, onPresetChange, onCreate }: GeneratorControlsProps) {
   const [detailsOpen, setDetailsOpen] = useState(false)
   const isTwitch = config.platform === 'twitch'
+  const primaryColor = config.colors['listener-name-bg']
 
   const applyPreset = (preset: PresetName) => {
     dispatch({ type: 'colorsChanged', colors: colorPresets[preset] })
@@ -128,7 +137,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
   return (
     <div className="flex h-full min-h-0 w-full max-w-md flex-col overflow-hidden rounded-4xl bg-surface max-lg:h-auto max-lg:max-w-none max-lg:overflow-visible">
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-12 max-lg:flex-none max-lg:overflow-visible max-lg:p-4">
-        <div className="flex flex-col gap-10 max-lg:gap-4">
+        <div className="flex flex-col gap-12 max-lg:gap-4">
           <div>
             <h3 id="platform-label" className="font-poppins mb-4 flex items-center gap-2 text-xl font-semibold text-foreground">
               <PlatformIcon />
@@ -237,7 +246,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
               <ColorInput
                 id="primary-color-picker"
                 aria-label="メインカラーを一括変更"
-                value={config.colors['listener-name-bg']}
+                value={primaryColor}
                 onChange={changePrimaryColor}
               />
             </div>
@@ -279,7 +288,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
           className="font-poppins group mx-auto flex min-h-12 w-full max-w-2xs cursor-pointer items-center justify-center gap-2 rounded-full bg-action-surface px-4 py-2 text-center text-lg font-semibold text-foreground transition-colors duration-200 hover:bg-secondary hover:text-on-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none max-lg:hover:bg-action-surface max-lg:hover:text-foreground"
           onClick={onCreate}
         >
-          <CreateIcon className="size-6 text-secondary-strong transition duration-300 group-hover:rotate-180 group-hover:text-on-primary motion-reduce:transition-none motion-reduce:group-hover:rotate-0 max-lg:group-hover:rotate-0 max-lg:group-hover:text-secondary-strong" />
+          <CreateIcon className="size-6 text-secondary-strong transition duration-300 group-hover:rotate-y-180 group-hover:text-on-primary motion-reduce:transition-none motion-reduce:group-hover:rotate-y-0 max-lg:group-hover:rotate-y-0 max-lg:group-hover:text-secondary-strong" />
           <span>Create</span>
         </button>
       </div>
@@ -324,11 +333,12 @@ type ColorInputProps = {
   id: string
   'aria-label'?: string
   'aria-labelledby'?: string
+  'aria-describedby'?: string
   value: string
   onChange: (value: string) => void
 }
 
-function ColorInput({ id, 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledBy, value, onChange }: ColorInputProps) {
+function ColorInput({ id, 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledBy, 'aria-describedby': ariaDescribedBy, value, onChange }: ColorInputProps) {
   const textInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -357,6 +367,7 @@ function ColorInput({ id, 'aria-label': ariaLabel, 'aria-labelledby': ariaLabell
           id={id}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}
+          aria-describedby={ariaDescribedBy}
           value={value}
           onChange={(event) => onChange(event.target.value)}
         />
@@ -370,6 +381,7 @@ function ColorInput({ id, 'aria-label': ariaLabel, 'aria-labelledby': ariaLabell
         type="text"
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
+        aria-describedby={ariaDescribedBy}
         className="font-poppins min-h-10 w-full p-0 font-normal text-foreground outline-none"
         maxLength={6}
         pattern="[0-9A-Fa-f]{6}"

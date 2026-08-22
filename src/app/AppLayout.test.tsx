@@ -39,6 +39,9 @@ describe('AppLayout', () => {
     expect(html).toContain('aria-label="アサヒナピピのXを開く"')
     expect(html).toContain('href="/guide"')
     expect(html).toContain('aria-label="使い方を開く"')
+    expect(html).toContain('flex size-12 shrink-0 items-center justify-center rounded-full text-secondary-strong')
+    expect(html).toContain('transition-opacity duration-200 hover:opacity-70')
+    expect(html).toContain('max-lg:hover:opacity-100')
   })
 
   it('keeps the footer at the bottom without constraining the generator to the viewport', () => {

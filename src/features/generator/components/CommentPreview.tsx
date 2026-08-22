@@ -42,7 +42,7 @@ export function CommentPreview({ config }: CommentPreviewProps) {
             <div className={`col-start-1 row-start-1 grid gap-6 ${isTwitch ? 'invisible' : ''}`} aria-hidden={isTwitch}>
               <TextComment config={config} {...youtubePreviewComment} />
 
-              <div className="font-sans text-base leading-6 font-medium tracking-wide not-italic">
+              <div className="font-sans text-base leading-6 font-medium not-italic">
                 <div className="relative flex items-center justify-between rounded-t-[20px] bg-(--superchat-name-bg) px-6 py-4 text-(--superchat-name)">
                   <p className="font-bold">リスナー </p>
                   <p className="font-inter rounded-full bg-(--superchat-name) px-3 py-2 leading-none text-(--superchat-name-bg)">￥5,000</p>
@@ -54,7 +54,7 @@ export function CommentPreview({ config }: CommentPreviewProps) {
                 </div>
               </div>
 
-              <div className="font-sans text-base leading-6 font-medium tracking-wide not-italic">
+              <div className="font-sans text-base leading-6 font-medium not-italic">
                 <div className="flex gap-2 rounded-t-[20px] bg-(--membership-name-bg) px-6 py-4 text-(--membership-name)">
                   <p className="font-bold">リスナー</p>
                   <MemberBadge />
@@ -64,7 +64,7 @@ export function CommentPreview({ config }: CommentPreviewProps) {
                 </div>
               </div>
 
-              <div className="font-sans text-base leading-6 font-medium tracking-wide not-italic">
+              <div className="font-sans text-base leading-6 font-medium not-italic">
                 <div className="flex gap-2 rounded-t-[20px] bg-(--membership-name-bg) px-6 pt-4 pb-0 text-(--membership-name)">
                   <p className="font-bold">リスナー</p>
                   <MemberBadge />
@@ -126,11 +126,13 @@ function TextComment({ config, name, message, member = false, showBadge = false 
   const borderColor = member ? 'border-(--member-comment-border)' : 'border-(--listener-comment-border)'
   const pointerOuterColor = member ? 'bg-(--member-comment-border)' : 'bg-(--listener-comment-border)'
   const pointerInnerColor = member ? 'bg-(--member-comment-bg)' : 'bg-(--listener-comment-bg)'
-  const outerPointerDirection = isRight ? '-right-1 -rotate-70 skew-x-20 skew-y-20' : '-left-1 -rotate-20 skew-x-20 skew-y-20'
-  const innerPointerDirection = isRight ? 'right-px rotate-110 skew-x-20 skew-y-20' : 'left-px -rotate-20 skew-x-20 skew-y-20'
+  const outerPointerDirection = isRight
+    ? 'right-[-3px] [transform:rotate(-70deg)_skew(20deg,20deg)]'
+    : 'left-[-3px] [transform:rotate(-20deg)_skew(20deg,20deg)]'
+  const innerPointerDirection = isRight ? 'right-px [transform:rotate(110deg)_skew(20deg,20deg)]' : 'left-px [transform:rotate(-20deg)_skew(20deg,20deg)]'
   const messageTemplateClasses: Record<CommentTemplate, string> = {
-    fukidashi: `rounded-4xl px-5 py-3 ${messageBackgroundColor} ${config.showBorder ? `border-3 border-solid ${borderColor}` : 'border-0'}`,
-    card: `rounded-[20px] px-6 py-4 text-left ${messageBackgroundColor} ${config.showBorder ? `border-3 border-solid ${borderColor}` : 'border-0'}`,
+    fukidashi: `rounded-[30px] px-5 py-3 ${messageBackgroundColor} ${config.showBorder ? `border-[3px] border-solid ${borderColor}` : 'border-0'}`,
+    card: `rounded-[20px] px-6 py-4 text-left ${messageBackgroundColor} ${config.showBorder ? `border-[3px] border-solid ${borderColor}` : 'border-0'}`,
     normal: 'bg-transparent p-0',
   }
 
@@ -149,7 +151,7 @@ function TextComment({ config, name, message, member = false, showBadge = false 
         <div className={config.showName ? 'block' : 'hidden'}>
           <div className={`flex gap-2 ${showProfileImage ? `${profileImageMinHeight} items-center` : ''} ${isRight ? 'justify-end' : 'justify-start'}`}>
             <div
-              className={`flex w-fit rounded-2xl ${nameVerticalPadding} ${nameFontSize}${nameFontWeight ? ` ${nameFontWeight}` : ''} ${nameHorizontalPadding} ${nameBackgroundColor} ${nameTextColor}`}
+              className={`flex w-fit rounded-[18px] ${nameVerticalPadding} ${nameFontSize}${nameFontWeight ? ` ${nameFontWeight}` : ''} ${nameHorizontalPadding} ${nameBackgroundColor} ${nameTextColor}`}
             >
               {name}
             </div>
@@ -159,13 +161,15 @@ function TextComment({ config, name, message, member = false, showBadge = false 
         <div className={`relative block w-fit overflow-visible font-medium ${messageTextColor} ${messageTemplateClasses[config.template]}`}>
           {isFukidashi && (
             <span
-              className={`absolute top-1 -z-1 block size-5 rounded-tl-lg rounded-br-lg ${pointerOuterColor} ${
+              className={`absolute top-1 z-[-1] block h-[21px] w-[21px] rounded-tl-[7px] rounded-br-[6px] ${pointerOuterColor} ${
                 config.showBorder ? 'block' : 'hidden'
               } ${outerPointerDirection}`}
             />
           )}
           {message}
-          {isFukidashi && <span className={`absolute top-2 z-0 block size-4 rounded-tl-sm rounded-br-2xl ${pointerInnerColor} ${innerPointerDirection}`} />}
+          {isFukidashi && (
+            <span className={`absolute top-[7px] z-0 block size-[18px] rounded-tl-sm rounded-br-[20px] ${pointerInnerColor} ${innerPointerDirection}`} />
+          )}
         </div>
       </div>
     </div>

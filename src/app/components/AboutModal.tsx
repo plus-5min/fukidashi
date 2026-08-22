@@ -30,16 +30,35 @@ export function AboutModal({ open, onClose }: AboutModalProps) {
               <p className="text-left text-xl font-bold text-foreground max-lg:text-center">アサヒナピピ</p>
               <nav aria-label="クリエイターリンク">
                 <ul className="flex flex-wrap items-center gap-4 max-lg:justify-center max-lg:gap-2">
-                  {creatorLinks.map(({ label, href, iconSrc, iconClassName }) => (
+                  {creatorLinks.map(({ label, href, iconSrc, hoverIconSrc, iconClassName, recolorOnHover }) => (
                     <li key={href}>
                       <a
-                        className="inline-flex min-h-12 items-center gap-2 rounded-full border border-border px-4 py-2 text-foreground transition-colors duration-200 hover:border-secondary hover:text-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none max-lg:px-2 max-lg:text-sm max-lg:hover:border-border max-lg:hover:text-foreground"
+                        className="group inline-flex min-h-12 items-center gap-2 rounded-full border border-border px-4 py-2 text-foreground transition-colors duration-200 hover:border-secondary hover:bg-secondary hover:text-on-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-reduce:transition-none max-lg:px-2 max-lg:text-sm max-lg:hover:border-border max-lg:hover:bg-transparent max-lg:hover:text-foreground"
                         href={href}
                         target="_blank"
                         rel="noreferrer"
                         aria-label={`${label}を開く`}
                       >
-                        <img className={`${iconClassName} object-contain brightness-0 invert`} src={iconSrc} alt="" />
+                        {hoverIconSrc ? (
+                          <span className={`${iconClassName} relative inline-block shrink-0`} aria-hidden="true">
+                            <img className="absolute inset-0 size-full object-contain group-hover:hidden max-lg:group-hover:block" src={iconSrc} alt="" />
+                            <img
+                              className="absolute inset-0 hidden size-full object-contain group-hover:block max-lg:group-hover:hidden"
+                              src={hoverIconSrc}
+                              alt=""
+                            />
+                          </span>
+                        ) : (
+                          <img
+                            className={`${iconClassName} object-contain${
+                              recolorOnHover
+                                ? ' brightness-0 invert transition-[filter] duration-200 group-hover:invert-0 motion-reduce:transition-none max-lg:group-hover:invert'
+                                : ''
+                            }`}
+                            src={iconSrc}
+                            alt=""
+                          />
+                        )}
                         <span>{label}</span>
                       </a>
                     </li>
