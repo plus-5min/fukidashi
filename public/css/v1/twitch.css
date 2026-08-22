@@ -139,6 +139,7 @@ span[data-a-target='chat-line-message-body'] {
   box-sizing: border-box;
   width: fit-content !important;
   max-width: 100%;
+  text-align: var(--comment-text-align, inherit);
   padding: var(--comment-padding, var(--comment-padding-block, 0) var(--comment-padding-inline, 0));
   border: var(--comment-border-width, 0) solid var(--chat-comment-border);
   border-radius: var(--comment-border-radius, var(--comment-radius, 0));

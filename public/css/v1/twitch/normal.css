@@ -5,3 +5,7 @@
   --pointer-display: none;
   --pointer-inner-display: none;
 }
+
+.chat-author__display-name {
+  font-weight: 500 !important;
+}

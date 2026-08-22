@@ -53,7 +53,14 @@ export function generateCss(config: GeneratorConfig, stylesheetOrigin: string): 
   }
 
   if (config.platform === 'youtube' && config.showProfileImage) {
+    const profileImageSize = config.template === 'normal' ? '24px' : '36px'
+
     layoutVariables['profile-image-display'] = 'block'
+
+    if (config.showName) {
+      layoutVariables['name-row-min-height'] = profileImageSize
+    }
+
   }
 
   if (!hasBorder && config.template !== 'normal') {
