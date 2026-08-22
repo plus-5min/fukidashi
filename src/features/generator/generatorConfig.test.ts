@@ -28,6 +28,8 @@ describe('generatorReducer', () => {
     expect(defaultGeneratorConfig.colors['member-name-bg']).toBe('#FFB5D5')
     expect(defaultGeneratorConfig.colors['member-comment']).toBe('#FFB5D5')
     expect(defaultGeneratorConfig.colors['member-comment-border']).toBe('#FFB5D5')
+    expect(defaultGeneratorConfig.colors['membership-name-bg']).toBe('#FFB5D5')
+    expect(defaultGeneratorConfig.colors['membership-comment-bg']).toBe('#FFB5D5')
   })
 
   it('指定した色だけを変更する', () => {
@@ -75,6 +77,8 @@ describe('generateCss', () => {
     expect(css).toContain(':root {')
     expect(css).not.toContain(':root {\n\n')
     expect(css).toContain('--listener-name-bg: #5997F2;')
+    expect(css).toContain('--membership-name-bg: #FFB5D5;')
+    expect(css).toContain('--membership-comment-bg: #FFB5D5;')
     expect(css).toContain('--comment-border-width: 0;')
     expect(css).not.toContain('--animation-name:')
     expect(css).not.toContain('--auto-margin-inline:')

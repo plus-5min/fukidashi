@@ -50,7 +50,7 @@ export type GeneratorConfig = {
 }
 
 const defaultPrimary = '#5997F2'
-const defaultSecondary = '#FFB5D5'
+const defaultSecondary = '#FFA3CB'
 
 export const defaultColors: GeneratorColors = {
   'listener-name': '#FFFFFF',
@@ -68,9 +68,9 @@ export const defaultColors: GeneratorColors = {
   'superchat-comment': '#FFFFFF',
   'superchat-comment-bg': defaultPrimary,
   'membership-name': '#FFFFFF',
-  'membership-name-bg': defaultPrimary,
+  'membership-name-bg': defaultSecondary,
   'membership-comment': '#FFFFFF',
-  'membership-comment-bg': defaultPrimary,
+  'membership-comment-bg': defaultSecondary,
 }
 
 export const defaultGeneratorConfig: GeneratorConfig = {
