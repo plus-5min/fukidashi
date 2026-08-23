@@ -137,7 +137,7 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
 
   return (
     <div className="flex h-full min-h-0 w-full max-w-md flex-col overflow-hidden rounded-4xl bg-surface max-lg:h-auto max-lg:max-w-none max-lg:overflow-visible">
-      <div className="controls-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain p-12 max-lg:flex-none max-lg:overflow-visible max-lg:p-4">
+      <div className="app-scrollbar min-h-0 flex-1 overflow-y-auto overscroll-contain p-12 max-lg:flex-none max-lg:overflow-visible max-lg:p-4">
         <div className="flex flex-col gap-12 max-lg:gap-4">
           <div>
             <h3 id="platform-label" className="font-poppins mb-4 flex items-center gap-2 text-xl font-semibold text-foreground">

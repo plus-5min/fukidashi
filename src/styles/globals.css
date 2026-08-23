@@ -49,24 +49,24 @@ body {
   outline-color: var(--color-primary);
 }
 
-.controls-scrollbar {
+.app-scrollbar {
   scrollbar-gutter: stable;
 }
 
-.controls-scrollbar::-webkit-scrollbar {
+.app-scrollbar::-webkit-scrollbar {
   width: 0.75rem;
 }
 
-.controls-scrollbar::-webkit-scrollbar-track {
+.app-scrollbar::-webkit-scrollbar-track {
   margin-block-start: 2rem;
   background-color: transparent;
 }
 
-.controls-scrollbar::-webkit-scrollbar-corner {
+.app-scrollbar::-webkit-scrollbar-corner {
   background-color: transparent;
 }
 
-.controls-scrollbar::-webkit-scrollbar-thumb {
+.app-scrollbar::-webkit-scrollbar-thumb {
   min-height: 2.75rem;
   border: 0.1875rem solid transparent;
   border-radius: 9999px;
@@ -74,16 +74,16 @@ body {
   background-clip: content-box;
 }
 
-.controls-scrollbar::-webkit-scrollbar-thumb:hover {
+.app-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-surface-hover);
 }
 
-.controls-scrollbar::-webkit-scrollbar-button {
+.app-scrollbar::-webkit-scrollbar-button {
   display: none;
 }
 
 @supports not selector(::-webkit-scrollbar) {
-  .controls-scrollbar {
+  .app-scrollbar {
     scrollbar-color: var(--color-surface-raised) transparent;
     scrollbar-width: thin;
   }
