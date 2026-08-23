@@ -10,6 +10,7 @@ describe('CreateModal', () => {
     expect(html).toContain('for="custom-css"')
     expect(html).toContain('生成されたCSS')
     expect(html).toContain('font-mono')
+    expect(html).toContain('app-scrollbar relative min-h-48')
     expect(html).toContain('aria-label="CSSをコピー"')
     expect(html).toContain('role="status"')
     expect(html).toContain('aria-live="polite"')
