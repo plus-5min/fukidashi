@@ -1,0 +1,50 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Noto Sans JP', sans-serif;
+  --font-poppins: 'Poppins', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --color-primary: #5997f2;
+  --color-secondary: #ffb5d5;
+  --color-secondary-strong: #ffa3cb;
+  --color-background: #1a1b20;
+  --color-surface: #27292c;
+  --color-surface-raised: #383a3d;
+  --color-surface-hover: #44464a;
+  --color-action-surface: #3b3d3e;
+  --color-foreground: #ffffff;
+  --color-foreground-muted: #a9a9ad;
+  --color-border: #5b5d63;
+  --color-on-primary: #1a1b20;
+  --color-overlay: rgb(0 0 0 / 70%);
+}
+
+@keyframes copy-success {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) rotate(-8deg);
+  }
+
+  70% {
+    transform: scale(1.12) rotate(0deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+body {
+  min-height: 100%;
+  width: 100%;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  color-scheme: dark;
+  font-family: var(--font-sans);
+  letter-spacing: 0.05rem;
+}
+
+:where(a, button, input, textarea, select, summary, [tabindex]) {
+  outline-color: var(--color-primary);
+}

@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+@import url('https://plus-5min.github.io/live-chat-css/twitch/hide.css');
+
+:root {
+  --font: 'Noto Sans JP', sans-serif;
+}
+
+@keyframes popInLeft {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes popInRight {
+  0% {
+    opacity: 0;
+    transform: translate(50%, -50%) scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* ----------------------------------------------------
+      app settings
+    ---------------------------------------------------- */
+html,
+body,
+#root,
+.chat-room,
+.chat-line__moderation,
+.chat-line__status,
+.chat-line__message {
+  margin: 0 auto;
+  background-color: transparent !important;
+}
+
+body,
+.chat-room,
+.chat-line__moderation,
+.chat-line__status,
+.chat-line__message,
+.chat-line__message * {
+  font-family: var(--font) !important;
+  font-size: 16px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0.5px !important;
+}
+
+body,
+.chat-room,
+.scrollable-area {
+  overflow: hidden !important;
+}
+
+.chat-scrollable-area__message-container {
+  padding-block-start: 0 !important;
+}
+
+/* ----------------------------------------------------
+      text message
+    ---------------------------------------------------- */
+.chat-line__message {
+  --chat-name: var(--listener-name);
+  --chat-name-bg: var(--listener-name-bg);
+  --chat-comment: var(--listener-comment);
+  --chat-comment-bg: var(--listener-comment-bg);
+  --chat-comment-rendered-bg: var(--comment-background, var(--chat-comment-bg));
+  --chat-comment-border: var(--listener-comment-border);
+
+  position: relative;
+  display: block !important;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px 16px !important;
+  overflow: visible !important;
+  animation: var(--animation-name, popInLeft) 0.3s ease-out forwards;
+}
+
+.chat-line__no-background {
+  display: grid !important;
+  grid-gap: 6px;
+  width: fit-content;
+  margin-inline: var(--auto-margin-inline, var(--auto-margin-left, 0) var(--auto-margin-right, auto));
+}
+
+.chat-line__username-container,
+.chat-line__username-container.chat-line__username-container--hoverable {
+  display: flex !important;
+  flex-direction: row-reverse;
+  align-items: center;
+  grid-gap: 8px;
+  width: fit-content;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-inline: var(--auto-margin-inline, var(--auto-margin-left, 0) var(--auto-margin-right, auto));
+}
+
+.chat-line__username-container span {
+  display: var(--name-display, block);
+}
+
+.chat-line__username {
+  display: var(--name-display, block) !important;
+  padding: var(--name-padding, 4px var(--name-padding-inline, 0));
+  border-radius: 18px;
+  background-color: var(--chat-name-bg) !important;
+}
+
+.chat-author__display-name {
+  display: var(--name-display, block) !important;
+  width: fit-content;
+  color: var(--chat-name) !important;
+  text-wrap: wrap;
+}
+
+.chat-badge {
+  display: var(--name-display, block) !important;
+  margin-bottom: 0 !important;
+  vertical-align: bottom !important;
+}
+
+span[data-a-target='chat-line-message-body'] {
+  position: relative;
+  display: block !important;
+  box-sizing: border-box;
+  width: fit-content !important;
+  max-width: 100%;
+  text-align: var(--comment-text-align, inherit);
+  padding: var(--comment-padding, var(--comment-padding-block, 0) var(--comment-padding-inline, 0));
+  border: var(--comment-border-width, 0) solid var(--chat-comment-border);
+  border-radius: var(--comment-border-radius, var(--comment-radius, 0));
+  background-color: var(--chat-comment-rendered-bg) !important;
+  color: var(--chat-comment) !important;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  margin-inline: var(--auto-margin-inline, var(--auto-margin-left, 0) var(--auto-margin-right, auto));
+}
+
+span[data-a-target='chat-line-message-body'] a {
+  color: var(--chat-comment) !important;
+}
+
+span[data-a-target='chat-line-message-body']::before {
+  content: var(--pointer-content, '');
+  display: var(--pointer-display, inline);
+  position: absolute;
+  top: 4px;
+  inset-inline: var(--pointer-outer-inset-inline, var(--pointer-outer-left, -3px) var(--pointer-outer-right, auto));
+  width: 21px;
+  height: 21px;
+  transform: var(--pointer-outer-transform, rotate(-20deg) skew(20deg, 20deg));
+  background-color: var(--chat-comment-border);
+  border-top-left-radius: 7px;
+  border-bottom-right-radius: 6px;
+  z-index: -1;
+}
+
+span[data-a-target='chat-line-message-body']::after {
+  content: var(--pointer-inner-content, '');
+  display: var(--pointer-inner-display, inline);
+  position: absolute;
+  top: 7px;
+  inset-inline: var(--pointer-inner-inset-inline, var(--pointer-inner-left, 1px) var(--pointer-inner-right, auto));
+  width: 18px;
+  height: 18px;
+  transform: var(--pointer-inner-transform, rotate(-20deg) skew(20deg, 20deg));
+  background-color: var(--chat-comment-bg);
+  border-top-left-radius: 4px;
+  border-bottom-right-radius: 20px;
+  z-index: 0;
+}
+
+.chat-line__message--emote {
+  margin: 0 !important;
+}

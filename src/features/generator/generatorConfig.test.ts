@@ -1,0 +1,363 @@
+import { readFileSync } from 'node:fs'
+
+import { describe, expect, it } from 'vitest'
+
+import { generateCss } from './generateCss'
+import { defaultGeneratorConfig, generatorReducer, primaryColorKeys } from './generatorConfig'
+
+const youtubeStylesheet = readFileSync(new URL('../../../public/css/v1/youtube.css', import.meta.url), 'utf8')
+const twitchStylesheet = readFileSync(new URL('../../../public/css/v1/twitch.css', import.meta.url), 'utf8')
+const youtubeFukidashiStylesheet = readFileSync(new URL('../../../public/css/v1/youtube/fukidashi.css', import.meta.url), 'utf8')
+const youtubeCardStylesheet = readFileSync(new URL('../../../public/css/v1/youtube/card.css', import.meta.url), 'utf8')
+const youtubeNormalStylesheet = readFileSync(new URL('../../../public/css/v1/youtube/normal.css', import.meta.url), 'utf8')
+const twitchCardStylesheet = readFileSync(new URL('../../../public/css/v1/twitch/card.css', import.meta.url), 'utf8')
+const twitchNormalStylesheet = readFileSync(new URL('../../../public/css/v1/twitch/normal.css', import.meta.url), 'utf8')
+const stylesheetOrigin = 'https://fukidashi-css.com'
+
+function generateTestCss(config: Parameters<typeof generateCss>[0]): string {
+  return generateCss(config, stylesheetOrigin)
+}
+
+describe('generatorReducer', () => {
+  it('初回表示は吹き出し、アイコンあり、枠線なしにする', () => {
+    expect(defaultGeneratorConfig.template).toBe('fukidashi')
+    expect(defaultGeneratorConfig.showProfileImage).toBe(true)
+    expect(defaultGeneratorConfig.showBorder).toBe(false)
+    expect(defaultGeneratorConfig.colors['listener-name-bg']).toBe('#5997F2')
+    expect(defaultGeneratorConfig.colors['listener-comment']).toBe('#5997F2')
+    expect(defaultGeneratorConfig.colors['member-name-bg']).toBe('#FFA3CB')
+    expect(defaultGeneratorConfig.colors['member-comment']).toBe('#FFA3CB')
+    expect(defaultGeneratorConfig.colors['member-comment-border']).toBe('#FFA3CB')
+    expect(defaultGeneratorConfig.colors['membership-name-bg']).toBe('#FFA3CB')
+    expect(defaultGeneratorConfig.colors['membership-comment-bg']).toBe('#FFA3CB')
+  })
+
+  it('指定した色だけを変更する', () => {
+    const nextConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'colorChanged',
+      key: 'listener-name-bg',
+      value: '#fb83ab',
+    })
+
+    expect(nextConfig.colors['listener-name-bg']).toBe('#FB83AB')
+    expect(defaultGeneratorConfig.colors['listener-name-bg']).toBe('#5997F2')
+  })
+
+  it('Primaryに対応する色だけを一括で変更する', () => {
+    const nextConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'primaryColorChanged',
+      value: '#fb83ab',
+    })
+
+    for (const key of primaryColorKeys) {
+      expect(nextConfig.colors[key]).toBe('#FB83AB')
+    }
+    expect(nextConfig.colors['member-name-bg']).toBe('#FB83AB')
+    expect(nextConfig.colors['member-comment']).toBe('#FB83AB')
+    expect(nextConfig.colors['member-comment-border']).toBe('#FB83AB')
+    expect(nextConfig.colors['member-name']).toBe('#FFFFFF')
+    expect(nextConfig.colors['listener-comment-bg']).toBe('#FFFFFF')
+  })
+
+  it('コメントテンプレートを変更する', () => {
+    const nextConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'templateChanged',
+      value: 'card',
+    })
+
+    expect(nextConfig.template).toBe('card')
+  })
+})
+
+describe('generateCss', () => {
+  it('YouTube用の配信CSSと設定変数だけを生成する', () => {
+    const css = generateTestCss(defaultGeneratorConfig)
+
+    expect(css).toContain('@import url("https://fukidashi-css.com/css/v1/youtube/fukidashi.css");')
+    expect(css).toContain(':root {')
+    expect(css).not.toContain(':root {\n\n')
+    expect(css).toContain('--listener-name-bg: #5997F2;')
+    expect(css).toContain('--membership-name-bg: #FFA3CB;')
+    expect(css).toContain('--membership-comment-bg: #FFA3CB;')
+    expect(css).toContain('--comment-border-width: 0;')
+    expect(css).not.toContain('--animation-name:')
+    expect(css).not.toContain('--auto-margin-inline:')
+    expect(css).toContain('--profile-image-display: block;')
+    expect(css).not.toContain('yt-live-chat-text-message-renderer')
+  })
+
+  it('指定されたoriginから配信CSSのURLを生成する', () => {
+    const css = generateCss(defaultGeneratorConfig, 'http://localhost:5173')
+
+    expect(css).toContain('@import url("http://localhost:5173/css/v1/youtube/fukidashi.css");')
+    expect(css).not.toContain(stylesheetOrigin)
+  })
+
+  it('配信するYouTube CSSが現在の対象要素と外部の非表示CSSを維持する', () => {
+    expect(youtubeStylesheet).toContain('https://plus-5min.github.io/live-chat-css/youtube/hide.css')
+    expect(youtubeStylesheet).toContain('ytd-sponsorships-live-chat-gift-purchase-announcement-renderer #header')
+    expect(youtubeStylesheet).toContain('#price-column.yt-live-chat-paid-sticker-renderer')
+    expect(youtubeStylesheet).toContain(':has(#message.yt-live-chat-paid-message-renderer:empty)')
+    expect(youtubeStylesheet).toMatch(
+      /yt-live-chat-paid-message-renderer:has\(#message\.yt-live-chat-paid-message-renderer:empty\) #header\.yt-live-chat-paid-message-renderer \{\s*border-radius: var\(--card-radius\);/,
+    )
+    expect(youtubeStylesheet).toContain('yt-live-chat-app {')
+    expect(youtubeStylesheet).toMatch(/body \{\s*overflow: hidden;\s*background-color: rgba\(0, 0, 0, 0\);\s*\}/)
+    expect(youtubeStylesheet).toContain('animation: var(--animation-name, popInLeft)')
+    expect(youtubeStylesheet).toContain('var(--name-padding-inline, 0)')
+    expect(youtubeStylesheet).toContain('var(--comment-padding-block, 0) var(--comment-padding-inline, 0)')
+    expect(youtubeStylesheet).toContain('var(--comment-border-radius, var(--comment-radius, 0))')
+    expect(youtubeStylesheet).toContain('text-align: var(--comment-text-align, inherit);')
+    expect(youtubeStylesheet).toContain('display: var(--pointer-display, inline);')
+    expect(youtubeStylesheet).toContain('var(--auto-margin-left, 0) var(--auto-margin-right, auto)')
+    expect(youtubeStylesheet).toContain('var(--pointer-outer-left, -3px) var(--pointer-outer-right, auto)')
+    expect(youtubeStylesheet).toMatch(
+      /#author-photo[\s\S]*width: var\(--profile-image-size, 36px\);[\s\S]*height: var\(--profile-image-size, 36px\);/,
+    )
+    expect(youtubeStylesheet).toContain('margin: 0 auto 8px;')
+    expect(youtubeStylesheet).toContain('align-items: center !important;')
+    expect(youtubeStylesheet).not.toContain('font-weight: 700')
+    expect(youtubeStylesheet).toContain('--card-radius: 20px;')
+    expect(youtubeStylesheet).toContain("--amount-font: 'Inter', sans-serif;")
+    expect(youtubeStylesheet).toContain('font-family: var(--amount-font) !important;')
+    expect(youtubeStylesheet).toMatch(/#purchase-amount yt-formatted-string[\s\S]*font-size: 12px !important;/)
+    expect(youtubeStylesheet).toMatch(/#purchase-amount-chip\.yt-live-chat-paid-sticker-renderer \*[\s\S]*font-size: 12px !important;/)
+    expect(youtubeStylesheet).toMatch(/#single-line\.yt-live-chat-paid-message-renderer[\s\S]*align-items: center;/)
+    expect(youtubeStylesheet).not.toContain('border-radius: 13px;')
+    expect(youtubeStylesheet).toContain('padding: 16px 24px;')
+    expect(youtubeStylesheet).toContain('padding: 0px 24px 16px;')
+    expect(youtubeStylesheet).toContain('padding: 0 24px 16px;')
+    expect(youtubeStylesheet).toMatch(
+      /yt-live-chat-paid-message-renderer #content\.yt-live-chat-paid-message-renderer \{\s*color: var\(--superchat-comment\);\s*padding: 16px 24px;/,
+    )
+    expect(youtubeStylesheet).toMatch(
+      /#content\.yt-live-chat-membership-item-renderer \{[\s\S]*?padding: 16px 24px;/,
+    )
+    expect(youtubeStylesheet.match(/ytd-sponsorships-live-chat-gift-purchase-announcement-renderer #author-name\.member\.yt-live-chat-author-chip/g)).toHaveLength(1)
+    expect(youtubeStylesheet).toMatch(
+      /ytd-sponsorships-live-chat-gift-purchase-announcement-renderer #author-name\.member\.yt-live-chat-author-chip \{[\s\S]*?padding: 16px 24px 0;/,
+    )
+    expect(youtubeStylesheet).toContain('padding: 6px 24px 16px;')
+    expect(youtubeStylesheet.match(/padding: 8px 12px;/g)).toHaveLength(2)
+    expect(youtubeStylesheet).not.toContain('padding: 12px 20px')
+    expect(youtubeStylesheet).not.toContain('20px 12px')
+    expect(youtubeStylesheet).toMatch(/yt-live-chat-paid-message-renderer \*[\s\S]*font-weight: 500 !important;/)
+    expect(youtubeStylesheet).toMatch(/#purchase-amount yt-formatted-string[\s\S]*font-weight: 500 !important;/)
+    expect(youtubeStylesheet).toMatch(
+      /#purchase-amount-column[\s\S]*background-color: var\(--superchat-name\);[\s\S]*#purchase-amount yt-formatted-string[\s\S]*color: var\(--superchat-name-bg\) !important;/,
+    )
+    expect(youtubeStylesheet).not.toContain('{{')
+  })
+
+  it('YouTubeの非表示処理を外部のhide.cssに任せる', () => {
+    expect(youtubeStylesheet).not.toContain('#creator-heart-button.yt-live-chat-paid-message-renderer')
+    expect(youtubeStylesheet).not.toContain('yt-live-chat-ticker-renderer')
+    expect(youtubeStylesheet).not.toContain('yt-live-chat-message-input-renderer')
+    expect(youtubeStylesheet).not.toContain('yt-live-chat-header-renderer {')
+  })
+
+  it('YouTubeのテンプレート設定を配信CSSへ分離する', () => {
+    expect(youtubeFukidashiStylesheet).toContain("@import url('../youtube.css');")
+    expect(youtubeFukidashiStylesheet).toContain('--name-padding-inline: 12px;')
+    expect(youtubeFukidashiStylesheet).toContain('--comment-padding-block: 12px;')
+    expect(youtubeFukidashiStylesheet).toContain('--comment-padding-inline: 20px;')
+    expect(youtubeFukidashiStylesheet).toContain('--comment-radius: 30px;')
+    expect(youtubeFukidashiStylesheet).toContain('--comment-border-width: 3px;')
+    expect(youtubeFukidashiStylesheet).toContain('--pointer-display: block;')
+    expect(youtubeFukidashiStylesheet).toContain('--pointer-inner-display: block;')
+    expect(youtubeCardStylesheet).toContain('--comment-padding-block: 16px;')
+    expect(youtubeCardStylesheet).toContain('--comment-padding-inline: 24px;')
+    expect(youtubeCardStylesheet).toContain('--comment-radius: 20px;')
+    expect(youtubeCardStylesheet).toContain('--comment-text-align: left;')
+    expect(youtubeCardStylesheet).toContain('--pointer-display: none;')
+    expect(youtubeNormalStylesheet).toContain('--comment-background: transparent;')
+    expect(youtubeNormalStylesheet).toContain('--profile-image-size: 24px;')
+    expect(youtubeNormalStylesheet).toContain('--name-font-size: 16px;')
+    expect(youtubeNormalStylesheet).not.toContain('--name-font-weight:')
+    expect(youtubeNormalStylesheet).not.toContain('--name-align-items:')
+    expect(youtubeNormalStylesheet).toContain('--name-padding: 0;')
+    expect(youtubeNormalStylesheet).not.toContain('--name-margin-top:')
+    expect(youtubeNormalStylesheet).not.toContain('#author-name')
+  })
+
+  it('初回表示の枠線なしをCSSへ反映する', () => {
+    const css = generateTestCss(defaultGeneratorConfig)
+
+    expect(css).toContain('--comment-border-width: 0;')
+    expect(css).toContain('--pointer-display: none;')
+    expect(css).not.toContain('--pointer-inner-content:')
+  })
+
+  it('Twitch用の配信CSSと必要な色だけを生成する', () => {
+    const config = generatorReducer(defaultGeneratorConfig, {
+      type: 'platformChanged',
+      value: 'twitch',
+    })
+    const css = generateTestCss(config)
+
+    expect(css).toContain('@import url("https://fukidashi-css.com/css/v1/twitch/fukidashi.css");')
+    expect(css).toContain('--listener-comment-border: #5997F2;')
+    expect(css).not.toContain('--member-name:')
+    expect(css).not.toContain('.chat-line__message')
+  })
+
+  it('配信するTwitch CSSが現在の対象要素と外部の非表示CSSを維持する', () => {
+    expect(twitchStylesheet).toContain('https://plus-5min.github.io/live-chat-css/twitch/hide.css')
+    expect(twitchStylesheet).toContain('.chat-line__message')
+    expect(twitchStylesheet).toContain('.chat-scrollable-area__message-container')
+    expect(twitchStylesheet).toContain('overflow-wrap: anywhere;')
+    expect(twitchStylesheet).toContain('animation: var(--animation-name, popInLeft)')
+    expect(twitchStylesheet).toContain('var(--name-padding-inline, 0)')
+    expect(twitchStylesheet).toContain('var(--comment-padding-block, 0) var(--comment-padding-inline, 0)')
+    expect(twitchStylesheet).toContain('var(--comment-border-radius, var(--comment-radius, 0))')
+    expect(twitchStylesheet).toContain('text-align: var(--comment-text-align, inherit);')
+    expect(twitchStylesheet).toContain('display: var(--pointer-display, inline);')
+    expect(twitchStylesheet).toContain('var(--auto-margin-left, 0) var(--auto-margin-right, auto)')
+    expect(twitchStylesheet).toContain('var(--pointer-outer-left, -3px) var(--pointer-outer-right, auto)')
+    expect(twitchStylesheet).not.toContain('yt-live-chat-paid-message-renderer')
+    expect(twitchStylesheet).not.toContain('{{')
+    expect(twitchCardStylesheet).toContain("@import url('../twitch.css');")
+    expect(twitchCardStylesheet).toContain('--comment-padding-block: 16px;')
+    expect(twitchCardStylesheet).toContain('--comment-padding-inline: 24px;')
+    expect(twitchCardStylesheet).toContain('--comment-radius: 20px;')
+    expect(twitchCardStylesheet).toContain('--comment-text-align: left;')
+  })
+
+  it('Twitchの非表示処理を外部のhide.cssに任せる', () => {
+    expect(twitchStylesheet).not.toContain('.simplebar-scrollbar')
+    expect(twitchStylesheet).not.toContain('.chat-line__timestamp')
+    expect(twitchStylesheet).not.toContain('.stream-chat-header')
+    expect(twitchStylesheet).not.toContain('.community-highlight-stack')
+  })
+
+  it('Twitchのcard用CSSを生成する', () => {
+    const twitchConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'platformChanged',
+      value: 'twitch',
+    })
+    const config = generatorReducer(twitchConfig, {
+      type: 'templateChanged',
+      value: 'card',
+    })
+    const css = generateTestCss(config)
+
+    expect(css).not.toContain('--comment-background:')
+    expect(css).toContain('@import url("https://fukidashi-css.com/css/v1/twitch/card.css");')
+    expect(css).toContain('--comment-border-width: 0;')
+    expect(css).not.toContain('--pointer-content:')
+    expect(css).not.toContain('--pointer-inner-content:')
+  })
+
+  it('card用CSSを生成する', () => {
+    const config = generatorReducer(defaultGeneratorConfig, {
+      type: 'templateChanged',
+      value: 'card',
+    })
+    const css = generateTestCss(config)
+
+    expect(css).not.toContain('--comment-background:')
+    expect(css).toContain('@import url("https://fukidashi-css.com/css/v1/youtube/card.css");')
+    expect(css).not.toContain('--comment-border-radius:')
+    expect(css).not.toContain('--comment-padding:')
+    expect(css).toContain('--comment-border-width: 0;')
+    expect(css).not.toContain('--pointer-content:')
+    expect(css).not.toContain('--pointer-inner-content:')
+  })
+
+  it('normal用CSSを生成する', () => {
+    const config = generatorReducer(defaultGeneratorConfig, {
+      type: 'templateChanged',
+      value: 'normal',
+    })
+    const css = generateTestCss(config)
+
+    expect(css).toContain('@import url("https://fukidashi-css.com/css/v1/youtube/normal.css");')
+    expect(css).not.toContain('--comment-background:')
+    expect(css).toContain('--listener-name: #5997F2;')
+    expect(css).toContain('--listener-name-bg: transparent;')
+    expect(css).toContain('--listener-comment: #5997F2;')
+    expect(css).toContain('--member-name: #FFA3CB;')
+    expect(css).toContain('--member-name-bg: transparent;')
+    expect(css).toContain('--member-comment: #FFA3CB;')
+    expect(css).not.toContain('--listener-comment-bg:')
+    expect(css).not.toContain('--listener-comment-border:')
+    expect(css).not.toContain('--member-comment-bg:')
+    expect(css).not.toContain('--member-comment-border:')
+    expect(css).not.toContain('--animation-name:')
+    expect(css).not.toContain('--name-display:')
+    expect(css).not.toContain('--name-padding:')
+    expect(css).not.toContain('--comment-border-radius:')
+    expect(css).not.toContain('--comment-padding:')
+    expect(css).not.toContain('--comment-border-width:')
+    expect(css).not.toContain('--pointer-content:')
+    expect(css).not.toContain('--pointer-inner-content:')
+    expect(css).not.toContain('--auto-margin-inline:')
+    expect(css).not.toContain('--message-flex-direction:')
+    expect(css).not.toContain('--message-justify-content:')
+    expect(css).toContain('--profile-image-display: block;')
+  })
+
+  it('Twitchのnormalではコメント文字色だけを生成する', () => {
+    const twitchConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'platformChanged',
+      value: 'twitch',
+    })
+    const config = generatorReducer(twitchConfig, {
+      type: 'templateChanged',
+      value: 'normal',
+    })
+    const css = generateTestCss(config)
+
+    expect(css).toContain('@import url("https://fukidashi-css.com/css/v1/twitch/normal.css");')
+    expect(css).toContain('--listener-name: #5997F2;')
+    expect(css).toContain('--listener-name-bg: transparent;')
+    expect(css).toContain('--listener-comment: #5997F2;')
+    expect(css).not.toContain('--listener-comment-bg:')
+    expect(css).not.toContain('--listener-comment-border:')
+    expect(twitchStylesheet).toContain('font-weight: 500 !important;')
+    expect(twitchStylesheet).not.toContain('font-weight: 700')
+    expect(twitchNormalStylesheet).not.toContain('--name-font-weight:')
+    expect(twitchNormalStylesheet).not.toContain('--comment-font-weight:')
+    expect(twitchNormalStylesheet).not.toContain('.chat-author__display-name')
+  })
+
+  it('右寄せ用の変数を生成する', () => {
+    const borderedConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'visibilityChanged',
+      key: 'showBorder',
+      value: true,
+    })
+    const config = generatorReducer(borderedConfig, {
+      type: 'directionChanged',
+      value: 'right',
+    })
+    const css = generateTestCss(config)
+
+    expect(css).toContain('--animation-name: popInRight;')
+    expect(css).toContain('--auto-margin-inline: auto 0;')
+    expect(css).toContain('--message-flex-direction: row-reverse;')
+    expect(css).toContain('--message-justify-content: end;')
+    expect(css).toContain('--pointer-outer-inset-inline: auto -3px;')
+    expect(css).toContain('--pointer-inner-inset-inline: auto 1px;')
+  })
+
+  it('名前とアイコンの非表示をCSSへ反映する', () => {
+    const hiddenNameConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'visibilityChanged',
+      key: 'showName',
+      value: false,
+    })
+    const hiddenNameCss = generateTestCss(hiddenNameConfig)
+    const config = generatorReducer(hiddenNameConfig, {
+      type: 'visibilityChanged',
+      key: 'showProfileImage',
+      value: false,
+    })
+    const css = generateTestCss(config)
+
+    expect(hiddenNameCss).toContain('--name-display: none;')
+    expect(hiddenNameCss).toContain('--profile-image-display: block;')
+    expect(css).toContain('--name-display: none;')
+    expect(css).not.toContain('--profile-image-display:')
+  })
+})
