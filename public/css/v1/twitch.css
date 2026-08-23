@@ -123,7 +123,7 @@ body,
   display: var(--name-display, block) !important;
   width: fit-content;
   color: var(--chat-name) !important;
-  font-weight: 700;
+  font-weight: var(--name-font-weight, 700);
   text-wrap: wrap;
 }
 

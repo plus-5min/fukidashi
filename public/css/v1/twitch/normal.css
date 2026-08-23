@@ -1,11 +1,8 @@
 @import url('../twitch.css');
 
 :root {
+  --name-font-weight: 500;
   --comment-background: transparent;
   --pointer-display: none;
   --pointer-inner-display: none;
-}
-
-.chat-author__display-name {
-  font-weight: 500 !important;
 }

@@ -3,13 +3,10 @@
 :root {
   --profile-image-size: 24px;
   --name-font-size: 16px;
+  --name-font-weight: 500;
   --name-padding: 0;
   --name-margin-top: 0;
   --comment-background: transparent;
   --pointer-display: none;
   --pointer-inner-display: none;
-}
-
-yt-live-chat-text-message-renderer #author-name.yt-live-chat-author-chip {
-  font-weight: 500 !important;
 }

@@ -112,6 +112,7 @@ describe('generateCss', () => {
       /#author-photo[\s\S]*width: var\(--profile-image-size, 36px\);[\s\S]*height: var\(--profile-image-size, 36px\);/,
     )
     expect(youtubeStylesheet).toContain('margin: var(--name-margin-top, 5px) auto 8px;')
+    expect(youtubeStylesheet).toContain('font-weight: var(--name-font-weight, 700) !important;')
     expect(youtubeStylesheet).toContain('--card-radius: 20px;')
     expect(youtubeStylesheet).toContain("--amount-font: 'Inter', sans-serif;")
     expect(youtubeStylesheet).toContain('font-family: var(--amount-font) !important;')
@@ -156,9 +157,10 @@ describe('generateCss', () => {
     expect(youtubeNormalStylesheet).toContain('--comment-background: transparent;')
     expect(youtubeNormalStylesheet).toContain('--profile-image-size: 24px;')
     expect(youtubeNormalStylesheet).toContain('--name-font-size: 16px;')
+    expect(youtubeNormalStylesheet).toContain('--name-font-weight: 500;')
     expect(youtubeNormalStylesheet).toContain('--name-padding: 0;')
     expect(youtubeNormalStylesheet).toContain('--name-margin-top: 0;')
-    expect(youtubeNormalStylesheet).toMatch(/#author-name\.yt-live-chat-author-chip[\s\S]*font-weight: 500 !important;/)
+    expect(youtubeNormalStylesheet).not.toContain('#author-name')
   })
 
   it('初回表示の枠線なしをCSSへ反映する', () => {
@@ -297,7 +299,9 @@ describe('generateCss', () => {
     expect(css).toContain('--listener-comment: #5997F2;')
     expect(css).not.toContain('--listener-comment-bg:')
     expect(css).not.toContain('--listener-comment-border:')
-    expect(twitchNormalStylesheet).toMatch(/\.chat-author__display-name[\s\S]*font-weight: 500 !important;/)
+    expect(twitchStylesheet).toContain('font-weight: var(--name-font-weight, 700);')
+    expect(twitchNormalStylesheet).toContain('--name-font-weight: 500;')
+    expect(twitchNormalStylesheet).not.toContain('.chat-author__display-name')
   })
 
   it('右寄せ用の変数を生成する', () => {

@@ -26,9 +26,12 @@ yt-live-chat-text-message-renderer * {
 ytd-sponsorships-live-chat-header-renderer #author-name,
 yt-live-chat-paid-sticker-renderer #author-name,
 yt-live-chat-membership-item-renderer #author-name,
-yt-live-chat-paid-message-renderer #author-name,
-yt-live-chat-text-message-renderer #author-name {
+yt-live-chat-paid-message-renderer #author-name {
   font-weight: 700 !important;
+}
+
+yt-live-chat-text-message-renderer #author-name {
+  font-weight: var(--name-font-weight, 700) !important;
 }
 
 ytd-sponsorships-live-chat-header-renderer #message,
