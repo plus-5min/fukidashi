@@ -12,6 +12,13 @@ function renderControls(config: GeneratorConfig, activePreset: PresetName | null
 }
 
 describe('GeneratorControls', () => {
+  it('設定領域に共通デザインのスクロールバーを適用する', () => {
+    const html = renderControls(defaultGeneratorConfig)
+
+    expect(html).toContain('controls-scrollbar min-h-0 flex-1 overflow-y-auto')
+    expect(html).toContain('p-12 max-lg:flex-none max-lg:overflow-visible max-lg:p-4')
+  })
+
   it('メイン見出しをxl、表示設定ラベルをbaseサイズで表示する', () => {
     const html = renderControls(defaultGeneratorConfig)
 
