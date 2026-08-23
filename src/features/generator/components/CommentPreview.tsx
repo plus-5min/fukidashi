@@ -45,9 +45,9 @@ export function CommentPreview({ config }: CommentPreviewProps) {
               <div className="font-sans text-base leading-6 font-medium not-italic">
                 <div className="relative flex items-center justify-between rounded-t-[20px] bg-(--superchat-name-bg) px-6 py-4 text-(--superchat-name)">
                   <p className="font-bold">リスナー </p>
-                  <p className="font-inter rounded-full bg-(--superchat-name) px-3 py-2 leading-none text-(--superchat-name-bg)">￥5,000</p>
+                  <p className="font-inter rounded-full bg-(--superchat-name) px-3 py-2 text-xs leading-none text-(--superchat-name-bg)">￥5,000</p>
                 </div>
-                <div className="rounded-b-[20px] bg-(--superchat-comment-bg) px-6 pt-0 pb-4 font-medium text-(--superchat-comment)">
+                <div className="rounded-b-[20px] bg-(--superchat-comment-bg) px-6 py-4 font-medium text-(--superchat-comment)">
                   <p>
                     ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。
                   </p>
@@ -75,7 +75,7 @@ export function CommentPreview({ config }: CommentPreviewProps) {
                 <div className="bg-(--membership-name-bg) px-6 pt-1.5 pb-4 font-medium text-(--membership-name)">
                   <p>メンバーシップ</p>
                 </div>
-                <div className="rounded-b-[20px] bg-(--membership-comment-bg) px-6 pt-0 pb-4 text-(--membership-comment)">
+                <div className="rounded-b-[20px] bg-(--membership-comment-bg) px-6 py-4 text-(--membership-comment)">
                   <p>ここにコメントが入ります。</p>
                 </div>
               </div>
@@ -149,7 +149,7 @@ function TextComment({ config, name, message, member = false, showBadge = false 
       </div>
       <div className="grid gap-1.5">
         <div className={config.showName ? 'block' : 'hidden'}>
-          <div className={`flex gap-2 ${showProfileImage ? `${profileImageMinHeight} items-center` : ''} ${isRight ? 'justify-end' : 'justify-start'}`}>
+          <div className={`flex gap-2 ${showProfileImage ? `${profileImageMinHeight}${isNormal ? '' : ' items-center'}` : ''} ${isRight ? 'justify-end' : 'justify-start'}`}>
             <div
               className={`flex w-fit rounded-[18px] ${nameVerticalPadding} ${nameFontSize}${nameFontWeight ? ` ${nameFontWeight}` : ''} ${nameHorizontalPadding} ${nameBackgroundColor} ${nameTextColor}`}
             >

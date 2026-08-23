@@ -83,7 +83,6 @@ describe('generateCss', () => {
     expect(css).not.toContain('--animation-name:')
     expect(css).not.toContain('--auto-margin-inline:')
     expect(css).toContain('--profile-image-display: block;')
-    expect(css).toContain('--name-row-min-height: 36px;')
     expect(css).not.toContain('yt-live-chat-text-message-renderer')
   })
 
@@ -99,6 +98,9 @@ describe('generateCss', () => {
     expect(youtubeStylesheet).toContain('ytd-sponsorships-live-chat-gift-purchase-announcement-renderer #header')
     expect(youtubeStylesheet).toContain('#price-column.yt-live-chat-paid-sticker-renderer')
     expect(youtubeStylesheet).toContain(':has(#message.yt-live-chat-paid-message-renderer:empty)')
+    expect(youtubeStylesheet).toMatch(
+      /yt-live-chat-paid-message-renderer:has\(#message\.yt-live-chat-paid-message-renderer:empty\) #header\.yt-live-chat-paid-message-renderer \{\s*border-radius: var\(--card-radius\);/,
+    )
     expect(youtubeStylesheet).toContain('yt-live-chat-app {')
     expect(youtubeStylesheet).toContain('animation: var(--animation-name, popInLeft)')
     expect(youtubeStylesheet).toContain('var(--name-padding-inline, 0)')
@@ -111,16 +113,25 @@ describe('generateCss', () => {
     expect(youtubeStylesheet).toMatch(
       /#author-photo[\s\S]*width: var\(--profile-image-size, 36px\);[\s\S]*height: var\(--profile-image-size, 36px\);/,
     )
-    expect(youtubeStylesheet).toContain('margin: var(--name-margin-top, 5px) auto 8px;')
+    expect(youtubeStylesheet).toContain('margin: 0 auto 8px;')
+    expect(youtubeStylesheet).toContain('align-items: center !important;')
     expect(youtubeStylesheet).toContain('font-weight: var(--name-font-weight, 700) !important;')
     expect(youtubeStylesheet).toContain('--card-radius: 20px;')
     expect(youtubeStylesheet).toContain("--amount-font: 'Inter', sans-serif;")
     expect(youtubeStylesheet).toContain('font-family: var(--amount-font) !important;')
+    expect(youtubeStylesheet).toMatch(/#purchase-amount yt-formatted-string[\s\S]*font-size: 12px !important;/)
+    expect(youtubeStylesheet).toMatch(/#purchase-amount-chip\.yt-live-chat-paid-sticker-renderer \*[\s\S]*font-size: 12px !important;/)
     expect(youtubeStylesheet).toMatch(/#single-line\.yt-live-chat-paid-message-renderer[\s\S]*align-items: center;/)
     expect(youtubeStylesheet).not.toContain('border-radius: 13px;')
     expect(youtubeStylesheet).toContain('padding: 16px 24px;')
     expect(youtubeStylesheet).toContain('padding: 0px 24px 16px;')
     expect(youtubeStylesheet).toContain('padding: 0 24px 16px;')
+    expect(youtubeStylesheet).toMatch(
+      /yt-live-chat-paid-message-renderer #content\.yt-live-chat-paid-message-renderer \{\s*color: var\(--superchat-comment\);\s*padding: 16px 24px;/,
+    )
+    expect(youtubeStylesheet).toMatch(
+      /#content\.yt-live-chat-membership-item-renderer \{[\s\S]*?padding: 16px 24px;/,
+    )
     expect(youtubeStylesheet).toContain('padding: 6px 24px 16px;')
     expect(youtubeStylesheet.match(/padding: 8px 12px;/g)).toHaveLength(2)
     expect(youtubeStylesheet).not.toContain('padding: 12px 20px')
@@ -158,8 +169,9 @@ describe('generateCss', () => {
     expect(youtubeNormalStylesheet).toContain('--profile-image-size: 24px;')
     expect(youtubeNormalStylesheet).toContain('--name-font-size: 16px;')
     expect(youtubeNormalStylesheet).toContain('--name-font-weight: 500;')
+    expect(youtubeNormalStylesheet).not.toContain('--name-align-items:')
     expect(youtubeNormalStylesheet).toContain('--name-padding: 0;')
-    expect(youtubeNormalStylesheet).toContain('--name-margin-top: 0;')
+    expect(youtubeNormalStylesheet).not.toContain('--name-margin-top:')
     expect(youtubeNormalStylesheet).not.toContain('#author-name')
   })
 
@@ -243,7 +255,6 @@ describe('generateCss', () => {
     expect(css).not.toContain('--comment-border-radius:')
     expect(css).not.toContain('--comment-padding:')
     expect(css).toContain('--comment-border-width: 0;')
-    expect(css).toContain('--name-row-min-height: 36px;')
     expect(css).not.toContain('--pointer-content:')
     expect(css).not.toContain('--pointer-inner-content:')
   })
@@ -279,7 +290,6 @@ describe('generateCss', () => {
     expect(css).not.toContain('--message-flex-direction:')
     expect(css).not.toContain('--message-justify-content:')
     expect(css).toContain('--profile-image-display: block;')
-    expect(css).toContain('--name-row-min-height: 24px;')
   })
 
   it('Twitchのnormalではコメント文字色だけを生成する', () => {
@@ -340,9 +350,7 @@ describe('generateCss', () => {
 
     expect(hiddenNameCss).toContain('--name-display: none;')
     expect(hiddenNameCss).toContain('--profile-image-display: block;')
-    expect(hiddenNameCss).not.toContain('--name-row-min-height:')
     expect(css).toContain('--name-display: none;')
     expect(css).not.toContain('--profile-image-display:')
-    expect(css).not.toContain('--name-row-min-height:')
   })
 })
