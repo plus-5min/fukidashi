@@ -1,6 +1,3 @@
-/* ----------------------------------------------------
-      ©︎通行止め.ᐟ.ᐟ
-    ---------------------------------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
 @import url('https://plus-5min.github.io/live-chat-css/twitch/hide.css');
 
@@ -53,7 +50,7 @@ body,
   font-family: var(--font) !important;
   font-size: 16px !important;
   font-style: normal !important;
-  font-weight: 700 !important;
+  font-weight: 500 !important;
   line-height: 1.5 !important;
   letter-spacing: 0.5px !important;
 }
@@ -123,7 +120,6 @@ body,
   display: var(--name-display, block) !important;
   width: fit-content;
   color: var(--chat-name) !important;
-  font-weight: 700;
   text-wrap: wrap;
 }
 
@@ -139,6 +135,7 @@ span[data-a-target='chat-line-message-body'] {
   box-sizing: border-box;
   width: fit-content !important;
   max-width: 100%;
+  text-align: var(--comment-text-align, inherit);
   padding: var(--comment-padding, var(--comment-padding-block, 0) var(--comment-padding-inline, 0));
   border: var(--comment-border-width, 0) solid var(--chat-comment-border);
   border-radius: var(--comment-border-radius, var(--comment-radius, 0));

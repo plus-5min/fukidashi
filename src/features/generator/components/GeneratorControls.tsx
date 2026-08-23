@@ -62,6 +62,7 @@ type ColorField = {
   key: ColorKey
   label: string
   hiddenOnNormal?: boolean
+  visibleWhen?: Extract<VisibilityKey, 'showName' | 'showBorder'>
 }
 
 type ColorSectionDefinition = {
@@ -74,21 +75,21 @@ const colorSections: ColorSectionDefinition[] = [
   {
     heading: 'Listener',
     fields: [
-      { key: 'listener-name', label: '名前', hiddenOnNormal: true },
-      { key: 'listener-name-bg', label: '名前の背景', hiddenOnNormal: true },
+      { key: 'listener-name', label: '名前', hiddenOnNormal: true, visibleWhen: 'showName' },
+      { key: 'listener-name-bg', label: '名前の背景', hiddenOnNormal: true, visibleWhen: 'showName' },
       { key: 'listener-comment', label: 'コメント' },
       { key: 'listener-comment-bg', label: 'コメントの背景', hiddenOnNormal: true },
-      { key: 'listener-comment-border', label: 'コメントの枠線', hiddenOnNormal: true },
+      { key: 'listener-comment-border', label: 'コメントの枠線', hiddenOnNormal: true, visibleWhen: 'showBorder' },
     ],
   },
   {
     heading: 'Member',
     fields: [
-      { key: 'member-name', label: 'メンバーの名前', hiddenOnNormal: true },
-      { key: 'member-name-bg', label: '名前の背景', hiddenOnNormal: true },
+      { key: 'member-name', label: 'メンバーの名前', hiddenOnNormal: true, visibleWhen: 'showName' },
+      { key: 'member-name-bg', label: '名前の背景', hiddenOnNormal: true, visibleWhen: 'showName' },
       { key: 'member-comment', label: 'コメント' },
       { key: 'member-comment-bg', label: 'コメントの背景', hiddenOnNormal: true },
-      { key: 'member-comment-border', label: 'コメントの枠線', hiddenOnNormal: true },
+      { key: 'member-comment-border', label: 'コメントの枠線', hiddenOnNormal: true, visibleWhen: 'showBorder' },
     ],
     hiddenOnTwitch: true,
   },
@@ -271,7 +272,10 @@ export function GeneratorControls({ config, activePreset, dispatch, onPresetChan
                   {colorSections.map(({ heading, fields, hiddenOnTwitch }) => {
                     if (hiddenOnTwitch && isTwitch) return null
 
-                    const visibleFields = fields.filter(({ hiddenOnNormal }) => !hiddenOnNormal || config.template !== 'normal')
+                    const visibleFields = fields.filter(
+                      ({ hiddenOnNormal, visibleWhen }) =>
+                        (!hiddenOnNormal || config.template !== 'normal') && (!visibleWhen || config[visibleWhen]),
+                    )
 
                     return <ColorSection key={heading} heading={heading} colors={config.colors} fields={visibleFields} onChange={changeColor} />
                   })}

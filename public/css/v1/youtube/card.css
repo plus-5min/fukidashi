@@ -2,9 +2,10 @@
 
 :root {
   --name-padding-inline: 12px;
-  --comment-padding-block: 12px;
-  --comment-padding-inline: 20px;
-  --comment-radius: 30px;
+  --comment-padding-block: 16px;
+  --comment-padding-inline: 24px;
+  --comment-radius: 20px;
+  --comment-text-align: left;
   --comment-border-width: 3px;
   --pointer-display: none;
   --pointer-inner-display: none;

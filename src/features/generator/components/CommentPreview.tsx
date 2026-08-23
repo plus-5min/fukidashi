@@ -42,40 +42,40 @@ export function CommentPreview({ config }: CommentPreviewProps) {
             <div className={`col-start-1 row-start-1 grid gap-6 ${isTwitch ? 'invisible' : ''}`} aria-hidden={isTwitch}>
               <TextComment config={config} {...youtubePreviewComment} />
 
-              <div className="font-sans text-base leading-6 font-bold not-italic">
-                <div className="relative flex justify-between rounded-t-[10px] bg-(--superchat-name-bg) px-5 py-3 text-(--superchat-name)">
+              <div className="font-sans text-base leading-6 font-medium not-italic">
+                <div className="relative flex items-center justify-between rounded-t-[20px] bg-(--superchat-name-bg) px-6 py-4 text-(--superchat-name)">
                   <p>リスナー </p>
-                  <p>￥5,000</p>
+                  <p className="font-inter rounded-full bg-(--superchat-name) px-3 py-2 text-xs leading-none text-(--superchat-name-bg)">￥5,000</p>
                 </div>
-                <div className="rounded-b-[10px] bg-(--superchat-comment-bg) px-5 py-3 font-medium text-(--superchat-comment)">
+                <div className="rounded-b-[20px] bg-(--superchat-comment-bg) px-6 py-4 font-medium text-(--superchat-comment)">
                   <p>
                     ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。ここにコメントが入ります。
                   </p>
                 </div>
               </div>
 
-              <div className="font-sans text-base leading-6 font-bold not-italic">
-                <div className="flex gap-2 rounded-t-[10px] bg-(--membership-name-bg) px-5 py-3 text-(--membership-name)">
+              <div className="font-sans text-base leading-6 font-medium not-italic">
+                <div className="flex gap-2 rounded-t-[20px] bg-(--membership-name-bg) px-6 py-4 text-(--membership-name)">
                   <p>リスナー</p>
                   <MemberBadge />
                 </div>
-                <div className="rounded-b-[10px] bg-(--membership-name-bg) px-5 pt-0 pb-3 font-medium text-(--membership-name)">
+                <div className="rounded-b-[20px] bg-(--membership-name-bg) px-6 pt-0 pb-4 font-medium text-(--membership-name)">
                   <p>メンバーシップ へようこそ！</p>
                 </div>
               </div>
 
-              <div className="font-sans text-base leading-6 font-bold not-italic">
-                <div className="flex gap-2 rounded-t-[10px] bg-(--membership-name-bg) px-5 pt-3 pb-0 text-(--membership-name)">
+              <div className="font-sans text-base leading-6 font-medium not-italic">
+                <div className="flex gap-2 rounded-t-[20px] bg-(--membership-name-bg) px-6 pt-4 pb-0 text-(--membership-name)">
                   <p>リスナー</p>
                   <MemberBadge />
                 </div>
-                <div className="bg-(--membership-name-bg) px-5 text-(--membership-name)">
+                <div className="bg-(--membership-name-bg) px-6 text-(--membership-name)">
                   <p>メンバー歴 12 か月</p>
                 </div>
-                <div className="bg-(--membership-name-bg) px-5 pt-1.5 pb-3 font-medium text-(--membership-name)">
+                <div className="bg-(--membership-name-bg) px-6 pt-1.5 pb-4 font-medium text-(--membership-name)">
                   <p>メンバーシップ</p>
                 </div>
-                <div className="rounded-b-[10px] bg-(--membership-comment-bg) px-5 py-3 text-(--membership-comment)">
+                <div className="rounded-b-[20px] bg-(--membership-comment-bg) px-6 py-4 text-(--membership-comment)">
                   <p>ここにコメントが入ります。</p>
                 </div>
               </div>
@@ -103,6 +103,12 @@ function TextComment({ config, name, message, member = false, showBadge = false 
   const isRight = config.direction === 'right'
   const isFukidashi = config.template === 'fukidashi'
   const showProfileImage = config.platform !== 'twitch' && config.showProfileImage
+  const isNormal = config.template === 'normal'
+  const profileImageMinWidth = isNormal ? 'min-w-6' : 'min-w-9'
+  const profileImageClass = isNormal ? 'size-6' : 'size-9'
+  const profileImageSize = isNormal ? 24 : 36
+  const nameFontSize = isNormal ? 'text-base' : 'text-xs'
+  const nameVerticalPadding = isNormal ? 'py-0' : 'py-1'
   const nameTextColor =
     config.template === 'normal'
       ? member
@@ -124,19 +130,29 @@ function TextComment({ config, name, message, member = false, showBadge = false 
   const innerPointerDirection = isRight ? 'right-px [transform:rotate(110deg)_skew(20deg,20deg)]' : 'left-px [transform:rotate(-20deg)_skew(20deg,20deg)]'
   const messageTemplateClasses: Record<CommentTemplate, string> = {
     fukidashi: `rounded-[30px] px-5 py-3 ${messageBackgroundColor} ${config.showBorder ? `border-[3px] border-solid ${borderColor}` : 'border-0'}`,
-    card: `rounded-[30px] px-5 py-3 ${messageBackgroundColor} ${config.showBorder ? `border-[3px] border-solid ${borderColor}` : 'border-0'}`,
+    card: `rounded-[20px] px-6 py-4 text-left ${messageBackgroundColor} ${config.showBorder ? `border-[3px] border-solid ${borderColor}` : 'border-0'}`,
     normal: 'bg-transparent p-0',
   }
 
   return (
-    <div className={`flex gap-3 font-sans text-base leading-6 font-bold not-italic ${isRight ? 'flex-row-reverse' : 'flex-row'}`}>
-      <div className={`min-w-6 ${showProfileImage ? 'block' : 'hidden'}`}>
-        <img className="block size-6 rounded-full object-cover" src="/image/icon.jpg" height="24" width="24" alt="アイコン" />
+    <div className={`flex gap-2 font-sans text-base leading-6 font-medium not-italic ${isRight ? 'flex-row-reverse' : 'flex-row'}`}>
+      <div className={`${profileImageMinWidth} ${showProfileImage ? 'block' : 'hidden'}`}>
+        <img
+          className={`block ${profileImageClass} rounded-full object-cover`}
+          src="/image/icon.jpg"
+          height={profileImageSize}
+          width={profileImageSize}
+          alt="アイコン"
+        />
       </div>
       <div className="grid gap-1.5">
         <div className={config.showName ? 'block' : 'hidden'}>
-          <div className={`flex gap-2 ${isRight ? 'justify-end' : 'justify-start'}`}>
-            <div className={`flex w-fit rounded-[18px] py-1 text-xs ${nameHorizontalPadding} ${nameBackgroundColor} ${nameTextColor}`}>{name}</div>
+          <div className={`flex items-center gap-2 ${isRight ? 'justify-end' : 'justify-start'}`}>
+            <div
+              className={`flex w-fit rounded-[18px] ${nameVerticalPadding} ${nameFontSize} ${nameHorizontalPadding} ${nameBackgroundColor} ${nameTextColor}`}
+            >
+              {name}
+            </div>
             {showBadge && <MemberBadge />}
           </div>
         </div>

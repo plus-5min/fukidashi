@@ -15,6 +15,7 @@ describe('generate-static-pages', () => {
   it('includes homepage metadata in the initial HTML for non-JavaScript crawlers', () => {
     expect(indexHtml).toContain('<title>fukidashi | YouTube・TwitchコメントCSSジェネレーター</title>')
     expect(indexHtml).toContain('<link rel="canonical" href="https://fukidashi-css.com/" />')
+    expect(indexHtml).toContain('<link rel="icon" type="image/svg+xml" href="/favicon.svg" />')
     expect(indexHtml).toContain('<meta property="og:image" content="https://fukidashi-css.com/image/ogp.png" />')
     expect(indexHtml).toContain('<meta name="twitter:card" content="summary_large_image" />')
   })
