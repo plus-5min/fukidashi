@@ -1,6 +1,3 @@
-/* ---------------------------------------------------- 
-      ©︎通行止め.ᐟ.ᐟ
-    ---------------------------------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&family=Noto+Sans+JP:wght@100..900&display=swap');
 @import url('https://plus-5min.github.io/live-chat-css/youtube/hide.css');
 
@@ -11,6 +8,7 @@
 }
 
 ytd-sponsorships-live-chat-header-renderer *,
+ytd-sponsorships-live-chat-gift-purchase-announcement-renderer *,
 yt-live-chat-paid-sticker-renderer *,
 yt-live-chat-membership-item-renderer *,
 yt-live-chat-paid-message-renderer *,
@@ -21,17 +19,6 @@ yt-live-chat-text-message-renderer * {
   font-weight: 500 !important;
   line-height: 1.5 !important;
   letter-spacing: 0.5px !important;
-}
-
-ytd-sponsorships-live-chat-header-renderer #author-name,
-yt-live-chat-paid-sticker-renderer #author-name,
-yt-live-chat-membership-item-renderer #author-name,
-yt-live-chat-paid-message-renderer #author-name {
-  font-weight: 700 !important;
-}
-
-yt-live-chat-text-message-renderer #author-name {
-  font-weight: var(--name-font-weight, 700) !important;
 }
 
 ytd-sponsorships-live-chat-header-renderer #message,
@@ -451,11 +438,6 @@ yt-live-chat-author-chip.ytd-sponsorships-live-chat-header-renderer {
   margin: 0;
 }
 
-ytd-sponsorships-live-chat-gift-purchase-announcement-renderer #author-name.member.yt-live-chat-author-chip  {
-  width: auto;
-  padding: 0 !important;
-}
-
 /* gift message */
 #content.ytd-sponsorships-live-chat-header-renderer {
   padding: 0px;
@@ -600,6 +582,11 @@ yt-live-chat-membership-item-renderer[is-deleted],
 yt-live-chat-moderation-message-renderer,
 yt-live-chat-auto-mod-message-renderer {
   display: none !important;
+}
+
+body {
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0);
 }
 
 yt-live-chat-app {

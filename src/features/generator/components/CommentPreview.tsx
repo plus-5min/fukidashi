@@ -44,7 +44,7 @@ export function CommentPreview({ config }: CommentPreviewProps) {
 
               <div className="font-sans text-base leading-6 font-medium not-italic">
                 <div className="relative flex items-center justify-between rounded-t-[20px] bg-(--superchat-name-bg) px-6 py-4 text-(--superchat-name)">
-                  <p className="font-bold">リスナー </p>
+                  <p>リスナー </p>
                   <p className="font-inter rounded-full bg-(--superchat-name) px-3 py-2 text-xs leading-none text-(--superchat-name-bg)">￥5,000</p>
                 </div>
                 <div className="rounded-b-[20px] bg-(--superchat-comment-bg) px-6 py-4 font-medium text-(--superchat-comment)">
@@ -56,7 +56,7 @@ export function CommentPreview({ config }: CommentPreviewProps) {
 
               <div className="font-sans text-base leading-6 font-medium not-italic">
                 <div className="flex gap-2 rounded-t-[20px] bg-(--membership-name-bg) px-6 py-4 text-(--membership-name)">
-                  <p className="font-bold">リスナー</p>
+                  <p>リスナー</p>
                   <MemberBadge />
                 </div>
                 <div className="rounded-b-[20px] bg-(--membership-name-bg) px-6 pt-0 pb-4 font-medium text-(--membership-name)">
@@ -66,7 +66,7 @@ export function CommentPreview({ config }: CommentPreviewProps) {
 
               <div className="font-sans text-base leading-6 font-medium not-italic">
                 <div className="flex gap-2 rounded-t-[20px] bg-(--membership-name-bg) px-6 pt-4 pb-0 text-(--membership-name)">
-                  <p className="font-bold">リスナー</p>
+                  <p>リスナー</p>
                   <MemberBadge />
                 </div>
                 <div className="bg-(--membership-name-bg) px-6 text-(--membership-name)">
@@ -105,11 +105,9 @@ function TextComment({ config, name, message, member = false, showBadge = false 
   const showProfileImage = config.platform !== 'twitch' && config.showProfileImage
   const isNormal = config.template === 'normal'
   const profileImageMinWidth = isNormal ? 'min-w-6' : 'min-w-9'
-  const profileImageMinHeight = isNormal ? 'min-h-6' : 'min-h-9'
   const profileImageClass = isNormal ? 'size-6' : 'size-9'
   const profileImageSize = isNormal ? 24 : 36
   const nameFontSize = isNormal ? 'text-base' : 'text-xs'
-  const nameFontWeight = isNormal ? 'font-medium' : ''
   const nameVerticalPadding = isNormal ? 'py-0' : 'py-1'
   const nameTextColor =
     config.template === 'normal'
@@ -137,7 +135,7 @@ function TextComment({ config, name, message, member = false, showBadge = false 
   }
 
   return (
-    <div className={`flex gap-2 font-sans text-base leading-6 font-bold not-italic ${isRight ? 'flex-row-reverse' : 'flex-row'}`}>
+    <div className={`flex gap-2 font-sans text-base leading-6 font-medium not-italic ${isRight ? 'flex-row-reverse' : 'flex-row'}`}>
       <div className={`${profileImageMinWidth} ${showProfileImage ? 'block' : 'hidden'}`}>
         <img
           className={`block ${profileImageClass} rounded-full object-cover`}
@@ -149,9 +147,9 @@ function TextComment({ config, name, message, member = false, showBadge = false 
       </div>
       <div className="grid gap-1.5">
         <div className={config.showName ? 'block' : 'hidden'}>
-          <div className={`flex gap-2 ${showProfileImage ? `${profileImageMinHeight}${isNormal ? '' : ' items-center'}` : ''} ${isRight ? 'justify-end' : 'justify-start'}`}>
+          <div className={`flex items-center gap-2 ${isRight ? 'justify-end' : 'justify-start'}`}>
             <div
-              className={`flex w-fit rounded-[18px] ${nameVerticalPadding} ${nameFontSize}${nameFontWeight ? ` ${nameFontWeight}` : ''} ${nameHorizontalPadding} ${nameBackgroundColor} ${nameTextColor}`}
+              className={`flex w-fit rounded-[18px] ${nameVerticalPadding} ${nameFontSize} ${nameHorizontalPadding} ${nameBackgroundColor} ${nameTextColor}`}
             >
               {name}
             </div>

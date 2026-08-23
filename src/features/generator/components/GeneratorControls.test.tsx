@@ -83,6 +83,38 @@ describe('GeneratorControls', () => {
     expect(html).toContain('id="member-comment-bg-picker"')
   })
 
+  it('nameがOFFのときは通常コメントの名前カラー設定をCustomから隠す', () => {
+    const config = generatorReducer(defaultGeneratorConfig, {
+      type: 'visibilityChanged',
+      key: 'showName',
+      value: false,
+    })
+    const html = renderControls(config)
+
+    expect(html).not.toContain('id="listener-name-picker"')
+    expect(html).not.toContain('id="listener-name-bg-picker"')
+    expect(html).not.toContain('id="member-name-picker"')
+    expect(html).not.toContain('id="member-name-bg-picker"')
+    expect(html).toContain('id="listener-comment-picker"')
+    expect(html).toContain('id="superchat-name-picker"')
+    expect(html).toContain('id="membership-name-picker"')
+  })
+
+  it('borderのON/OFFに合わせて枠線カラー設定をCustomで切り替える', () => {
+    const hiddenHtml = renderControls(defaultGeneratorConfig)
+    const visibleConfig = generatorReducer(defaultGeneratorConfig, {
+      type: 'visibilityChanged',
+      key: 'showBorder',
+      value: true,
+    })
+    const visibleHtml = renderControls(visibleConfig)
+
+    expect(hiddenHtml).not.toContain('id="listener-comment-border-picker"')
+    expect(hiddenHtml).not.toContain('id="member-comment-border-picker"')
+    expect(visibleHtml).toContain('id="listener-comment-border-picker"')
+    expect(visibleHtml).toContain('id="member-comment-border-picker"')
+  })
+
   it('未選択のTemplateカードには枠線を表示しない', () => {
     const html = renderControls(defaultGeneratorConfig)
 

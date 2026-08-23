@@ -102,6 +102,7 @@ describe('generateCss', () => {
       /yt-live-chat-paid-message-renderer:has\(#message\.yt-live-chat-paid-message-renderer:empty\) #header\.yt-live-chat-paid-message-renderer \{\s*border-radius: var\(--card-radius\);/,
     )
     expect(youtubeStylesheet).toContain('yt-live-chat-app {')
+    expect(youtubeStylesheet).toMatch(/body \{\s*overflow: hidden;\s*background-color: rgba\(0, 0, 0, 0\);\s*\}/)
     expect(youtubeStylesheet).toContain('animation: var(--animation-name, popInLeft)')
     expect(youtubeStylesheet).toContain('var(--name-padding-inline, 0)')
     expect(youtubeStylesheet).toContain('var(--comment-padding-block, 0) var(--comment-padding-inline, 0)')
@@ -115,7 +116,7 @@ describe('generateCss', () => {
     )
     expect(youtubeStylesheet).toContain('margin: 0 auto 8px;')
     expect(youtubeStylesheet).toContain('align-items: center !important;')
-    expect(youtubeStylesheet).toContain('font-weight: var(--name-font-weight, 700) !important;')
+    expect(youtubeStylesheet).not.toContain('font-weight: 700')
     expect(youtubeStylesheet).toContain('--card-radius: 20px;')
     expect(youtubeStylesheet).toContain("--amount-font: 'Inter', sans-serif;")
     expect(youtubeStylesheet).toContain('font-family: var(--amount-font) !important;')
@@ -132,11 +133,15 @@ describe('generateCss', () => {
     expect(youtubeStylesheet).toMatch(
       /#content\.yt-live-chat-membership-item-renderer \{[\s\S]*?padding: 16px 24px;/,
     )
+    expect(youtubeStylesheet.match(/ytd-sponsorships-live-chat-gift-purchase-announcement-renderer #author-name\.member\.yt-live-chat-author-chip/g)).toHaveLength(1)
+    expect(youtubeStylesheet).toMatch(
+      /ytd-sponsorships-live-chat-gift-purchase-announcement-renderer #author-name\.member\.yt-live-chat-author-chip \{[\s\S]*?padding: 16px 24px 0;/,
+    )
     expect(youtubeStylesheet).toContain('padding: 6px 24px 16px;')
     expect(youtubeStylesheet.match(/padding: 8px 12px;/g)).toHaveLength(2)
     expect(youtubeStylesheet).not.toContain('padding: 12px 20px')
     expect(youtubeStylesheet).not.toContain('20px 12px')
-    expect(youtubeStylesheet).toMatch(/yt-live-chat-paid-message-renderer #author-name[\s\S]*font-weight: 700 !important;/)
+    expect(youtubeStylesheet).toMatch(/yt-live-chat-paid-message-renderer \*[\s\S]*font-weight: 500 !important;/)
     expect(youtubeStylesheet).toMatch(/#purchase-amount yt-formatted-string[\s\S]*font-weight: 500 !important;/)
     expect(youtubeStylesheet).toMatch(
       /#purchase-amount-column[\s\S]*background-color: var\(--superchat-name\);[\s\S]*#purchase-amount yt-formatted-string[\s\S]*color: var\(--superchat-name-bg\) !important;/,
@@ -168,7 +173,7 @@ describe('generateCss', () => {
     expect(youtubeNormalStylesheet).toContain('--comment-background: transparent;')
     expect(youtubeNormalStylesheet).toContain('--profile-image-size: 24px;')
     expect(youtubeNormalStylesheet).toContain('--name-font-size: 16px;')
-    expect(youtubeNormalStylesheet).toContain('--name-font-weight: 500;')
+    expect(youtubeNormalStylesheet).not.toContain('--name-font-weight:')
     expect(youtubeNormalStylesheet).not.toContain('--name-align-items:')
     expect(youtubeNormalStylesheet).toContain('--name-padding: 0;')
     expect(youtubeNormalStylesheet).not.toContain('--name-margin-top:')
@@ -309,8 +314,10 @@ describe('generateCss', () => {
     expect(css).toContain('--listener-comment: #5997F2;')
     expect(css).not.toContain('--listener-comment-bg:')
     expect(css).not.toContain('--listener-comment-border:')
-    expect(twitchStylesheet).toContain('font-weight: var(--name-font-weight, 700);')
-    expect(twitchNormalStylesheet).toContain('--name-font-weight: 500;')
+    expect(twitchStylesheet).toContain('font-weight: 500 !important;')
+    expect(twitchStylesheet).not.toContain('font-weight: 700')
+    expect(twitchNormalStylesheet).not.toContain('--name-font-weight:')
+    expect(twitchNormalStylesheet).not.toContain('--comment-font-weight:')
     expect(twitchNormalStylesheet).not.toContain('.chat-author__display-name')
   })
 
